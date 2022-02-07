@@ -8,11 +8,7 @@ namespace BackEnd.Controllers
 {
     public class WallStreetBetsDB
     {
-        // Put CRUD methods up here
-        // getFavorites()
-        // all of our API calls will happen on the backend (not from the front end)
-        // one more note
-        // Josh test
+
     }
 
     public class User
@@ -27,7 +23,6 @@ namespace BackEnd.Controllers
         public int id { get; set; }
         public string username { get; set; }
         public string ticker { get; set; }
-        public string company { get; set; }
     }
 
     public class Note
@@ -35,6 +30,11 @@ namespace BackEnd.Controllers
         public int id { get; set; }
         public int favorite_id { get; set; }
         public string description { get; set; }
+    }
+
+    public class JoinResults
+    {
+
     }
 
     public class WallStreetBetsContext : DbContext
