@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BackEnd.Controllers
 {
-    public class Database
+    public class WallStreetBetsDB
     {
 
     }
