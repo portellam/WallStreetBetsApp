@@ -7,7 +7,10 @@ namespace BackEnd.Controllers
 {
     public class WallStreetBetsDB
     {
-
+        // Put CRUD methods up here
+        // getFavorites()
+        // all of our API calls will happen on the backend (not from the front end)
+        // one more note
     }
 
     public class User
