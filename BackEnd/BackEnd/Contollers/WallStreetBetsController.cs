@@ -6,46 +6,46 @@ using BackEnd.Models;
 
 namespace BackEnd.Contollers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class WallStreetBetsController : ControllerBase
-    {
-        // PROPERTIES //
-        private readonly WallStreetBetsContext _context;
-        public WallStreetBetsController(WallStreetBetsContext context)
-        {
-            _context = context;
-        }
+	[Route("api/[controller]")]
+	[ApiController]
+	public class WallStreetBetsController : ControllerBase
+	{
+		// PROPERTIES //
+		private readonly WallStreetBetsContext _context;
+		public WallStreetBetsController(WallStreetBetsContext context)
+		{
+			_context = context;
+		}
 
-        // METHODS //
-        // CRUD FUNCTIONS
+		// METHODS //
+		// CRUD FUNCTIONS
 
-        // TODO:    Users table
+		// TODO:    Users table
 
-        // function reads the list of Users
-        // GET: api/<WallStreetBetsController>
-        [HttpGet]
-        public IEnumerable<User> GetUsers()
-        {
-            return _context.Users;
-        }
+		// function reads the list of Users
+		// GET: api/<WallStreetBetsController>
+		[HttpGet]
+		public IEnumerable<User> GetUsers()
+		{
+			return _context.Users;
+		}
 
-        // function creates a User, adds to list
-        [HttpPost]
-        public void PostUser(string username, string first_name)
-        {
-            // we are taking in values, which is a username and first_name, and adding to list
-            // do I instantiate a list of users here, or call _context.Users ?
+		// function creates a User, adds to list
+		[HttpPost]
+		public void PostUser(string username, string first_name)
+		{
+			// we are taking in values, which is a username and first_name, and adding to list
+			// do I instantiate a list of users here, or call _context.Users ?
 
-            User myUser = new User();
-            myUser.username = username;
-            myUser.first_name = first_name;
+			User myUser = new User();
+			myUser.username = username;
+			myUser.first_name = first_name;
 
-            _context.Users.Add(myUser);
-            _context.SaveChanges();
+			_context.Users.Add(myUser);
+			_context.SaveChanges();
 
-            // EXAMPLE: https://localhost:7262/api/WallStreetBets?username=jeffcogs&first_name=jeff
-        }
+			// EXAMPLE: https://localhost:7262/api/WallStreetBets?username=jeffcogs&first_name=jeff
+		}
 
         /*
         [HttpPut]
@@ -54,8 +54,6 @@ namespace BackEnd.Contollers
             
         }
         */
-
-
 
         /*
 
@@ -75,11 +73,11 @@ namespace BackEnd.Contollers
         }
         */
 
-
         // TODO:    Favorites table
-
+        /*
         // function reads Favorite Ticker
         // GET api/<WallStreetBetsController>/5
+        
         [HttpGet("{id}")]
         public static List<Favorite> GetFavs(string username)
         {
@@ -89,41 +87,44 @@ namespace BackEnd.Contollers
                 var query = 
             }
         }
-
-
-
-
-        /*
-
+        */
 
         // function creates Favorite Ticker, assigns to a User
         // POST api/<WallStreetBetsController>
         [HttpPost]
-        public void PostFav(string username, string ticker)
+        public void AddFav(string username, string ticker)
         {
-            
-
+            List<Favorite> Favs = _context.Favorites.ToList();
+            for (int i = 0; i < Favs.Count; i++)
+            {
+                if (ticker == Favs[i].ticker)
+                {
+                    return; // If Favorite already exists, exit function
+                }
+            }
+            Favorite newFav = new Favorite();
+            newFav.username = username;
+            newFav.ticker = ticker;
+            _context.Favorites.Add(newFav);
+            _context.SaveChanges();
         }
 
-        // function updates Favorite Ticker
-        // PUT api/<WallStreetBetsController>/5
-        [HttpPut("{id}")]
-        public void PutFav(string username, string ticker, List<Favorite> Favorites)
-        {
-
-        }
+        // NOTE: put/edit not necessary for Favorites
 
         // function deletes Favorite Ticker
         // DELETE api/<WallStreetBetsController>/5
         [HttpDelete("{id}")]
-        public void DeleteFav(string username, string ticker, List<Favorite> Favorites)
+        public void DeleteFav(string username, string ticker)
         {
-
+            List<Favorite> Favs = _context.Favorites.ToList();
+            for (int i = 0; i < Favs.Count; i++)
+            {
+                if (username == Favs[i].username && ticker == Favs[i].ticker)
+                { 
+                    _context.Favorites.Remove(Favs[i]);
+                }
+            }
+                
         }
-
-
-       
-        */
-
     }
 }
