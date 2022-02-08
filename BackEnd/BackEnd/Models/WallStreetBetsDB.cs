@@ -39,6 +39,11 @@ namespace BackEnd.Controllers
 
     public class WallStreetBetsContext : DbContext
     {
+        public WallStreetBetsContext(DbContextOptions<WallStreetBetsContext> options) : base(options)
+        {
+
+        }
+
         public DbSet<User> Users { get; set; }
         public DbSet<Favorite> Favorites { get; set; }
         public DbSet<Note> Notes { get; set; }
