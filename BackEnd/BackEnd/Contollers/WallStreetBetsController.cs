@@ -10,27 +10,22 @@ namespace BackEnd.Contollers
 	[ApiController]
 	public class WallStreetBetsController : ControllerBase
 	{
-		// PROPERTIES //
+		// THIS IS OUR DATABASE
 		private readonly WallStreetBetsContext _context;
 		public WallStreetBetsController(WallStreetBetsContext context)
 		{
 			_context = context;
 		}
 
-		// METHODS //
-		// CRUD FUNCTIONS
 
-		// TODO:    Users table
 
-		// function reads the list of Users
-		// GET: api/<WallStreetBetsController>
+        // THESE ARE THE GET & POST FOR THE USERS TABLE
 		[HttpGet]
 		public IEnumerable<User> GetUsers()
 		{
 			return _context.Users;
 		}
 
-		// function creates a User, adds to list
 		[HttpPost]
 		public void PostUser(string username, string first_name)
 		{
@@ -46,6 +41,68 @@ namespace BackEnd.Contollers
 
 			// EXAMPLE: https://localhost:7262/api/WallStreetBets?username=jeffcogs&first_name=jeff
 		}
+
+
+
+
+        // THESE ARE THE GET, POST, AND DELETE FOR THE FAVORITES TABLE
+        [Route("favorites")]
+        [HttpGet]
+        public IEnumerable<Favorite> GetFavorites()
+        {
+            return _context.Favorites;
+        }
+
+        [Route("favorites")]
+        [HttpPost]
+        public void AddFav(string username, string ticker)
+        {
+            List<Favorite> Favs = _context.Favorites.ToList();
+            for (int i = 0; i < Favs.Count; i++)
+            {
+                if (username == Favs[i].username && ticker == Favs[i].ticker)
+                {
+                    return; // If Favorite already exists, exit function
+                }
+            }
+            Favorite newFav = new Favorite();
+            newFav.username = username;
+            newFav.ticker = ticker;
+            _context.Favorites.Add(newFav);
+            _context.SaveChanges();
+        }
+
+        [Route("favorites")]
+        [HttpDelete]
+        public void DeleteFav(string username, string ticker)
+        {
+            List<Favorite> Favs = _context.Favorites.ToList();
+            for (int i = 0; i < Favs.Count; i++)
+            {
+                if (username == Favs[i].username && ticker == Favs[i].ticker)
+                {
+                    _context.Favorites.Remove(Favs[i]);
+                    _context.SaveChanges();
+                }
+            }
+
+        }
+
+
+
+
+        // THESE ARE THE CRUD OPERATIONS FOR OUR NOTES TABLE
+
+        [Route("notes")]
+        [HttpPost]
+        public void AddNote(string description)
+        {
+            Note theNote = new Note();
+            List<Favorite> theFavoriteList = _context.Favorites.ToList();
+        }
+
+
+
 
         /*
         [HttpPut]
@@ -91,40 +148,21 @@ namespace BackEnd.Contollers
 
         // function creates Favorite Ticker, assigns to a User
         // POST api/<WallStreetBetsController>
-        [HttpPost]
-        public void AddFav(string username, string ticker)
-        {
-            List<Favorite> Favs = _context.Favorites.ToList();
-            for (int i = 0; i < Favs.Count; i++)
-            {
-                if (ticker == Favs[i].ticker)
-                {
-                    return; // If Favorite already exists, exit function
-                }
-            }
-            Favorite newFav = new Favorite();
-            newFav.username = username;
-            newFav.ticker = ticker;
-            _context.Favorites.Add(newFav);
-            _context.SaveChanges();
-        }
 
-        // NOTE: put/edit not necessary for Favorites
-
-        // function deletes Favorite Ticker
-        // DELETE api/<WallStreetBetsController>/5
-        [HttpDelete("{id}")]
-        public void DeleteFav(string username, string ticker)
+        /*
+        
+        [HttpGet]
+        public IEnumerable<User> GetFavs()
         {
-            List<Favorite> Favs = _context.Favorites.ToList();
-            for (int i = 0; i < Favs.Count; i++)
-            {
-                if (username == Favs[i].username && ticker == Favs[i].ticker)
-                { 
-                    _context.Favorites.Remove(Favs[i]);
-                }
-            }
-                
+            return _context.Favorites;
         }
+        */
+
+
+
+
+
+
+
     }
 }

@@ -45,12 +45,12 @@ namespace BackEnd.Controllers
     {
         public int id { get; set; }
         public int favorite_id { get; set; }
-        public string description { get; set; }
+        public string description { get; set; } // GME looks like a great buy!
     }
 
     public class JoinResults
     {
-
+        
     }
 
     public class WallStreetBetsContext : DbContext
