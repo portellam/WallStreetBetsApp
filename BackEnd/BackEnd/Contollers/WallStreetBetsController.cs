@@ -19,6 +19,8 @@ namespace BackEnd.Contollers
 
 
 
+
+
         // THESE ARE THE GET & POST FOR THE USERS TABLE
 		[HttpGet]
 		public IEnumerable<User> GetUsers()
@@ -41,6 +43,7 @@ namespace BackEnd.Contollers
 
 			// EXAMPLE: https://localhost:7262/api/WallStreetBets?username=jeffcogs&first_name=jeff
 		}
+
 
 
 
@@ -85,22 +88,80 @@ namespace BackEnd.Contollers
                     _context.SaveChanges();
                 }
             }
-
         }
+
 
 
 
 
         // THESE ARE THE CRUD OPERATIONS FOR OUR NOTES TABLE
+        [Route("notes")]
+        [HttpGet]
+        public IEnumerable<Note> GetNotes()
+        {
+            return _context.Notes;
+        }
 
         [Route("notes")]
         [HttpPost]
-        public void AddNote(string description)
+        public void AddNote(int favID, string noteDescription)
         {
-            Note theNote = new Note();
-            List<Favorite> theFavoriteList = _context.Favorites.ToList();
+            Note myNote = new Note();
+            List<Favorite> favoriteRecords = _context.Favorites.ToList();
+
+            for (int i = 0; i < favoriteRecords.Count; i++)
+            {
+                if (favoriteRecords[i].id == favID)
+                {
+                    myNote.favorite_id = favID;
+                    myNote.description = noteDescription;
+
+                    _context.Notes.Add(myNote);
+                    _context.SaveChanges();
+                }
+            }
         }
-        // fsdfjsadkl;fjsakl;dj
+
+        [Route("notes")]
+        [HttpPut]
+        public void EditNote(int noteID, string updatedNoteDescription)
+        {
+            List<Note> notesList = _context.Notes.ToList();
+            Note myNote = new Note();
+
+            for (int i = 0; i < notesList.Count; i++)
+            {
+                if (notesList[i].id == noteID)
+                {
+                    notesList[i].description = updatedNoteDescription;
+                    myNote = notesList[i];
+
+                    _context.Notes.Update(myNote);
+                    _context.SaveChanges();
+                }
+            }
+        }
+
+        [Route("notes")]
+        [HttpDelete]
+        public void DeleteNote(int noteID)
+        {
+            List<Note> notesList = _context.Notes.ToList();
+            Note noteToDelete = new Note();
+
+            for (int i = 0; i < notesList.Count; i++)
+            {
+                if (notesList[i].id == noteID)
+                {
+                    noteToDelete = notesList[i];
+
+                    _context.Notes.Remove(noteToDelete);
+                    _context.SaveChanges();
+                }
+            }
+        }
+
+        
 
 
 
