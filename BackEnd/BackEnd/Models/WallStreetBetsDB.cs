@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,10 +8,7 @@ namespace BackEnd.Controllers
 {
     public class WallStreetBetsDB
     {
-        // Put CRUD methods up here
-        // getFavorites()
-        // all of our API calls will happen on the backend (not from the front end)
-        // one more note
+
     }
 
     public class User
@@ -25,7 +23,6 @@ namespace BackEnd.Controllers
         public int id { get; set; }
         public string username { get; set; }
         public string ticker { get; set; }
-        public string company { get; set; }
     }
 
     public class Note
@@ -33,6 +30,28 @@ namespace BackEnd.Controllers
         public int id { get; set; }
         public int favorite_id { get; set; }
         public string description { get; set; }
-        public DateTime last_updated { get; set; }
     }
+
+    public class JoinResults
+    {
+
+    }
+
+    public class WallStreetBetsContext : DbContext
+    {
+        public WallStreetBetsContext(DbContextOptions<WallStreetBetsContext> options) : base(options)
+        {
+
+        }
+
+        public DbSet<User> Users { get; set; }
+        public DbSet<Favorite> Favorites { get; set; }
+        public DbSet<Note> Notes { get; set; }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS;Database=WSBdatabase;Integrated Security=SSPI;");
+        }
+    }
+
+
 }
