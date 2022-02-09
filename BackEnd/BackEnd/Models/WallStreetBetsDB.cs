@@ -9,20 +9,28 @@ namespace BackEnd.Controllers
     public class WallStreetBetsDB
     {
         // METHODS //
-        // CRUD
-        // Favorites table
+
+        // CRUD FUNCTIONS
+        // NOTE: all of our API calls will happen on the backend (not from the front end)
+
+        // User table
+        // GetUsers
+        // AddUser
+        // EditUser
+        // DeleteUser           // call DeleteFavorites()
+        // end table.
+
+        // Favorite table
         // GetFavorites()
-
         // DeleteFavorites()    // call DeleteNote()
+        // end table.
 
-        // Notes table
-        // PostNote()
-
-        // PutNote()
-
+        // Note table
+        // GetNotes()
+        // AddNote()
+        // EditNote()
         // DeleteNote()
-
-        // all of our API calls will happen on the backend (not from the front end)
+        // end table.
     }
 
     public class User
@@ -30,27 +38,39 @@ namespace BackEnd.Controllers
         // PROPERTIES //
         public int id { get; set; }
         public string username { get; set; }
-        public string first_name { get; set; }
+        public string firstName { get; set; }
     }
 
     public class Favorite
     {
         // PROPERTIES //
         public int id { get; set; }
-        public string username { get; set; }
+        //public string username { get; set; }      // TODO: remove?
         public string ticker { get; set; }
+        public int user_id { get; set; }            // foreign key
+        public List<Note> noteList { get; set; }   // like a foreign key
     }
 
     public class Note
     {
         public int id { get; set; }
-        public int favorite_id { get; set; }
         public string description { get; set; }
+        public DateTime lastEdit { get; set; }    //  TODO: optional
+        public int favorite_id { get; set; }
+        public List<Favorite> favoriteList { get; set; }
     }
 
     public class JoinResults
     {
-
+        // PROPERTIES //
+        // User
+        public int id { get; set; }
+        public string username { get; set; }
+        public string firstName { get; set; }
+        // Favorite
+        public string ticker { get; set; }
+        public int user_id { get; set; }
+        public List<Note> Notes { get; set; }
     }
 
     public class WallStreetBetsContext : DbContext

@@ -8,123 +8,207 @@ namespace BackEnd.Contollers
 {
 	[Route("api/[controller]")]
 	[ApiController]
+    // function defines the local database.
 	public class WallStreetBetsController : ControllerBase
 	{
 		// PROPERTIES //
 		private readonly WallStreetBetsContext _context;
-		public WallStreetBetsController(WallStreetBetsContext context)
-		{
-			_context = context;
-		}
 
-		// METHODS //
-		// CRUD FUNCTIONS
+        // METHODS //
+        public WallStreetBetsController(WallStreetBetsContext context)
+        {
+            _context = context;
+        }
 
-		// TODO:    Users table
+        // CRUD FUNCTIONS
 
-		// function reads the list of Users
-		// GET: api/<WallStreetBetsController>
-		[HttpGet]
+        // User table:
+        // Route: api/<WallStreetBetsController>
+
+        // function reads the list of Users.
+        [HttpGet]
 		public IEnumerable<User> GetUsers()
 		{
 			return _context.Users;
 		}
 
-		// function creates a User, adds to list
+		// function creates a User.
 		[HttpPost]
-		public void PostUser(string username, string first_name)
+		public void AddUser(string username, string firstName)
 		{
-			// we are taking in values, which is a username and first_name, and adding to list
-			// do I instantiate a list of users here, or call _context.Users ?
-
-			User myUser = new User();
+            List<User> userList = _context.Users.ToList();
+            for (int i = 0; i < userList.Count; i++)
+            {
+                if (username == userList[i].username)
+                {
+                    return;     // If match exists, exit function now.
+                }
+            }
+            User myUser = new User();
 			myUser.username = username;
-			myUser.first_name = first_name;
-
-			_context.Users.Add(myUser);
+			myUser.firstName = firstName;
+            _context.Users.Add(myUser);
 			_context.SaveChanges();
-
-			// EXAMPLE: https://localhost:7262/api/WallStreetBets?username=jeffcogs&first_name=jeff
+            // EXAMPLE: https://localhost:7262/api/WallStreetBets?username=jeffcogs&first_name=jeff
 		}
 
-        /*
+        // function edits User, checks for conflicting match.
         [HttpPut]
-        public void EditUser(string currentUsername, string newUsername, string newFirstName)
+        public void EditUser(int id, string username, string firstName)
         {
-            
-        }
-        */
-
-        /*
-
-        // function deletes a User (also should delete all Favs/Notes of given User, too)
-        [HttpGet]
-        public void DeleteUser(int id, List<User> Users)
-        {
-            // foreach or forloop?
-            for (int i = 0; i < Users.Count; i++)
+            // FrontEnd:
+            // verify input, if string is null or same, assume no change and pass old string
+            // else, pass new string
+            List<User> userList = _context.Users.ToList();
+            for (int i = 0; i < userList.Count; i++)
             {
-                if (i == id)
+                if (id != i && username == userList[i].username)
                 {
-                    // delete user here
+                    return;     // If user is not current user and match exists, exit function now.
                 }
             }
-            return;
-        }
-        */
-
-        // TODO:    Favorites table
-        /*
-        // function reads Favorite Ticker
-        // GET api/<WallStreetBetsController>/5
-        
-        [HttpGet("{id}")]
-        public static List<Favorite> GetFavs(string username)
-        {
-            List<Favorite> result = null;
-            using (WallStreetBetsContext ctx = new WallStreetBetsContext())
-            {
-                var query = 
-            }
-        }
-        */
-
-        // function creates Favorite Ticker, assigns to a User
-        // POST api/<WallStreetBetsController>
-        [HttpPost]
-        public void AddFav(string username, string ticker)
-        {
-            List<Favorite> Favs = _context.Favorites.ToList();
-            for (int i = 0; i < Favs.Count; i++)
-            {
-                if (ticker == Favs[i].ticker)
-                {
-                    return; // If Favorite already exists, exit function
-                }
-            }
-            Favorite newFav = new Favorite();
-            newFav.username = username;
-            newFav.ticker = ticker;
-            _context.Favorites.Add(newFav);
+            User myUser = userList.ElementAt(id);
+            myUser.username = username;
+            myUser.firstName = firstName;
+            _context.Users.Update(myUser);
             _context.SaveChanges();
         }
 
-        // NOTE: put/edit not necessary for Favorites
-
-        // function deletes Favorite Ticker
-        // DELETE api/<WallStreetBetsController>/5
-        [HttpDelete("{id}")]
-        public void DeleteFav(string username, string ticker)
+        // function deletes a User.
+        [HttpDelete]
+        public void DeleteUser(int id)
         {
-            List<Favorite> Favs = _context.Favorites.ToList();
-            for (int i = 0; i < Favs.Count; i++)
+            List<User> userList = _context.Users.ToList();
+            for (int i = 0; i < userList.Count; i++)
             {
-                if (username == Favs[i].username && ticker == Favs[i].ticker)
-                { 
-                    _context.Favorites.Remove(Favs[i]);
+                if (id == userList[i].id)
+                {
+                    // TODO: recursive call DeleteNote(), and DeleteFavorite() here?
+                    _context.Users.Remove(userList.ElementAt(id));
+                    _context.SaveChanges();
+                    return;     // If match exists, exit function now.
                 }
             }
-                
         }
+        // end table.
+
+        // Favorite table:
+        // Route: api/<WallStreetBetsController>/favorite/{id}  // NOTE: is this correct?
+
+        // NOTE: PUT/EDIT not necessary for favoriteList.
+
+        // function reads list of Favorites.
+        [Route("favorites")]
+        [HttpGet]
+        public IEnumerable<Favorite> GetFavorites()
+        {
+            return _context.Favorites;
+        }
+
+        // function creates Favorite, assigns to a User.
+        [Route("favorites")]
+        [HttpPost]
+        public void AddFavorite(int user_id, string ticker)
+        {
+            List<Favorite> favoriteList = _context.Favorites.ToList();
+            for (int i = 0; i < favoriteList.Count; i++)
+            {
+                if (ticker == favoriteList[i].ticker)
+                {
+                    return;     // If match exists, exit function now.
+                }
+            }
+            Favorite newFavorite = new Favorite();
+            newFavorite.ticker = ticker;
+            newFavorite.user_id = user_id;
+            newFavorite.noteList = new List<Note>();
+            _context.Favorites.Add(newFavorite);
+            _context.SaveChanges();
+        }
+
+        // function deletes Favorite.
+        [Route("favorites")]
+        [HttpDelete("{id}")]    //  ("removeFav?{id}")
+        public void DeleteFavorite(int user_id, string ticker)
+        {
+            List<Favorite> favoriteList = _context.Favorites.ToList();
+            for (int i = 0; i < favoriteList.Count; i++)
+            {
+                if (user_id == favoriteList[i].user_id && ticker == favoriteList[i].ticker)
+                {
+                    // TODO: recursive call DeleteNote() here?
+                    _context.Favorites.Remove(favoriteList[i]);
+                    _context.SaveChanges();
+                    return;     // If match exists, delete the Favorite, and exit function now.
+                }
+            }     
+        }
+        // end table.
+
+        // Note table:
+
+        // function reads list of Notes.
+        [Route("notes")]
+        [HttpGet]
+        public IEnumerable<Note> GetNotes()
+        {
+            return _context.Notes;
+        }
+
+        // function creates Note, assigns to Favorite Ticker
+        [Route("notes")]
+        [HttpPost]
+        public void AddNote(int favorite_id, string description)
+        {
+            Note newNote = new Note();
+            List<Favorite> favoriteList = _context.Favorites.ToList();
+            for (int i = 0; i < favoriteList.Count; i++)
+            {
+                if (favorite_id == favoriteList[i].id)
+                {
+                    newNote.favorite_id = favorite_id;
+                    newNote.description = description;
+                    _context.Notes.Add(newNote);
+                    _context.SaveChanges();
+                    return;     // If match exists, add the Note, and exit function now.
+                }
+            }
+        }
+
+        // function edits Note.
+        [Route("notes")]
+        [HttpPut]
+        public void EditNote(int id, string description)
+        {
+            List<Note> noteList = _context.Notes.ToList();
+            for (int i = 0; i < noteList.Count; i++)
+            {
+                if (id == noteList[i].id)
+                {
+                    noteList[i].description = description;
+                    _context.Notes.Update(noteList[i]);
+                    _context.SaveChanges();
+                    return;     // If match exists, edit Note, and exit function now.
+                }
+            }
+        }
+
+        // function deletes Note.
+        [Route("notes")]
+        [HttpDelete]
+        public void DeleteNote(int id)
+        {
+            List<Note> noteList = _context.Notes.ToList();
+            for (int i = 0; i < noteList.Count; i++)
+            {
+                if (id == noteList[i].id)
+                {
+                    _context.Notes.Remove(noteList[i]);
+                    _context.SaveChanges();
+                    return;     // If match exists, delete Note, and exit function now.
+                }
+            }
+        }
+        // end table.
     }
 }
