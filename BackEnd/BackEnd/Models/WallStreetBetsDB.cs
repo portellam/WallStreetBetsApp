@@ -45,17 +45,16 @@ namespace BackEnd.Controllers
     {
         // PROPERTIES //
         public int id { get; set; }
-        //public string username { get; set; }      // TODO: remove?
         public string ticker { get; set; }
         public int user_id { get; set; }            // foreign key
-        public List<Note> noteList { get; set; }   // like a foreign key
+        public List<Note> noteList { get; set; }    // like a foreign key
     }
 
     public class Note
     {
         public int id { get; set; }
         public string description { get; set; }
-        public DateTime lastEdit { get; set; }    //  TODO: optional
+        public DateTime lastEdit { get; set; }      //  TODO: optional
         public int favorite_id { get; set; }
         public List<Favorite> favoriteList { get; set; }
     }
@@ -75,18 +74,17 @@ namespace BackEnd.Controllers
 
     public class WallStreetBetsContext : DbContext
     {
-        // METHODS //
-        public WallStreetBetsContext(DbContextOptions<WallStreetBetsContext> options) : base(options)
-        {
-
-        }
-
         // PROPERTIES //
         public DbSet<User> Users { get; set; }
         public DbSet<Favorite> Favorites { get; set; }
         public DbSet<Note> Notes { get; set; }
 
         // METHODS //
+        public WallStreetBetsContext(DbContextOptions<WallStreetBetsContext> options) : base(options)
+        {
+
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS;Database=WSBdatabase;Integrated Security=SSPI;");
