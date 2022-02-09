@@ -20,7 +20,6 @@ namespace BackEnd.Controllers
                             where myFavs.username == username
                             select new JoinResults()
                             {
-                                id = myFavs.id,
                                 username = myFavs.username,
                                 ticker = myFavs.ticker,
                                 favorite_id = myNotes.favorite_id,
@@ -37,7 +36,7 @@ namespace BackEnd.Controllers
         // PROPERTIES //
         public int id { get; set; }
         public string username { get; set; }
-        public string firstName { get; set; }
+        public string first_name { get; set; }
     }
 
     public class Favorite
@@ -83,6 +82,10 @@ namespace BackEnd.Controllers
         public WallStreetBetsContext(DbContextOptions<WallStreetBetsContext> options) : base(options)
         {
 
+        }
+
+        public WallStreetBetsContext()
+        {
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
