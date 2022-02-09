@@ -8,23 +8,8 @@ namespace BackEnd.Controllers
 {
     public class WallStreetBetsDB
     {
-        
         // METHODS //
-        // CRUD
-        // Favorites table
-        // GetFavorites()
-
-        // DeleteFavorites()    // call DeleteNote()
-
-        // Notes table
-        // PostNote()
-
-        // PutNote()
-
-        // DeleteNote()
-
-        // all of our API calls will happen on the backend (not from the front end)
-
+        // NOTE: all of our API calls will happen on the backend (not from the front end)
         public static List<JoinResults> GetJoinResults(string username)
         {
             List<JoinResults> results = null;
@@ -52,38 +37,47 @@ namespace BackEnd.Controllers
         // PROPERTIES //
         public int id { get; set; }
         public string username { get; set; }
-        public string first_name { get; set; }
+        public string firstName { get; set; }
     }
 
     public class Favorite
     {
         // PROPERTIES //
         public int id { get; set; }
-        public string username { get; set; }
         public string ticker { get; set; }
+        public string username { get; set; }
+        //public int user_id { get; set; }            // foreign key
+        //public List<Note> noteList { get; set; }    // like a foreign key
     }
 
     public class Note
     {
-        public int id { get; set; }
+        public int id { get; set; }      
+        public string description { get; set; } // EXAMPLE: GME looks like a great buy!
         public int favorite_id { get; set; }
-        public string description { get; set; } // GME looks like a great buy!
+        //public DateTime lastEdit { get; set; }      //  TODO: optional
+        //public List<Favorite> favoriteList { get; set; }
     }
 
     public class JoinResults
     {
-        public int id { get; set; } // I'm gonna sleep on this, but now that I think about it... we probably don't need id because it's not being stored in the database.
+        // PROPERTIES //
+        // User
         public string username { get; set; }
+        //public int user_id { get; set; }
+        // Favorite
         public string ticker { get; set; }
         public int favorite_id { get; set; }
+        // Note
         public string description { get; set; }
     }
 
     public class WallStreetBetsContext : DbContext
-    {
-        public WallStreetBetsContext()
-        {
-        }
+    {        
+        // PROPERTIES //
+        public DbSet<User> Users { get; set; }
+        public DbSet<Favorite> Favorites { get; set; }
+        public DbSet<Note> Notes { get; set; }
 
         // METHODS //
         public WallStreetBetsContext(DbContextOptions<WallStreetBetsContext> options) : base(options)
@@ -91,17 +85,10 @@ namespace BackEnd.Controllers
 
         }
 
-        // PROPERTIES //
-        public DbSet<User> Users { get; set; }
-        public DbSet<Favorite> Favorites { get; set; }
-        public DbSet<Note> Notes { get; set; }
-
-        // METHODS //
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS;Database=WSBdatabase;Integrated Security=SSPI;");
         }
     }
-
 
 }
