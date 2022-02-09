@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using BackEnd.Controllers;
 using BackEnd.Models;
+using System.Linq;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,8 +20,7 @@ namespace BackEnd.Contollers
 
 
 
-
-
+        // ======================================================================================================
         // THESE ARE THE GET & POST FOR THE USERS TABLE
 		[HttpGet]
 		public IEnumerable<User> GetUsers()
@@ -43,11 +43,11 @@ namespace BackEnd.Contollers
 
 			// EXAMPLE: https://localhost:7262/api/WallStreetBets?username=jeffcogs&first_name=jeff
 		}
+        // ======================================================================================================
 
 
 
-
-
+        // ======================================================================================================
         // THESE ARE THE GET, POST, AND DELETE FOR THE FAVORITES TABLE
         [Route("favorites")]
         [HttpGet]
@@ -89,11 +89,11 @@ namespace BackEnd.Contollers
                 }
             }
         }
+        // ======================================================================================================
 
 
 
-
-
+        // ======================================================================================================
         // THESE ARE THE CRUD OPERATIONS FOR OUR NOTES TABLE
         [Route("notes")]
         [HttpGet]
@@ -160,71 +160,24 @@ namespace BackEnd.Contollers
                 }
             }
         }
+        // ======================================================================================================
+
 
         
 
 
 
 
-        /*
-        [HttpPut]
-        public void EditUser(string currentUsername, string newUsername, string newFirstName)
-        {
-            
-        }
-        */
+        // EXPERIMENTATION FOR JOINRESULTS
+        // SEEMS LIKE IT'S WORKING, BUT I AM STILL UNSURE IF "ID" IS CORRECT
+        // EXAMPLE URL: https://localhost:7262/api/WallStreetBets/joinresults?username=coloritoj
 
-        /*
-
-        // function deletes a User (also should delete all Favs/Notes of given User, too)
+        [Route("joinresults")]
         [HttpGet]
-        public void DeleteUser(int id, List<User> Users)
+        public IEnumerable<JoinResults> GetJoins(string username)
         {
-            // foreach or forloop?
-            for (int i = 0; i < Users.Count; i++)
-            {
-                if (i == id)
-                {
-                    // delete user here
-                }
-            }
-            return;
+            List<JoinResults> myJoinResults = WallStreetBetsDB.GetJoinResults(username);
+            return myJoinResults;
         }
-        */
-
-        // TODO:    Favorites table
-        /*
-        // function reads Favorite Ticker
-        // GET api/<WallStreetBetsController>/5
-        
-        [HttpGet("{id}")]
-        public static List<Favorite> GetFavs(string username)
-        {
-            List<Favorite> result = null;
-            using (WallStreetBetsContext ctx = new WallStreetBetsContext())
-            {
-                var query = 
-            }
-        }
-        */
-
-        // function creates Favorite Ticker, assigns to a User
-        // POST api/<WallStreetBetsController>
-
-        /*
-        
-        [HttpGet]
-        public IEnumerable<User> GetFavs()
-        {
-            return _context.Favorites;
-        }
-        */
-
-
-
-
-
-
-
     }
 }

@@ -31,3 +31,17 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+
+builder.Services.AddCors(options =>
+{
+	options.AddPolicy(name: "LocalOriginsPolicy",
+			builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
+			  );
+}
+	);
+
+app.UseCors("LocalOriginsPolicy");
+
+
+// Ask if this is what we need to do: https://docs.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-6.0
