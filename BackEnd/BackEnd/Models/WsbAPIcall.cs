@@ -1,9 +1,11 @@
 ﻿namespace BackEnd.Models
 {
-    public class WsbAPIcall
+    public class WSBAPIcall
     {
+        // PROPERTIES //
         private static HttpClient _realClientWSB = null;
 
+        // METHODS //
         public static HttpClient MyWSBHttp
         {
             get
@@ -11,32 +13,34 @@
                 if (_realClientWSB == null)
                 {
                     _realClientWSB = new HttpClient();
-                    _realClientWSB.BaseAddress = new Uri("https://dashboard.nbshare.io/");
+                    _realClientWSB.BaseAddress = new Uri("https://dashboard.nbshare.io/");  // WallStreetBets API URL
                 }
                 return _realClientWSB;
             }
         }
 
-        public static async Task<WsbObject> GetWsbObject(string ticker)
+        // function returns API result of a given Ticker
+        public static async Task<WSBObject> GetWSBObject(string ticker)
         {
             var connection = await MyWSBHttp.GetAsync("/api/v1/apps/reddit");
-            List<WsbObject> wsbObjects = await connection.Content.ReadAsAsync<List<WsbObject>>();
+            List<WSBObject> WSBObjects = await connection.Content.ReadAsAsync<List<WSBObject>>();
 
-            WsbObject myWsbObject = new WsbObject();
+            WSBObject myWSBObject = new WSBObject();
 
-            for (int i = 0; i < wsbObjects.Count; i++)
+            for (int i = 0; i < WSBObjects.Count; i++)
             {
-                if (wsbObjects[i].ticker.ToLower() == ticker.ToLower())
+                if (WSBObjects[i].ticker.ToLower() == ticker.ToLower())
                 {
-                    myWsbObject = wsbObjects[i];
+                    myWSBObject = WSBObjects[i];
                 }
             }
-            return myWsbObject;
+            return myWSBObject;
         }
     }
 
-    public class WsbObject
+    public class WSBObject
     {
+        // PROPERTIES //
         public int no_of_comments { get; set; }
         public string sentiment { get; set; }
         public decimal sentiment_score { get; set; }
