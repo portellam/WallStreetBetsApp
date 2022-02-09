@@ -9,28 +9,27 @@ namespace BackEnd.Controllers
     public class WallStreetBetsDB
     {
         // METHODS //
-
-        // CRUD FUNCTIONS
         // NOTE: all of our API calls will happen on the backend (not from the front end)
-
-        // User table
-        // GetUsers
-        // AddUser
-        // EditUser
-        // DeleteUser           // call DeleteFavorites()
-        // end table.
-
-        // Favorite table
-        // GetFavorites()
-        // DeleteFavorites()    // call DeleteNote()
-        // end table.
-
-        // Note table
-        // GetNotes()
-        // AddNote()
-        // EditNote()
-        // DeleteNote()
-        // end table.
+        public static List<JoinResults> GetJoinResults(string username)
+        {
+            List<JoinResults> results = null;
+            using (WallStreetBetsContext context = new WallStreetBetsContext())
+            {
+                var query = from myFavs in context.Favorites
+                            join myNotes in context.Notes on myFavs.id equals myNotes.favorite_id
+                            where myFavs.username == username
+                            select new JoinResults()
+                            {
+                                id = myFavs.id,
+                                username = myFavs.username,
+                                ticker = myFavs.ticker,
+                                favorite_id = myNotes.favorite_id,
+                                description = myNotes.description,
+                            };
+                results = query.ToList();
+            }
+            return results;
+        }
     }
 
     public class User
@@ -46,34 +45,35 @@ namespace BackEnd.Controllers
         // PROPERTIES //
         public int id { get; set; }
         public string ticker { get; set; }
-        public int user_id { get; set; }            // foreign key
-        public List<Note> noteList { get; set; }    // like a foreign key
+        public string username { get; set; }
+        //public int user_id { get; set; }            // foreign key
+        //public List<Note> noteList { get; set; }    // like a foreign key
     }
 
     public class Note
     {
-        public int id { get; set; }
-        public string description { get; set; }
-        public DateTime lastEdit { get; set; }      //  TODO: optional
+        public int id { get; set; }      
+        public string description { get; set; } // EXAMPLE: GME looks like a great buy!
         public int favorite_id { get; set; }
-        public List<Favorite> favoriteList { get; set; }
+        //public DateTime lastEdit { get; set; }      //  TODO: optional
+        //public List<Favorite> favoriteList { get; set; }
     }
 
     public class JoinResults
     {
         // PROPERTIES //
         // User
-        public int id { get; set; }
         public string username { get; set; }
-        public string firstName { get; set; }
+        //public int user_id { get; set; }
         // Favorite
         public string ticker { get; set; }
-        public int user_id { get; set; }
-        public List<Note> Notes { get; set; }
+        public int favorite_id { get; set; }
+        // Note
+        public string description { get; set; }
     }
 
     public class WallStreetBetsContext : DbContext
-    {
+    {        
         // PROPERTIES //
         public DbSet<User> Users { get; set; }
         public DbSet<Favorite> Favorites { get; set; }
@@ -90,6 +90,5 @@ namespace BackEnd.Controllers
             optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS;Database=WSBdatabase;Integrated Security=SSPI;");
         }
     }
-
 
 }
