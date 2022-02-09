@@ -11,6 +11,14 @@ builder.Services.AddDbContext<WallStreetBetsContext>(options =>
 	options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")); // 45:50 or so is where I left off. Added the Microsoft.EntityFrameworkCore at the top.
 });
 
+builder.Services.AddCors(options =>
+{
+	options.AddPolicy(name: "LocalOriginsPolicy",
+			builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
+			  );
+}
+	);
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -23,7 +31,7 @@ if (app.Environment.IsDevelopment())
 	app.UseSwagger();
 	app.UseSwaggerUI();
 }
-
+app.UseCors("LocalOriginsPolicy");
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
@@ -32,16 +40,3 @@ app.MapControllers();
 
 app.Run();
 
-
-builder.Services.AddCors(options =>
-{
-	options.AddPolicy(name: "LocalOriginsPolicy",
-			builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
-			  );
-}
-	);
-
-app.UseCors("LocalOriginsPolicy");
-
-
-// Ask if this is what we need to do: https://docs.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-6.0
