@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { JoinResults } from '../join-results';
+import { JoinResultsService } from '../join-results.service';
 
 @Component({
   selector: 'app-favorite',
@@ -7,9 +9,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FavoriteComponent implements OnInit {
 
-  constructor() { }
+  allJoinResultsForUser: JoinResults[] = [];
+
+  constructor(private JoinResultsService: JoinResultsService) { }
 
   ngOnInit(): void {
+  }
+
+  getUserJoinResults() {
+    this.JoinResultsService.getJoinResults(
+      (results: any) => {
+        this.allJoinResultsForUser = results;
+      }
+    );
   }
 
 }
