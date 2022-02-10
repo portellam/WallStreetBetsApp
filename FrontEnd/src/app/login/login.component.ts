@@ -60,7 +60,4 @@ export class LoginComponent implements OnInit {
     //this._User.username = '';
     //this._User.first_name = '';
   }
-
-  
-
 }
