@@ -10,7 +10,9 @@ export class MarketStackService {
 
   constructor(private http: HttpClient) { }
 
-  retrieveMarketStackInfo(cb: any) {
-    this.http.get<MarketStack>('https://localhost:7262/api/WallStreetBets/marketstack').subscribe(cb);
+  retrieveMarketStackInfo(ticker: string, cb: any) {
+    this.http.get<MarketStack>(
+      `https://localhost:7262/api/WallStreetBets/marketstack?ticker=${ticker}`)
+      .subscribe(cb);
   }
 }
