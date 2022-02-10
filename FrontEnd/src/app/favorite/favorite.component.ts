@@ -14,6 +14,7 @@ export class FavoriteComponent implements OnInit {
   constructor(private JoinResultsService: JoinResultsService) { }
 
   ngOnInit(): void {
+    this.getUserJoinResults();
   }
 
   getUserJoinResults() {
@@ -22,5 +23,7 @@ export class FavoriteComponent implements OnInit {
         this.allJoinResultsForUser = results;
       }
     );
-  }  
+  }
+  
+  
 }

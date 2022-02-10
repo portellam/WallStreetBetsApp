@@ -46,6 +46,10 @@ export class HomeComponent implements OnInit {
     );
   }
 
+
+  // OK, this function is working
+  // What I need to do is figure out how to pass the ticker they are favoriting into myFav
+  // I also need to figure out how to pass their username as well (without having to type it)
   addFavoriteForUser(){
     this.FavoriteService.postFavorite(this.myFav,
       (result: any) => {

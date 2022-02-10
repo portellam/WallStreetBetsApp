@@ -1,12 +1,4 @@
-<p>favorite works! hello world!</p>
-
-<button (click)="getUserJoinResults()">Get Join Results!</button>
-
-<br>
-<br>
-
 <ng-container *ngFor="let joinresult of allJoinResultsForUser">
-    <br>
     Username: {{joinresult.username}}<br>
     Ticker: {{joinresult.ticker}}<br>
     Favorite ID: {{joinresult.favorite_id}}<br>
