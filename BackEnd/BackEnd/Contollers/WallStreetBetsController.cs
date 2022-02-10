@@ -241,12 +241,12 @@ namespace BackEnd.Contollers
 		[Route("marketstack")]
 		[HttpGet]
 		//public async Task<MarketStackObject> GetMarketStackInfo(string _ticker)		// TODO: change?
-		public async Task<MarketStackObject> getMarketStackInfo()
+		public async Task<MarketStackObject> getMarketStackInfo(string _ticker)
 		{
 			HttpClient _HttpClient = new HttpClient();
 			_HttpClient.BaseAddress = new Uri("http://api.marketstack.com/v1/");
-			//var connection = await _HttpClient.GetAsync($"eod?access_key=208302dbe2d07c780ba4de2dc30c56ba&symbols={_ticker}&limit=1");  // NOTE: NOT tested!
-			var connection = await _HttpClient.GetAsync("eod?access_key=208302dbe2d07c780ba4de2dc30c56ba&symbols=GME&limit=1");  // NOTE: Need to change parameters, this is just currently testing 1 record of GME.
+			//    http://api.marketstack.com/v1/eod?access_key=208302dbe2d07c780ba4de2dc30c56ba&symbols=DIS&limit=1
+			var connection = await _HttpClient.GetAsync($"eod?access_key=208302dbe2d07c780ba4de2dc30c56ba&symbols={_ticker}&limit=1");
 			MarketStackObject marketStackObject = await connection.Content.ReadAsAsync<MarketStackObject>();
 			return marketStackObject;
 		}
