@@ -16,11 +16,20 @@
 
 <ng-container *ngFor="let wsb of wsbArray">
     <br>
+    <button>Placeholder Favorite Button</button><br>
     Ticker: {{wsb.ticker}}<br>
     Sentiment: {{wsb.sentiment}}<br>
     Sentiment Score: {{wsb.sentiment_score}}<br>
     Number of Comments: {{wsb.no_of_comments}}<br>
-    <button>Placeholder Favorite Button</button>
+    <button (click)="showMarketStackInfo()">Daily Stock Information</button><br>
+    <ng-container *ngIf="marketStackInfo">
+        GME Opening Price: ${{marketStackInfo.data[0].open}}<br>
+        GME Intraday High Price: ${{marketStackInfo.data[0].high}}<br>
+        GME Intraday Low Price: ${{marketStackInfo.data[0].low}}<br>
+        GME Closing Price: ${{marketStackInfo.data[0].close}}<br>
+        GME Volume: {{marketStackInfo.data[0].volume}}<br>
+        GME Date: {{marketStackInfo.data[0].date}}<br>
+    </ng-container>
     <br>
 </ng-container>
 
