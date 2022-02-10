@@ -5,4 +5,5 @@ export interface StockInfo {
     close: number;
     volume: number;
     date: Date;
+    symbol: string;
 }

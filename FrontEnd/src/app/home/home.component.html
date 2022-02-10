@@ -8,33 +8,20 @@
     <br>
 
 
-
-
-
-    
-    <div>
-        <input type="text" [(ngModel)]="myFav.ticker">
-        <input type="text" [(ngModel)]="myFav.username">
-        <button (click)="addFavoriteForUser()">Placeholder Favorite Button</button><br>
-    </div>
-
-
-
-
-
     Ticker: {{wsb.ticker}}<br>
     Sentiment: {{wsb.sentiment}}<br>
     Sentiment Score: {{wsb.sentiment_score}}<br>
     Number of Comments: {{wsb.no_of_comments}}<br>
-    <button (click)="showMarketStackInfo()">Daily Stock Information</button><br>
-    <ng-container *ngIf="marketStackInfo">
-        GME Opening Price: ${{marketStackInfo.data[0].open}}<br>
-        GME Intraday High Price: ${{marketStackInfo.data[0].high}}<br>
-        GME Intraday Low Price: ${{marketStackInfo.data[0].low}}<br>
-        GME Closing Price: ${{marketStackInfo.data[0].close}}<br>
-        GME Volume: {{marketStackInfo.data[0].volume}}<br>
-        GME Date: {{marketStackInfo.data[0].date}}<br>
+    <button (click)="showMarketStackInfo(wsb.ticker)">Daily Stock Information</button><br>
+    <ng-container *ngIf="marketStackInfo && marketStackInfo.data[0] && marketStackInfo.data[0].symbol == wsb.ticker">
+        Opening Price: ${{marketStackInfo.data[0].open}}<br>
+        Intraday High Price: ${{marketStackInfo.data[0].high}}<br>
+        Intraday Low Price: ${{marketStackInfo.data[0].low}}<br>
+        Closing Price: ${{marketStackInfo.data[0].close}}<br>
+        Volume: {{marketStackInfo.data[0].volume}}<br>
+        Date: {{marketStackInfo.data[0].date}}<br>
     </ng-container>
+    <button (click)="addFav(wsb.ticker)">Favorite</button>
     <br>
 </ng-container>
 

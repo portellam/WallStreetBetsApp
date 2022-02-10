@@ -17,16 +17,21 @@ export class LoginComponent implements OnInit {
     username: '',
     first_name: ''
   }
+  username: string = '';
   // METHODS //
-  constructor(private UserService: UserService, private router:Router) {}
+  constructor(private userService: UserService, private router:Router) {}
 
   ngOnInit(): void {
+  }
+
+  login() {
+    this.userService.login(this.username);
   }
 
   addToList(){
     console.log('addToList');
     console.log(this._User);
-    this.UserService.postUser(this._User, 
+    this.userService.postUser(this._User, 
       (result: any) => {
         // ALERT: server doesn't return anything right now
         alert('Success!');
@@ -34,4 +39,5 @@ export class LoginComponent implements OnInit {
       }
     );
   }
+
 }
