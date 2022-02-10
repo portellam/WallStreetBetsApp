@@ -22,6 +22,5 @@ export class FavoriteComponent implements OnInit {
         this.allJoinResultsForUser = results;
       }
     );
-  }
-
+  }  
 }

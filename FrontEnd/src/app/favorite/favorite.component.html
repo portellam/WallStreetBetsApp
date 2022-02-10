@@ -2,11 +2,22 @@
 
 <button (click)="getUserJoinResults()">Get Join Results!</button>
 
+<br>
+<br>
+
 <ng-container *ngFor="let joinresult of allJoinResultsForUser">
     <br>
-    {{joinresult.username}}<br>
-    {{joinresult.ticker}}<br>
-    {{joinresult.favorite_id}}<br>
-    {{joinresult.description}}<br>
+    Username: {{joinresult.username}}<br>
+    Ticker: {{joinresult.ticker}}<br>
+    Favorite ID: {{joinresult.favorite_id}}<br>
+    Description: {{joinresult.description}}<br>
     <br>
 </ng-container>
+
+<!--
+This is a test for the comments array:
+<button (click)="placeAllCommentsInOneGroup()"></button>
+<ng-container *ngFor="let comment of commentArray">
+    {{comment}}
+</ng-container>
+-->
