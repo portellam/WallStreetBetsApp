@@ -8,13 +8,15 @@ import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { FavoriteComponent } from './favorite/favorite.component';
 import { AppRoutingModule } from './app-routing.module';
+import { AdvancedJoinComponent } from './advanced-join/advanced-join.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     HomeComponent,
-    FavoriteComponent
+    FavoriteComponent,
+    AdvancedJoinComponent
   ],
   imports: [
     BrowserModule,
