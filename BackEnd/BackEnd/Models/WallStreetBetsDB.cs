@@ -86,6 +86,7 @@ namespace BackEnd.Controllers
 		public double close { get; set; }
 		public double volume { get; set; }
 		public DateTime date { get; set; }
+		public string symbol { get; set; }
 	}
 
 	public class WallStreetBetsContext : DbContext
