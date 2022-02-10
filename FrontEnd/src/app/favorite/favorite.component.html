@@ -1,0 +1,18 @@
+<ng-container *ngFor="let joinresult of allJoinResultsForUser">
+    Username: {{joinresult.username}}<br>
+    Ticker: {{joinresult.ticker}}<br>
+    Favorite ID: {{joinresult.favorite_id}}<br>
+    Description: {{joinresult.description}}<br>
+    <br>
+</ng-container>
+
+
+<p>This is a test to update the Disney stock note</p>
+<input type="text" [(ngModel)]="_EditNote.updatedNoteDescription"/>
+<button (click)="editStockNote()">Update Disney Note</button>
+
+
+<br>
+<br>
+<p>This is a test to delete the GME 2 note</p>
+<button (click)="deleteStockNote()">Delete GME 2 note</button>

@@ -66,9 +66,25 @@ namespace BackEnd.Controllers
         //public int user_id { get; set; }
         // Favorite
         public string ticker { get; set; }
-        public int favorite_id { get; set; }
+        public int? favorite_id { get; set; }
         // Note
         public string description { get; set; }
+    }
+
+    public class MarketStackObject
+    {
+        public List<StockInfo> data { get; set; }
+    }
+
+    public class StockInfo
+    {
+        public double open { get; set; }
+        public double high { get; set; }
+        public double low { get; set; }
+        public double close { get; set; }
+        public double volume { get; set; }
+        public DateTime date { get; set; }
+        public string symbol { get; set; }
     }
 
     public class WallStreetBetsContext : DbContext
