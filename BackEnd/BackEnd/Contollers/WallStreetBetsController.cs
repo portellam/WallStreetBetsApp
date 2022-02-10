@@ -152,16 +152,16 @@ namespace BackEnd.Contollers
 		// function creates Note, assigns to Favorite Ticker.
 		[Route("notes")]
 		[HttpPost]
-		public void AddNote(int favorite_id, string _description)
+		public void AddNote(int _favorite_id, string _description)
 		{
 			List<Favorite> _Favorites = _context.Favorites.ToList();
 			Note _Note = new Note();
 			for (int i = 0; i < _Favorites.Count; i++)
 			{
-				if (_Favorites[i].id == favorite_id)
+				if (_Favorites[i].id == _favorite_id)
 				{
 					_Note.description = _description;
-					_Favorites[i].id = favorite_id;
+					_Favorites[i].id = _favorite_id;
 					_context.Notes.Add(_Note);
 					_context.SaveChanges();
 					return; // If match exists, add note, and exit function now.
@@ -175,16 +175,15 @@ namespace BackEnd.Contollers
 		public void EditNote(int _id, string _description)
 		{
 			List<Note> _Notes = _context.Notes.ToList();
-			Note _Note = new Note();
 			for (int i = 0; i < _Notes.Count; i++)
 			{
 				if (_id == _Notes[i].id)
 				{
-					//_Note = _Notes[i];
-					//_Note.description = _description;
-					//_context.Notes.Update(_Note);
-					_Notes[i].description = _description;
-					_context.Notes.Update(_Notes[i]);
+					Note _Note = _Notes[i];
+					_Note.description = _description;
+					_context.Notes.Update(_Note);
+					//_Notes[i].description = _description;
+					//_context.Notes.Update(_Notes[i]);		// TODO: change to this?
 					_context.SaveChanges();
 					return; // If match exists, edit note, and exit function now.
 				}
@@ -197,13 +196,12 @@ namespace BackEnd.Contollers
 		public void DeleteNote(int _id)
 		{
 			List<Note> _Notes = _context.Notes.ToList();
-			//Note _Note = new Note();
 			for (int i = 0; i < _Notes.Count; i++)
 			{
 				if (_id == _Notes[i].id)
 				{
-					//noteToDelete = notesList[i];
-					//_context.Notes.Remove(noteToDelete);
+					//Note _Note = notesList[i];
+					//_context.Notes.Remove(_Note);
 					_context.Notes.Remove(_Notes[i]);
 					_context.SaveChanges();
 					return; // If match exists, delete note, and exit function now.
@@ -230,9 +228,10 @@ namespace BackEnd.Contollers
 		// Web API
 		// NOTE: Jeff's code here
 
-		// nbshare custom API for reddit.com/r/WallStreetBets
+		// Nbshare API for reddit.com
 		[Route("nbshare")]
 		[HttpGet]
+		//public async Task<string> GetNbshare		// TODO: change to this?
 		public async Task<string> get()
 		{
 			// IMPORTANT:
@@ -252,6 +251,7 @@ namespace BackEnd.Contollers
 		// MarketStack API
 		[Route("marketstack")]
 		[HttpGet]
+		//public async Task<MarketStackObject> GetMarketStackInfo()		// TODO: change to this?
 		public async Task<MarketStackObject> getMarketStackInfo()
 		{
 			HttpClient _HttpClient = new HttpClient();
