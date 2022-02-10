@@ -32,6 +32,6 @@ export class LoginComponent implements OnInit {
         alert('Success!');
         // this.router.navigate(['/']);  // TODO: you can redirect to another component from here
       }
-      );
+    );
   }
 }
