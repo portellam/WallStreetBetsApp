@@ -38,9 +38,11 @@ export class HomeComponent implements OnInit {
     );
   }
 
-  showMarketStackInfo(){
-    this.MarketStackService.retrieveMarketStackInfo(
+  showMarketStackInfo(ticker: string){
+    this.MarketStackService.retrieveMarketStackInfo(ticker,
       (results: any) => {
+        console.log('STACK INFO:');
+        console.log(results);
         this.marketStackInfo = results;
       }
     );
@@ -50,10 +52,11 @@ export class HomeComponent implements OnInit {
   // OK, this function is working
   // What I need to do is figure out how to pass the ticker they are favoriting into myFav
   // I also need to figure out how to pass their username as well (without having to type it)
-  addFavoriteForUser(){
-    this.FavoriteService.postFavorite(this.myFav,
+  addFav(ticker: string){
+    //alert(ticker);
+    this.FavoriteService.postFavorite(ticker,
       (result: any) => {
-        alert('Succesfully added favorite!')
+        //alert('Succesfully added favorite!')
       }
     );
   }

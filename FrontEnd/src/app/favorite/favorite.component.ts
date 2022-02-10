@@ -24,6 +24,8 @@ export class FavoriteComponent implements OnInit {
     noteID: 9
   }
 
+  newNote: string = '';
+
   constructor(private JoinResultsService: JoinResultsService,
     private EditNoteService: EditNoteService,
     private DeleteNoteService: DeleteNoteService) { }
