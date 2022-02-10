@@ -33,10 +33,22 @@ namespace BackEnd.Contollers
 			return _context.Users;
 		}
 
-		// function edits User, checks for conflicting match.
+		// function edits User.
 		[HttpPost]
-		public void PostUser(string _username, string _first_name)
+		//public void EditUser(int _id, string _username, string _first_name)		// TODO: change?
+		public void PostUser(int _id, string _username, string _first_name)
 		{
+			List<User> _Users = _context.Users.ToList();
+
+			/*
+			for (int i = 0; i < _Users.Count; i++)		// NOTE: subfunction NOT tested! If this doesn't work, verify in FrontEnd.
+			{
+				if (_id != i && _username == _Users[i].username)
+				{
+					return;     // If user is not current user and match exists, exit function now.
+				}
+			}
+			*/
 			User _User = new User();
 			_User.username = _username;
 			_User.first_name = _first_name;
@@ -44,53 +56,32 @@ namespace BackEnd.Contollers
 			_context.SaveChanges();
 			// URL: https://localhost:7262/api/WallStreetBets?username=jeffcogs&first_name=jeff
 		}
-		
-		/*
-        // function edits User, checks for conflicting match.
-            [HttpPut]
-            public void EditUser(int _id, string _username, string _first_name)
-            {
-                // FrontEnd:
-                // verify input, if string is null or same, assume no change and pass old string
-                // else, pass new string
-                List<User> _Users = _context.Users.ToList();
-                for (int i = 0; i < _Users.Count; i++)
-                {
-                    if (_id != i && _username == _Users[i].username)
-                    {
-                        return;     // If user is not current user and match exists, exit function now.
-                    }
-                }
-                User _User = _Users.ElementAt(_id);
-                _User.username = _username;
-                _User.first_name = _first_name;
-                _context.Users.Update(_User);
-                _context.SaveChanges();
-            }
-        */
 
+		// function deletes a User.		// NOTE: function NOT tested!
 		/*
-		// function deletes a User.
-            [HttpDelete]
-            public void DeleteUser(int _id)
-            {
-                List<User> _Users = _context.Users.ToList();
-                for (int i = 0; i < _Users.Count; i++)
-                {
-                    if (_id == _Users[i].id)
-                    {
-                        // TODO: recursive call DeleteNote(), and DeleteFavorite() here?
-                        _context.Users.Remove(_Users.ElementAt(_id));
-                        _context.SaveChanges();
-                        return;     // If match exists, exit function now.
-                    }
-                }
-            }
+		[HttpDelete]
+		public void DeleteUser(int _id)
+		{
+			List<User> _Users = _context.Users.ToList();
+			for (int i = 0; i < _Users.Count; i++)
+			{
+				if (_id == _Users[i].id)
+				{
+					// TODO: recursive call DeleteNote(), and DeleteFavorite() here?
+					//_context.Users.Remove(_Users.ElementAt(_id));		// TODO: change?
+					//_context.SaveChanges();
+					User _User = _Users[i];
+					_context.Users.Remove(_User);
+					return;     // If match exists, delete user, and exit function now.
+
+				}
+			}
+		}
         */
 
 		// ==================================================================================================== //
 
-		// Favorite table CRUD
+		// Favorite table
 		// NOTE: Put/Edit is not necessary for Favorite
 
 		// function reads list of Favorites.
@@ -139,7 +130,7 @@ namespace BackEnd.Contollers
 		}
 		// ==================================================================================================== //
 
-		// Note table CRUD
+		// Note table
 
 		// function reads list of Notes.
 		[Route("notes")]
@@ -212,7 +203,7 @@ namespace BackEnd.Contollers
 		// ==================================================================================================== //
 
 		// JoinResults table
-		// TODO: appears to be working, unsure if "id" is correct
+		// TODO: appears to be working, unsure if "id" is correct.
 		// URL: https://localhost:7262/api/WallStreetBets/joinresults?username=coloritoj
 
 		// function reads list of JoinResults.
@@ -256,7 +247,7 @@ namespace BackEnd.Contollers
 		{
 			HttpClient _HttpClient = new HttpClient();
 			_HttpClient.BaseAddress = new Uri("http://api.marketstack.com/v1/");
-			var connection = await _HttpClient.GetAsync("eod?access_key=208302dbe2d07c780ba4de2dc30c56ba&symbols=GME&limit=1");  // NOTE: Need to change parameters, this is just currently testing 1 record of GME
+			var connection = await _HttpClient.GetAsync("eod?access_key=208302dbe2d07c780ba4de2dc30c56ba&symbols=GME&limit=1");  // NOTE: Need to change parameters, this is just currently testing 1 record of GME.
 			MarketStackObject marketStackObject = await connection.Content.ReadAsAsync<MarketStackObject>();
 			return marketStackObject;
 		}
