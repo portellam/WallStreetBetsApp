@@ -17,24 +17,10 @@ export class LoginComponent implements OnInit {
     username: '',
     first_name: ''
   }
-  Users: User[] = [];
-
-  // OUTPUTS
-  @Output() theUser: EventEmitter<User> = new EventEmitter<User>();
-
   // METHODS //
   constructor(private UserService: UserService, private router:Router) {}
 
   ngOnInit(): void {
-  }
-
-  // NOTE: name changes? refreshList for User sign in? existing user?
-  refreshList() {
-    this.UserService.getUsers(
-      (results: any) => {
-        this.Users = results;
-      }
-    )
   }
 
   addToList(){
@@ -43,21 +29,9 @@ export class LoginComponent implements OnInit {
     this.UserService.postUser(this._User, 
       (result: any) => {
         // ALERT: server doesn't return anything right now
-        //alert('Success!');
+        alert('Success!');
         // this.router.navigate(['/']);  // TODO: you can redirect to another component from here
-
       }
       );
-  }
-
-  isUserTaken(){}
-
-  // EMITTERS
-  emitUser(){
-    this.theUser.emit(this._User);
-    // clear the fields
-    //this._User.id = 0;
-    //this._User.username = '';
-    //this._User.first_name = '';
   }
 }
