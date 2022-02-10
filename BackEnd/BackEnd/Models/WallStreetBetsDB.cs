@@ -9,7 +9,7 @@ namespace BackEnd.Controllers
     public class WallStreetBetsDB
     {
         // METHODS //
-        // NOTE: all of our API calls will happen on the backend (not from the front end)
+        // NOTE: all of our API calls will happen on the BackEnd (not from the FrontEnd)
         public static List<JoinResults> GetJoinResults(string username)
         {
             List<JoinResults> results = null;
@@ -28,7 +28,7 @@ namespace BackEnd.Controllers
                 results = query.ToList();
             }
             return results;
-        }//
+        }
     }
 
     public class User
@@ -45,16 +45,16 @@ namespace BackEnd.Controllers
         public int id { get; set; }
         public string ticker { get; set; }
         public string username { get; set; }
-        //public int user_id { get; set; }            // foreign key
-        //public List<Note> noteList { get; set; }    // like a foreign key
+        //public int user_id { get; set; }                  // foreign key
+        //public List<Note> noteList { get; set; }          // like a foreign key
     }
 
     public class Note
     {
         public int id { get; set; }      
-        public string description { get; set; } // EXAMPLE: GME looks like a great buy!
+        public string description { get; set; }             // EXAMPLE: GME looks like a great buy!
         public int favorite_id { get; set; }
-        //public DateTime lastEdit { get; set; }      //  TODO: optional
+        //public DateTime lastEdit { get; set; }            //  TODO: optional
         //public List<Favorite> favoriteList { get; set; }
     }
 
@@ -64,9 +64,11 @@ namespace BackEnd.Controllers
         // User
         public string username { get; set; }
         //public int user_id { get; set; }
+
         // Favorite
         public string ticker { get; set; }
         public int favorite_id { get; set; }
+
         // Note
         public string description { get; set; }
     }
@@ -108,5 +110,4 @@ namespace BackEnd.Controllers
             optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS;Database=WSBdatabase;Integrated Security=SSPI;");
         }
     }
-
 }

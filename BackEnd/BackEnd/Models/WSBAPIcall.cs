@@ -24,7 +24,6 @@
         {
             var connection = await MyWSBHttp.GetAsync("/api/v1/apps/reddit");
             List<WSBObject> WSBObjects = await connection.Content.ReadAsAsync<List<WSBObject>>();
-
             WSBObject myWSBObject = new WSBObject();
 
             for (int i = 0; i < WSBObjects.Count; i++)
@@ -46,5 +45,4 @@
         public decimal sentiment_score { get; set; }
         public string ticker { get; set; }
     }
-
 }

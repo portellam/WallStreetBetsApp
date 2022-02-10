@@ -11,18 +11,19 @@ namespace BackEnd.Contollers
 	[ApiController]
 	public class WallStreetBetsController : ControllerBase
 	{
-		// THIS IS OUR DATABASE
+        // Database
 		private readonly WallStreetBetsContext _context;
+
+        // METHODS //
 		public WallStreetBetsController(WallStreetBetsContext context)
 		{
 			_context = context;
 		}
+        // ==================================================================================================== //
 
+        // User table CRUD
 
-
-        // ======================================================================================================
-        // THESE ARE THE GET & POST FOR THE USERS TABLE
-		[HttpGet]
+        [HttpGet]
 		public IEnumerable<User> GetUsers()
 		{
 			return _context.Users;
@@ -31,24 +32,18 @@ namespace BackEnd.Contollers
 		[HttpPost]
 		public void PostUser(string username, string first_name)
 		{
-			// we are taking in values, which is a username and first_name, and adding to list
-			// do I instantiate a list of users here, or call _context.Users ?
-
 			User myUser = new User();
 			myUser.username = username;
 			myUser.first_name = first_name;
-
 			_context.Users.Add(myUser);
 			_context.SaveChanges();
-
-			// EXAMPLE: https://localhost:7262/api/WallStreetBets?username=jeffcogs&first_name=jeff
+            // URL: https://localhost:7262/api/WallStreetBets?username=jeffcogs&first_name=jeff
 		}
-        // ======================================================================================================
+        // ==================================================================================================== //
 
+        // Favorite table CRUD
 
-
-        // ======================================================================================================
-        // THESE ARE THE GET, POST, AND DELETE FOR THE FAVORITES TABLE
+        // NOTE: Put/Edit is not necessary for Favorite
         [Route("favorites")]
         [HttpGet]
         public IEnumerable<Favorite> GetFavorites()
@@ -65,7 +60,7 @@ namespace BackEnd.Contollers
             {
                 if (username == Favs[i].username && ticker == Favs[i].ticker)
                 {
-                    return; // If Favorite already exists, exit function
+                    return; // If match exists, exit function now.
                 }
             }
             Favorite newFav = new Favorite();
@@ -86,15 +81,14 @@ namespace BackEnd.Contollers
                 {
                     _context.Favorites.Remove(Favs[i]);
                     _context.SaveChanges();
+                    return; // If match exists, delete favorite, and exit function now.
                 }
             }
         }
-        // ======================================================================================================
+        // ==================================================================================================== //
 
+        // Note table CRUD
 
-
-        // ======================================================================================================
-        // THESE ARE THE CRUD OPERATIONS FOR OUR NOTES TABLE
         [Route("notes")]
         [HttpGet]
         public IEnumerable<Note> GetNotes()
@@ -115,9 +109,9 @@ namespace BackEnd.Contollers
                 {
                     myNote.favorite_id = favID;
                     myNote.description = noteDescription;
-
                     _context.Notes.Add(myNote);
                     _context.SaveChanges();
+                    return; // If match exists, add note, and exit function now.
                 }
             }
         }
@@ -135,9 +129,9 @@ namespace BackEnd.Contollers
                 {
                     notesList[i].description = updatedNoteDescription;
                     myNote = notesList[i];
-
                     _context.Notes.Update(myNote);
                     _context.SaveChanges();
+                    return; // If match exists, edit note, and exit function now.
                 }
             }
         }
@@ -157,21 +151,16 @@ namespace BackEnd.Contollers
 
                     _context.Notes.Remove(noteToDelete);
                     _context.SaveChanges();
+                    return; // If match exists, delete note, and exit function now.
                 }
-            }
+            }        
         }
-        // ======================================================================================================
+        // ==================================================================================================== //
 
+        // JoinResults table CRUD
 
-        
-
-
-
-
-        // EXPERIMENTATION FOR JOINRESULTS
-        // SEEMS LIKE IT'S WORKING, BUT I AM STILL UNSURE IF "ID" IS CORRECT
-        // EXAMPLE URL: https://localhost:7262/api/WallStreetBets/joinresults?username=coloritoj
-
+        // TODO: appears to be working, unsure if "id" is correct
+        // URL: https://localhost:7262/api/WallStreetBets/joinresults?username=coloritoj
         [Route("joinresults")]
         [HttpGet]
         public IEnumerable<JoinResults> GetJoins(string username)
@@ -179,17 +168,15 @@ namespace BackEnd.Contollers
             List<JoinResults> myJoinResults = WallStreetBetsDB.GetJoinResults(username);
             return myJoinResults;
         }
+        // ==================================================================================================== //
+        
+        // Web API CRUD
 
-
-
-        // =================================================================
-        // THIS IS JEFF'S CODE HERE:
-
+        // NOTE: Jeff's code here
         [Route("nbshare")]
         [HttpGet]
         public async Task<string> get()
         {
-
             // IMPORTANT:
             // Notice I'm not bothering with making classes for the response. Ultimately all
             // http requests are really just strings anyway. So I'm just reading the JSON as
@@ -210,10 +197,9 @@ namespace BackEnd.Contollers
         {
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri("http://api.marketstack.com/v1/");
-            var connection = await client.GetAsync("eod?access_key=208302dbe2d07c780ba4de2dc30c56ba&symbols=GME&limit=1"); // Note: Need to change parameters, this is just currently testing 1 record of GME
+            var connection = await client.GetAsync("eod?access_key=208302dbe2d07c780ba4de2dc30c56ba&symbols=GME&limit=1");  // NOTE: Need to change parameters, this is just currently testing 1 record of GME
             MarketStackObject marketStackObject = await connection.Content.ReadAsAsync<MarketStackObject>();
             return marketStackObject;
         }
-        
     }
 }
