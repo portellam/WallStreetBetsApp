@@ -2,14 +2,28 @@
 {
     public class WSBAPIcall
     {
-        // PROPERTIES //
-        private static HttpClient _realClientWSB = null;
+        // NOTE: made changes and proposed changes to variable names to another pattern.
 
+        // PROPERTIES //
+        //private static HttpClient _realClient = null;	// TODO: change?
+                                                        // NOTE: the idea is that you don't have to guess names if you had ten or more API classes.
+        private static HttpClient _realClientWSB = null;
+        
         // METHODS //
+        //public static HttpClient _HttpClient          // TODO: change?
         public static HttpClient MyWSBHttp
         {
             get
             {
+                // TODO: change?
+                /*
+                if (_realClient == null)
+                {
+                    _realClient = new HttpClient();
+                    _realClient.BaseAddress = new Uri("https://dashboard.nbshare.io/");  // WallStreetBets API URL
+                }
+                return _realClientWSB;
+                */
                 if (_realClientWSB == null)
                 {
                     _realClientWSB = new HttpClient();
@@ -20,21 +34,21 @@
         }
 
         // function returns API result of a given Ticker
-        public static async Task<WSBObject> GetWSBObject(string ticker)
+        public static async Task<WSBObject> GetWSBObject(string _ticker)
         {
+            //var connection = await _HttpClient.GetAsync("/api/v1/apps/reddit");  // TODO: change?
             var connection = await MyWSBHttp.GetAsync("/api/v1/apps/reddit");
             List<WSBObject> WSBObjects = await connection.Content.ReadAsAsync<List<WSBObject>>();
-
-            WSBObject myWSBObject = new WSBObject();
+            WSBObject _WSBObject = new WSBObject();
 
             for (int i = 0; i < WSBObjects.Count; i++)
             {
-                if (WSBObjects[i].ticker.ToLower() == ticker.ToLower())
+                if (WSBObjects[i].ticker.ToLower() == _ticker.ToLower())
                 {
-                    myWSBObject = WSBObjects[i];
+                    _WSBObject = WSBObjects[i];
                 }
             }
-            return myWSBObject;
+            return _WSBObject;
         }
     }
 
@@ -46,5 +60,4 @@
         public decimal sentiment_score { get; set; }
         public string ticker { get; set; }
     }
-
 }
