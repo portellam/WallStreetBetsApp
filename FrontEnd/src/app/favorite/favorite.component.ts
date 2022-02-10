@@ -3,6 +3,8 @@ import { JoinResults } from '../join-results';
 import { JoinResultsService } from '../join-results.service';
 import { EditNote } from '../edit-note';
 import { EditNoteService } from '../edit-note.service';
+import { DeleteNote } from '../delete-note';
+import { DeleteNoteService } from '../delete-note.service';
 
 @Component({
   selector: 'app-favorite',
@@ -18,8 +20,13 @@ export class FavoriteComponent implements OnInit {
     updatedNoteDescription: 'testing this'
   }
 
+  _DeleteNote: DeleteNote = {
+    noteID: 9
+  }
+
   constructor(private JoinResultsService: JoinResultsService,
-    private EditNoteService: EditNoteService) { }
+    private EditNoteService: EditNoteService,
+    private DeleteNoteService: DeleteNoteService) { }
 
   ngOnInit(): void {
     this.getUserJoinResults();
@@ -43,5 +50,13 @@ export class FavoriteComponent implements OnInit {
   }
   // Example URL: https://localhost:7262/api/WallStreetBets/notes?noteID=25&updatedNoteDescription=this%20looks%20like%20a%20great%20stock
 
+  deleteStockNote() {
+    this.DeleteNoteService.deleteNote(this._DeleteNote,
+      (result: any) => {
+        alert('the GME 1 note should have been deleted')
+        this.getUserJoinResults();
+      }
+      )
+  }
 
 }
