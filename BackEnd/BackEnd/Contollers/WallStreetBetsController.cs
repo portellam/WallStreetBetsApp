@@ -78,7 +78,6 @@ namespace BackEnd.Contollers
 			}
 		}
         */
-
 		// ==================================================================================================== //
 
 		// Favorite table
@@ -199,7 +198,6 @@ namespace BackEnd.Contollers
 				}
 			}
 		}
-
 		// ==================================================================================================== //
 
 		// JoinResults table
@@ -219,7 +217,7 @@ namespace BackEnd.Contollers
 		// Web API
 		// NOTE: Jeff's code here
 
-		// Nbshare API for reddit.com
+		// Nbshare API (for reddit.com)
 		[Route("nbshare")]
 		[HttpGet]
 		//public async Task<string> GetNbshare		// TODO: change?
@@ -251,5 +249,6 @@ namespace BackEnd.Contollers
 			MarketStackObject marketStackObject = await connection.Content.ReadAsAsync<MarketStackObject>();
 			return marketStackObject;
 		}
+		// ==================================================================================================== //
 	}
 }
