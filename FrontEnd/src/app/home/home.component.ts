@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { WallStreetBetsInfo } from '../wall-street-bets-info';
+import { WallStreetBetsInfoService } from '../wall-street-bets-info.service';
 
 @Component({
   selector: 'app-home',
@@ -7,9 +9,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  wsbArray: WallStreetBetsInfo[] = [];
+
+  constructor(private WallStreetBetsInfoServce: WallStreetBetsInfoService) { }
 
   ngOnInit(): void {
+  }
+
+  showWsbInfo(){
+    this.WallStreetBetsInfoServce.retrieveWallStreetBetsInfo(
+      (results: any) => {
+        this.wsbArray = results;
+      }
+    );
   }
 
 }

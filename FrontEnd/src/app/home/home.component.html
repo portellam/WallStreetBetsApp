@@ -1,1 +1,14 @@
 <p>hello world! this is the home component speaking</p>
+
+<button (click)="showWsbInfo()">Click here to get WSB info!</button>
+<br>
+
+<ng-container *ngFor="let wsb of wsbArray">
+    <br>
+    Ticker: {{wsb.ticker}}<br>
+    Sentiment: {{wsb.sentiment}}<br>
+    Sentiment Score: {{wsb.sentiment_score}}<br>
+    Number of Comments: {{wsb.no_of_comments}}<br>
+    <button>Placeholder Favorite Button</button>
+    <br>
+</ng-container>
