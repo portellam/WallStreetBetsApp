@@ -203,5 +203,17 @@ namespace BackEnd.Contollers
             string json = await response.Content.ReadAsStringAsync();
             return json;
         }
+
+        [Route("marketstack")]
+        [HttpGet]
+        public async Task<MarketStackObject> getMarketStackInfo()
+        {
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("http://api.marketstack.com/v1/");
+            var connection = await client.GetAsync("eod?access_key=208302dbe2d07c780ba4de2dc30c56ba&symbols=GME&limit=1"); // Note: Need to change parameters, this is just currently testing 1 record of GME
+            MarketStackObject marketStackObject = await connection.Content.ReadAsAsync<MarketStackObject>();
+            return marketStackObject;
+        }
+        
     }
 }

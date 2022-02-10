@@ -71,6 +71,21 @@ namespace BackEnd.Controllers
         public string description { get; set; }
     }
 
+    public class MarketStackObject
+    {
+        public List<StockInfo> data { get; set; }
+    }
+
+    public class StockInfo
+    {
+        public double open { get; set; }
+        public double high { get; set; }
+        public double low { get; set; }
+        public double close { get; set; }
+        public double volume { get; set; }
+        public DateTime date { get; set; }
+    }
+
     public class WallStreetBetsContext : DbContext
     {        
         // PROPERTIES //
