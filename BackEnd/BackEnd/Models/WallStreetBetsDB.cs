@@ -6,18 +6,19 @@ using System.Threading.Tasks;
 
 namespace BackEnd.Controllers
 {
+    // NOTE: all of our API calls will happen on the BackEnd (not from the FrontEnd)
+
     public class WallStreetBetsDB
     {
         // METHODS //
-        // NOTE: all of our API calls will happen on the BackEnd (not from the FrontEnd)
-        public static List<JoinResults> GetJoinResults(string username)
+        public static List<JoinResults> GetJoinResults(string _username)
         {
             List<JoinResults> results = null;
             using (WallStreetBetsContext context = new WallStreetBetsContext())
             {
                 var query = from myFavs in context.Favorites
                             join myNotes in context.Notes on myFavs.id equals myNotes.favorite_id
-                            where myFavs.username == username
+                            where myFavs.username == _username
                             select new JoinResults()
                             {
                                 username = myFavs.username,
@@ -45,17 +46,16 @@ namespace BackEnd.Controllers
         public int id { get; set; }
         public string ticker { get; set; }
         public string username { get; set; }
-        //public int user_id { get; set; }                  // foreign key
-        //public List<Note> noteList { get; set; }          // like a foreign key
+        //public int user_id { get; set; }                  // TODO: change?    NOTE: foreign key
+        //public List<Note> noteList { get; set; }          // TODO: change?    NOTE: like a foreign key
     }
 
     public class Note
     {
         public int id { get; set; }      
         public string description { get; set; }             // EXAMPLE: GME looks like a great buy!
-        public int favorite_id { get; set; }
-        //public DateTime lastEdit { get; set; }            //  TODO: optional
-        //public List<Favorite> favoriteList { get; set; }
+        public int favorite_id { get; set; }                // NOTE: like a foreign key
+        //public DateTime lastEdit { get; set; }            // TODO: add functionality for this later
     }
 
     public class JoinResults
@@ -63,7 +63,7 @@ namespace BackEnd.Controllers
         // PROPERTIES //
         // User
         public string username { get; set; }
-        //public int user_id { get; set; }
+        //public int user_id { get; set; }                  // TODO: change?
 
         // Favorite
         public string ticker { get; set; }

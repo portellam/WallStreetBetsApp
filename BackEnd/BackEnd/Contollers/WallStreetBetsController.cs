@@ -5,7 +5,7 @@ using System.Linq;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-// NOTE: changed method/temporary variable names to another pattern, from is seen in professional environments.
+// NOTE: made changes and proposed changes to variable names to another pattern.
 
 namespace BackEnd.Contollers
 {
@@ -183,7 +183,7 @@ namespace BackEnd.Contollers
 					_Note.description = _description;
 					_context.Notes.Update(_Note);
 					//_Notes[i].description = _description;
-					//_context.Notes.Update(_Notes[i]);		// TODO: change to this?
+					//_context.Notes.Update(_Notes[i]);		// TODO: change?
 					_context.SaveChanges();
 					return; // If match exists, edit note, and exit function now.
 				}
@@ -231,7 +231,7 @@ namespace BackEnd.Contollers
 		// Nbshare API for reddit.com
 		[Route("nbshare")]
 		[HttpGet]
-		//public async Task<string> GetNbshare		// TODO: change to this?
+		//public async Task<string> GetNbshare		// TODO: change?
 		public async Task<string> get()
 		{
 			// IMPORTANT:
@@ -251,7 +251,7 @@ namespace BackEnd.Contollers
 		// MarketStack API
 		[Route("marketstack")]
 		[HttpGet]
-		//public async Task<MarketStackObject> GetMarketStackInfo()		// TODO: change to this?
+		//public async Task<MarketStackObject> GetMarketStackInfo()		// TODO: change?
 		public async Task<MarketStackObject> getMarketStackInfo()
 		{
 			HttpClient _HttpClient = new HttpClient();
