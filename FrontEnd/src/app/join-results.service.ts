@@ -10,7 +10,7 @@ export class JoinResultsService {
   constructor(private http: HttpClient) { }
 
   getJoinResults(cb: any){
-    this.http.get<JoinResults>('https://localhost:7262/api/WallStreetBets/joinresults?username=coloritoj')
+    this.http.get<JoinResults[]>('https://localhost:7262/api/WallStreetBets/joinresults?username=coloritoj').subscribe(cb)
   }
 
   // For now, I'm just using my name to see if this is working
