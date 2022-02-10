@@ -16,14 +16,15 @@ namespace BackEnd.Controllers
             using (WallStreetBetsContext context = new WallStreetBetsContext())
             {
                 var query = from myFavs in context.Favorites
-                            join myNotes in context.Notes on myFavs.id equals myNotes.favorite_id
+                            join myNotes in context.Notes on myFavs.id equals myNotes.favorite_id into fullnotes
+                            from morenotes in fullnotes.DefaultIfEmpty()
                             where myFavs.username == username
                             select new JoinResults()
                             {
                                 username = myFavs.username,
                                 ticker = myFavs.ticker,
-                                favorite_id = myNotes.favorite_id,
-                                description = myNotes.description,
+                                favorite_id = morenotes.favorite_id,
+                                description = morenotes.description,
                             };
                 results = query.ToList();
             }
