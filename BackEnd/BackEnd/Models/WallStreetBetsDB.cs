@@ -16,6 +16,20 @@ namespace BackEnd.Controllers
 			List<JoinResults> results = null;
 			using (WallStreetBetsContext context = new WallStreetBetsContext())
 			{
+				// TODO: change?
+				/*
+				var query = from _Favorites in context.Favorites
+							join _Notes in context.Notes on _Favorites.id equals _Notes.favorite_id into temp
+							from _Note in temp.DefaultIfEmpty()
+							where _Favorites.username == _username
+							select new JoinResults()
+							{
+								username = _Favorites.username,
+								ticker = _Favorites.ticker,
+								favorite_id = _Note.favorite_id,
+								description = _Note.description,
+							};
+				*/
 				var query = from myFavs in context.Favorites
 							join myNotes in context.Notes on myFavs.id equals myNotes.favorite_id
 							where myFavs.username == _username

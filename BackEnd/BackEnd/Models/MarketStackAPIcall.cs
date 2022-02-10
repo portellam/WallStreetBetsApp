@@ -5,15 +5,25 @@
 		// NOTE: made changes and proposed changes to variable names to another pattern.
 
 		// PROPERTIES //
+		//private static HttpClient _realClient = null;	// TODO: change?
+														// NOTE: the idea is that you don't have to guess names if you had ten or more API classes.
 		private static HttpClient _realMarketStackClient = null;
 
 		// METHODS //
-		//public static HttpClient _HttpClient  // TODO: change?
-		// NOTE: the idea is that you don't have to guess names if you had ten API classes.
+		//public static HttpClient _HttpClient			// TODO: change?
 		public static HttpClient MyMarketStackHttp
 		{
 			get
 			{
+				// TODO: change?
+				/*
+                if (_realClient == null)
+                {
+                    _realClient = new HttpClient();
+                    _realClient.BaseAddress = new Uri("http://api.marketstack.com/v1/eod");  // MarketStack API URL
+                }
+                return _realClientWSB;
+                */
 				if (_realMarketStackClient == null)
 				{
 					_realMarketStackClient = new HttpClient();
