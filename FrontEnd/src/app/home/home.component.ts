@@ -5,6 +5,7 @@ import { MarketStackService } from '../market-stack.service';
 import { MarketStack } from '../market-stack';
 import { Favorite } from '../favorite';
 import { FavoriteService } from '../favorite.service';
+import { EditNoteService } from '../edit-note.service';
 
 @Component({
   selector: 'app-home',
@@ -17,13 +18,18 @@ export class HomeComponent implements OnInit {
 
   marketStackInfo: MarketStack | undefined;
 
+  showFavComment: string = '';
+  showFavId: number = 0;
+  noteText: string = '';
+
   myFav: Favorite = {
     id: 0,
     ticker: '',
     username: ''
   }
 
-  constructor(private WallStreetBetsInfoService: WallStreetBetsInfoService,
+  constructor(private EditNoteService: EditNoteService
+    ,private WallStreetBetsInfoService: WallStreetBetsInfoService,
     private MarketStackService: MarketStackService,
     private FavoriteService: FavoriteService) { }
 
@@ -57,8 +63,21 @@ export class HomeComponent implements OnInit {
     this.FavoriteService.postFavorite(ticker,
       (result: any) => {
         //alert('Succesfully added favorite!')
+        if (result) {
+          this.showFavComment = ticker;
+          this.showFavId = result;
+        }
       }
     );
+  }
+
+  saveText(){
+    this.showFavComment = '';
+    this.EditNoteService.postNote(this.showFavId, this.noteText, (result: any) => {});
+  }
+
+  cancelText(){
+    this.showFavComment = '';
   }
 
 }

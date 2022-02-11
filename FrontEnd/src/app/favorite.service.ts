@@ -13,17 +13,19 @@ export class FavoriteService {
   postFavorite(ticker: string, cb: any){
     //alert(this.userService.getCurrent())
 
-    let q = this.http.post(
+    this.http.post(
       `https://localhost:7262/api/WallStreetBets/favorites?username=${this.userService.getCurrent()}&ticker=${ticker}`, ticker).subscribe(
-        //'https://localhost:7262/api/WallStreetBets/favorites').subscribe(
         (result: any) => {
-          //alert('done!');
-          //cb();
+          console.log('RESULTS FROM SAVING FAVORITE:');
+          console.log(result);
+          if (result) {
+            cb(result.id);
+          }
+          else {
+            cb(null);
+          }
         }
       );
-    console.log('RESULT FROM POST');
-    console.log(q);
-    //alert('before/after');
       
   }
 

@@ -23,13 +23,25 @@ namespace BackEnd.Controllers
                             {
                                 username = myFavs.username,
                                 ticker = myFavs.ticker,
-                                favorite_id = morenotes.favorite_id,
+                                favorite_id = myFavs.id, //favorite_id = morenotes.favorite_id,
                                 description = morenotes.description,
                             };
                 results = query.ToList();
             }
             return results;
-        }//
+        }
+
+        /*
+        public static int GetFavoriteID(string username, string ticker)
+        {
+            int favID = 0;
+            using (WallStreetBetsContext context = new WallStreetBetsContext())
+            {
+                var query = from myFavs in context.Favorites
+                            where myFavs.username == username && myFavs.ticker == ticker
+            }
+        }
+        */
     }
 
     public class User

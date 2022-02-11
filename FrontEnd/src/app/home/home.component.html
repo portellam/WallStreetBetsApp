@@ -6,20 +6,29 @@
 
 <ng-container *ngFor="let wsb of wsbArray">
     <br>
-    Ticker: {{wsb.ticker}}<br>
-    Sentiment: {{wsb.sentiment}}<br>
-    Sentiment Score: {{wsb.sentiment_score}}<br>
-    Number of Comments: {{wsb.no_of_comments}}<br>
-    <button (click)="showMarketStackInfo(wsb.ticker)">Daily Stock Information</button><br>
+    <button (click)="addFav(wsb.ticker)">Add Stock to Favorites</button><br>
+    <div *ngIf="showFavComment == wsb.ticker">
+        Enter a comment (optional): <br>
+        <input type="text" [(ngModel)]="noteText"/><button (click)="saveText()">Save</button><button (click)="cancelText()">Cancel</button>
+    </div>
+        <div class="WallStreetBetsApiInfo">
+            Ticker: {{wsb.ticker}}<br>
+            Sentiment: {{wsb.sentiment}}<br>
+            Sentiment Score: {{wsb.sentiment_score}}<br>
+            Number of Comments: {{wsb.no_of_comments}}<br>
+        </div>
     <ng-container *ngIf="marketStackInfo && marketStackInfo.data[0] && marketStackInfo.data[0].symbol == wsb.ticker">
-        Opening Price: ${{marketStackInfo.data[0].open}}<br>
-        Intraday High Price: ${{marketStackInfo.data[0].high}}<br>
-        Intraday Low Price: ${{marketStackInfo.data[0].low}}<br>
-        Closing Price: ${{marketStackInfo.data[0].close}}<br>
-        Volume: {{marketStackInfo.data[0].volume}}<br>
-        Date: {{marketStackInfo.data[0].date}}<br>
+        <div class="MarketStackApiInfo">
+            Opening Price: ${{marketStackInfo.data[0].open}}<br> 
+            Intraday High Price: ${{marketStackInfo.data[0].high}}<br>
+            Intraday Low Price: ${{marketStackInfo.data[0].low}}<br>
+            Closing Price: ${{marketStackInfo.data[0].close}}<br>
+            Volume: {{marketStackInfo.data[0].volume}}<br>
+            Date: {{marketStackInfo.data[0].date}}<br>
+        </div>
     </ng-container>
-    <button (click)="addFav(wsb.ticker)">Favorite</button>
+    <button (click)="showMarketStackInfo(wsb.ticker)">Show MarketStack Info</button>
     <br>
+    <br>    
 </ng-container>
 

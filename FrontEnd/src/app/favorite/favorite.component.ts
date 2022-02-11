@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { JoinResults } from '../join-results';
 import { JoinResultsService } from '../join-results.service';
 import { EditNote } from '../edit-note';
@@ -16,8 +16,8 @@ export class FavoriteComponent implements OnInit {
   allJoinResultsForUser: JoinResults[] = [];
 
   _EditNote: EditNote = {
-    noteID: 25, // NEED TO FIGURE OUT HOW TO SEND FROM FAVORITE.COMPONENT.HTML WITH AN INPUT DECORATOR
-    updatedNoteDescription: 'testing this'
+    noteID: 25, 
+    updatedNoteDescription: ''
   }
 
   _DeleteNote: DeleteNote = {
@@ -25,6 +25,17 @@ export class FavoriteComponent implements OnInit {
   }
 
   newNote: string = '';
+
+  revealNoteBox: boolean = false;
+
+  toggleNoteBoxOn(){
+    this.revealNoteBox = true;
+  }
+
+  toggleNoteBoxOff(){
+    this.revealNoteBox = false;
+  }
+
 
   constructor(private JoinResultsService: JoinResultsService,
     private EditNoteService: EditNoteService,

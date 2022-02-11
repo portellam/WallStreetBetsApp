@@ -58,14 +58,14 @@ namespace BackEnd.Contollers
 
         [Route("favorites")]
         [HttpPost]
-        public void AddFav(string username, string ticker)
+        public Favorite AddFav(string username, string ticker)
         {
             List<Favorite> Favs = _context.Favorites.ToList();
             for (int i = 0; i < Favs.Count; i++)
             {
                 if (username == Favs[i].username && ticker == Favs[i].ticker)
                 {
-                    return; // If Favorite already exists, exit function
+                    return null; // If Favorite already exists, exit function
                 }
             }
             Favorite newFav = new Favorite();
@@ -73,6 +73,7 @@ namespace BackEnd.Contollers
             newFav.ticker = ticker;
             _context.Favorites.Add(newFav);
             _context.SaveChanges();
+            return newFav;
         }
 
         [Route("favorites")]
@@ -211,7 +212,8 @@ namespace BackEnd.Contollers
             HttpClient client = new HttpClient();
             //    http://api.marketstack.com/v1/eod?access_key=208302dbe2d07c780ba4de2dc30c56ba&symbols=DIS&limit=1
             client.BaseAddress = new Uri("http://api.marketstack.com/v1/");
-            var connection = await client.GetAsync($"eod?access_key=208302dbe2d07c780ba4de2dc30c56ba&symbols={ticker}&limit=1"); // Note: Need to change parameters, this is just currently testing 1 record of GME
+            // Just added new API key below on 2/11/2022
+            var connection = await client.GetAsync($"eod?access_key=a6b0ab8551d6ead2bb1df2da121ff9d9&symbols={ticker}&limit=1"); // Note: Need to change parameters, this is just currently testing 1 record of GME
             MarketStackObject marketStackObject = await connection.Content.ReadAsAsync<MarketStackObject>();
             return marketStackObject;
         }
