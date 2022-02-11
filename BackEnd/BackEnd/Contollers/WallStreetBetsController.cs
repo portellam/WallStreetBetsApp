@@ -6,6 +6,7 @@ using System.Linq;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 // NOTE: made changes and proposed changes to variable names to another pattern.
+// TODO: add function for DateTime in Notes, add current time to _Note in AddNote and EditNote
 
 namespace BackEnd.Contollers
 {
