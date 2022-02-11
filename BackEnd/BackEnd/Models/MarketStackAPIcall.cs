@@ -33,11 +33,12 @@
 			}
 		}
 
-		// function returns StockInfo of a given Ticker
-		public static async Task<BaseInfo> GetStockInfo(string apiKey, string _Ticker)
+		// function returns BaseInfo of a given Ticker
+		//public static async Task<BaseInfo> GetMarketStackInfo(string apiKey, string _ticker)
+		public static async Task<BaseInfo> GetStockInfo(string apiKey, string _ticker)
 		{
-			//var connection = await _HttpClient.GetAsync($"?access_key={apiKey}&symbols={_Ticker}");  // TODO: change?
-			var connection = await MyMarketStackHttp.GetAsync($"?access_key={apiKey}&symbols={_Ticker}");
+			//var connection = await _HttpClient.GetAsync($"?access_key={apiKey}&symbols={_ticker}");  // TODO: change?
+			var connection = await MyMarketStackHttp.GetAsync($"?access_key={apiKey}&symbols={_ticker}");
 			BaseInfo _BaseInfo = await connection.Content.ReadAsAsync<BaseInfo>();
 			return _BaseInfo;
 		}

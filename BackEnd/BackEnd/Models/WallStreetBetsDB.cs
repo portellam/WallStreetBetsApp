@@ -16,29 +16,16 @@ namespace BackEnd.Controllers
 			List<JoinResults> results = null;
 			using (WallStreetBetsContext context = new WallStreetBetsContext())
 			{
-				// TODO: change?
-				/*
 				var query = from _Favorites in context.Favorites
-							join _Notes in context.Notes on _Favorites.id equals _Notes.favorite_id into temp
-							from _Note in temp.DefaultIfEmpty()
+							join _Notes in context.Notes on _Favorites.id equals _Notes.favorite_id into tempNotes
+							from moreNotes in tempNotes.DefaultIfEmpty()
 							where _Favorites.username == _username
 							select new JoinResults()
 							{
 								username = _Favorites.username,
 								ticker = _Favorites.ticker,
-								favorite_id = _Note.favorite_id,
-								description = _Note.description,
-							};
-				*/
-				var query = from myFavs in context.Favorites
-							join myNotes in context.Notes on myFavs.id equals myNotes.favorite_id
-							where myFavs.username == _username
-							select new JoinResults()
-							{
-								username = myFavs.username,
-								ticker = myFavs.ticker,
-								favorite_id = myNotes.favorite_id,
-								description = myNotes.description,
+								favorite_id = moreNotes.favorite_id,
+								description = moreNotes.description,
 							};
 				results = query.ToList();
 			}
@@ -69,7 +56,7 @@ namespace BackEnd.Controllers
 		public int id { get; set; }
 		public string description { get; set; }             // EXAMPLE: GME looks like a great buy!
 		public int favorite_id { get; set; }                // NOTE: like a foreign key
-															//public DateTime lastEdit { get; set; }            // TODO: add functionality for this later
+		public DateTime lastEdit { get; set; }            // TODO: add functionality for this later
 	}
 
 	public class JoinResults
@@ -82,7 +69,7 @@ namespace BackEnd.Controllers
 		// Favorite
 		public string ticker { get; set; }
 		public int favorite_id { get; set; }
-
+		//public List<Note> noteList { get; set; }
 		// Note
 		public string description { get; set; }
 	}
