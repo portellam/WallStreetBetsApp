@@ -40,12 +40,11 @@
             var connection = await MyWSBHttp.GetAsync("/api/v1/apps/reddit");
             List<WSBObject> WSBObjects = await connection.Content.ReadAsAsync<List<WSBObject>>();
             WSBObject _WSBObject = new WSBObject();
-
             for (int i = 0; i < WSBObjects.Count; i++)
             {
-                if (WSBObjects[i].ticker.ToLower() == _ticker.ToLower())
+                if (_ticker.ToLower() == WSBObjects[i].ticker.ToLower())
                 {
-                    _WSBObject = WSBObjects[i];
+                    _WSBObject = WSBObjects[i];  
                 }
             }
             return _WSBObject;
