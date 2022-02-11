@@ -16,7 +16,7 @@ export class FavoriteComponent implements OnInit {
   allJoinResultsForUser: JoinResults[] = [];
 
   _EditNote: EditNote = {
-    noteID: 25,
+    noteID: 25, // NEED TO FIGURE OUT HOW TO SEND FROM FAVORITE.COMPONENT.HTML WITH AN INPUT DECORATOR
     updatedNoteDescription: 'testing this'
   }
 
