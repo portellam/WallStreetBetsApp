@@ -71,10 +71,12 @@ namespace BackEnd.Contollers
 			// subfunction verifies input.
 			for (int i = 0; i < _Users.Count; i++)
 			{
+				/*
 				if (_id == i && _id != _Users[i].id && _username == _Users[i].username)
 				{
 					return;	// If _id exists, _id is NOT valid, and username exists, exit function now.	// NOTE: Because _id is an input parameter, it is safe to NOT assume it is pre validated.
 				}
+				*/
 				if (_id == _Users[i].id)
 				{
 					_Users[_id].username = _username;
@@ -200,10 +202,12 @@ namespace BackEnd.Contollers
 			{
 				for (int i = 0; i < _Notes.Count; i++)
 				{
+					/*
 					if (_id == i && _id != _Notes[i].id)
 					{
 						return; // If _id exists, and _id is NOT valid, exit function now.	// NOTE: Because _id is an input parameter, it is safer to assume it is NOT valid.
 					}
+					*/
 					if (_id == _Notes[i].id)
 					{
 						//Note _Note = _Notes[i];	// NOTE: not necessary?

@@ -56,7 +56,7 @@ namespace BackEnd.Controllers
 		public int id { get; set; }
 		public string description { get; set; }             // EXAMPLE: GME looks like a great buy!
 		public int favorite_id { get; set; }                // NOTE: like a foreign key
-		public DateTime lastEdit { get; set; }            // TODO: add functionality for this later
+		//public DateTime lastEdit { get; set; }            // TODO: add functionality for this later
 	}
 
 	public class JoinResults
@@ -69,7 +69,7 @@ namespace BackEnd.Controllers
 		// Favorite
 		public string ticker { get; set; }
 		public int favorite_id { get; set; }
-		//public List<Note> noteList { get; set; }
+		//public List<Note> noteList { get; set; }			// TODO: change?
 		// Note
 		public string description { get; set; }
 	}
