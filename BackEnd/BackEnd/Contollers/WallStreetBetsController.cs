@@ -59,7 +59,7 @@ namespace BackEnd.Contollers
 		}
 
 		// function edits User.
-		[HttpPost]
+		[HttpPut]
 		public void EditUser(int _id, string _username, string _first_name)		// NOTE: NOT tested!
 		{
 			List<User> _Users = _context.Users.ToList();
