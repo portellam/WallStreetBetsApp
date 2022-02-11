@@ -5,216 +5,251 @@ using System.Linq;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
+// NOTE: made changes and proposed changes to variable names to another pattern.
+
 namespace BackEnd.Contollers
 {
 	[Route("api/[controller]")]
 	[ApiController]
 	public class WallStreetBetsController : ControllerBase
 	{
-		// THIS IS OUR DATABASE
+		// Database
 		private readonly WallStreetBetsContext _context;
+
+		// METHODS //
 		public WallStreetBetsController(WallStreetBetsContext context)
 		{
 			_context = context;
 		}
 
+		// CRUD FUNCTIONS
 
+		// User table
 
-        // ======================================================================================================
-        // THESE ARE THE GET & POST FOR THE USERS TABLE
+		// function reads the list of Users.
 		[HttpGet]
 		public IEnumerable<User> GetUsers()
 		{
 			return _context.Users;
 		}
 
+		// function edits User.
 		[HttpPost]
-		public void PostUser(string username, string first_name)
+		//public void EditUser(int _id, string _username, string _first_name)		// TODO: change?
+		public void PostUser(int _id, string _username, string _first_name)
 		{
-			// we are taking in values, which is a username and first_name, and adding to list
-			// do I instantiate a list of users here, or call _context.Users ?
+			List<User> _Users = _context.Users.ToList();
 
-			User myUser = new User();
-			myUser.username = username;
-			myUser.first_name = first_name;
-
-			_context.Users.Add(myUser);
+			/*
+			for (int i = 0; i < _Users.Count; i++)		// NOTE: subfunction NOT tested! If this doesn't work, verify in FrontEnd.
+			{
+				if (_id != i && _username == _Users[i].username)
+				{
+					return;     // If user is not current user and match exists, exit function now.
+				}
+			}
+			*/
+			User _User = new User();
+			_User.username = _username;
+			_User.first_name = _first_name;
+			_context.Users.Add(_User);
 			_context.SaveChanges();
-
-			// EXAMPLE: https://localhost:7262/api/WallStreetBets?username=jeffcogs&first_name=jeff
+			// URL: https://localhost:7262/api/WallStreetBets?username=jeffcogs&first_name=jeff
 		}
-        // ======================================================================================================
 
+		// function deletes a User.		// NOTE: function NOT tested!
+		/*
+		[HttpDelete]
+		public void DeleteUser(int _id)
+		{
+			List<User> _Users = _context.Users.ToList();
+			for (int i = 0; i < _Users.Count; i++)
+			{
+				if (_id == _Users[i].id)
+				{
+					// TODO: recursive call DeleteNote(), and DeleteFavorite() here?
+					//_context.Users.Remove(_Users.ElementAt(_id));		// TODO: change?
+					//_context.SaveChanges();
+					User _User = _Users[i];
+					_context.Users.Remove(_User);
+					return;     // If match exists, delete user, and exit function now.
 
+				}
+			}
+		}
+        */
+		// ==================================================================================================== //
 
-        // ======================================================================================================
-        // THESE ARE THE GET, POST, AND DELETE FOR THE FAVORITES TABLE
-        [Route("favorites")]
-        [HttpGet]
-        public IEnumerable<Favorite> GetFavorites()
-        {
-            return _context.Favorites;
-        }
+		// Favorite table
+		// NOTE: Put/Edit is not necessary for Favorite
 
-        [Route("favorites")]
-        [HttpPost]
-        public void AddFav(string username, string ticker)
-        {
-            List<Favorite> Favs = _context.Favorites.ToList();
-            for (int i = 0; i < Favs.Count; i++)
-            {
-                if (username == Favs[i].username && ticker == Favs[i].ticker)
-                {
-                    return; // If Favorite already exists, exit function
-                }
-            }
-            Favorite newFav = new Favorite();
-            newFav.username = username;
-            newFav.ticker = ticker;
-            _context.Favorites.Add(newFav);
-            _context.SaveChanges();
-        }
+		// function reads list of Favorites.
+		[Route("favorites")]
+		[HttpGet]
+		public IEnumerable<Favorite> GetFavorites()
+		{
+			return _context.Favorites;
+		}
 
-        [Route("favorites")]
-        [HttpDelete]
-        public void DeleteFav(string username, string ticker)
-        {
-            List<Favorite> Favs = _context.Favorites.ToList();
-            for (int i = 0; i < Favs.Count; i++)
-            {
-                if (username == Favs[i].username && ticker == Favs[i].ticker)
-                {
-                    _context.Favorites.Remove(Favs[i]);
-                    _context.SaveChanges();
-                }
-            }
-        }
-        // ======================================================================================================
+		// function creates Favorite, assigns to a User.
+		[Route("favorites")]
+		[HttpPost]
+		public void AddFav(string _username, string _ticker)
+		{
+			List<Favorite> _Favorites = _context.Favorites.ToList();
+			Favorite _Favorite = new Favorite();
+			for (int i = 0; i < _Favorites.Count; i++)
+			{
+				if (_username == _Favorites[i].username && _ticker == _Favorites[i].ticker)
+				{
+					return; // If match exists, exit function now.
+				}
+			}
+			_Favorite.username = _username;
+			_Favorite.ticker = _ticker;
+			_context.Favorites.Add(_Favorite);
+			_context.SaveChanges();
+		}
 
+		// function deletes Favorite.
+		[Route("favorites")]
+		[HttpDelete]
+		public void DeleteFav(string _username, string _ticker)
+		{
+			List<Favorite> _Favorites = _context.Favorites.ToList();
+			for (int i = 0; i < _Favorites.Count; i++)
+			{
+				if (_username == _Favorites[i].username && _ticker == _Favorites[i].ticker)
+				{
+					_context.Favorites.Remove(_Favorites[i]);
+					_context.SaveChanges();
+					return; // If match exists, delete favorite, and exit function now.
+				}
+			}
+		}
+		// ==================================================================================================== //
 
+		// Note table
 
-        // ======================================================================================================
-        // THESE ARE THE CRUD OPERATIONS FOR OUR NOTES TABLE
-        [Route("notes")]
-        [HttpGet]
-        public IEnumerable<Note> GetNotes()
-        {
-            return _context.Notes;
-        }
+		// function reads list of Notes.
+		[Route("notes")]
+		[HttpGet]
+		public IEnumerable<Note> GetNotes()
+		{
+			return _context.Notes;
+		}
 
-        [Route("notes")]
-        [HttpPost]
-        public void AddNote(int favID, string noteDescription)
-        {
-            Note myNote = new Note();
-            List<Favorite> favoriteRecords = _context.Favorites.ToList();
+		// function creates Note, assigns to Favorite Ticker.
+		[Route("notes")]
+		[HttpPost]
+		public void AddNote(int _favorite_id, string _description)
+		{
+			List<Favorite> _Favorites = _context.Favorites.ToList();
+			Note _Note = new Note();
+			for (int i = 0; i < _Favorites.Count; i++)
+			{
+				if (_Favorites[i].id == _favorite_id)
+				{
+					_Note.description = _description;
+					_Favorites[i].id = _favorite_id;
+					_context.Notes.Add(_Note);
+					_context.SaveChanges();
+					return; // If match exists, add note, and exit function now.
+				}
+			}
+		}
 
-            for (int i = 0; i < favoriteRecords.Count; i++)
-            {
-                if (favoriteRecords[i].id == favID)
-                {
-                    myNote.favorite_id = favID;
-                    myNote.description = noteDescription;
+		// function edits Note.
+		[Route("notes")]
+		[HttpPut]
+		public void EditNote(int _id, string _description)
+		{
+			List<Note> _Notes = _context.Notes.ToList();
+			for (int i = 0; i < _Notes.Count; i++)
+			{
+				if (_id == _Notes[i].id)
+				{
+					Note _Note = _Notes[i];
+					_Note.description = _description;
+					_context.Notes.Update(_Note);
+					//_Notes[i].description = _description;
+					//_context.Notes.Update(_Notes[i]);		// TODO: change?
+					_context.SaveChanges();
+					return; // If match exists, edit note, and exit function now.
+				}
+			}
+		}
 
-                    _context.Notes.Add(myNote);
-                    _context.SaveChanges();
-                }
-            }
-        }
+		// function deletes Note.
+		[Route("notes")]
+		[HttpDelete]
+		public void DeleteNote(int _id)
+		{
+			List<Note> _Notes = _context.Notes.ToList();
+			for (int i = 0; i < _Notes.Count; i++)
+			{
+				if (_id == _Notes[i].id)
+				{
+					//Note _Note = notesList[i];
+					//_context.Notes.Remove(_Note);
+					_context.Notes.Remove(_Notes[i]);
+					_context.SaveChanges();
+					return; // If match exists, delete note, and exit function now.
+				}
+			}
+		}
+		// ==================================================================================================== //
 
-        [Route("notes")]
-        [HttpPut]
-        public void EditNote(int noteID, string updatedNoteDescription)
-        {
-            List<Note> notesList = _context.Notes.ToList();
-            Note myNote = new Note();
+		// JoinResults table
+		// TODO: appears to be working, unsure if "id" is correct.
+		// URL: https://localhost:7262/api/WallStreetBets/joinresults?username=coloritoj
 
-            for (int i = 0; i < notesList.Count; i++)
-            {
-                if (notesList[i].id == noteID)
-                {
-                    notesList[i].description = updatedNoteDescription;
-                    myNote = notesList[i];
+		// function reads list of JoinResults.
+		[Route("joinresults")]
+		[HttpGet]
+		public IEnumerable<JoinResults> GetJoins(string _username)
+		{
+			List<JoinResults> _JoinResults = WallStreetBetsDB.GetJoinResults(_username);
+			return _JoinResults;
+		}
+		// ==================================================================================================== //
 
-                    _context.Notes.Update(myNote);
-                    _context.SaveChanges();
-                }
-            }
-        }
+		// Web API
+		// NOTE: Jeff's code here
 
-        [Route("notes")]
-        [HttpDelete]
-        public void DeleteNote(int noteID)
-        {
-            List<Note> notesList = _context.Notes.ToList();
-            Note noteToDelete = new Note();
+		// Nbshare API (for reddit.com)
+		[Route("nbshare")]
+		[HttpGet]
+		//public async Task<string> GetNbshare		// TODO: change?
+		public async Task<string> get()
+		{
+			// IMPORTANT:
+			// Notice I'm not bothering with making classes for the response. Ultimately all
+			// http requests are really just strings anyway. So I'm just reading the JSON as
+			// a string and passing it exactly as-is back out. The Angular app in turn will
+			// correctly read it as JSON. (Interestingly, the ASP.NET core seems to notice
+			// that the data is JSON and attaches the correct content type of application/json.)
 
-            for (int i = 0; i < notesList.Count; i++)
-            {
-                if (notesList[i].id == noteID)
-                {
-                    noteToDelete = notesList[i];
+			HttpClient _HttpClient = new HttpClient();
+			_HttpClient.BaseAddress = new Uri("https://dashboard.nbshare.io/api/v1/");
+			HttpResponseMessage response = await _HttpClient.GetAsync("apps/reddit");
+			string json = await response.Content.ReadAsStringAsync();
+			return json;
+		}
 
-                    _context.Notes.Remove(noteToDelete);
-                    _context.SaveChanges();
-                }
-            }
-        }
-        // ======================================================================================================
-
-
-        
-
-
-
-
-        // EXPERIMENTATION FOR JOINRESULTS
-        // SEEMS LIKE IT'S WORKING, BUT I AM STILL UNSURE IF "ID" IS CORRECT
-        // EXAMPLE URL: https://localhost:7262/api/WallStreetBets/joinresults?username=coloritoj
-
-        [Route("joinresults")]
-        [HttpGet]
-        public IEnumerable<JoinResults> GetJoins(string username)
-        {
-            List<JoinResults> myJoinResults = WallStreetBetsDB.GetJoinResults(username);
-            return myJoinResults;
-        }
-
-
-
-        // =================================================================
-        // THIS IS JEFF'S CODE HERE:
-
-        [Route("nbshare")]
-        [HttpGet]
-        public async Task<string> get()
-        {
-
-            // IMPORTANT:
-            // Notice I'm not bothering with making classes for the response. Ultimately all
-            // http requests are really just strings anyway. So I'm just reading the JSON as
-            // a string and passing it exactly as-is back out. The Angular app in turn will
-            // correctly read it as JSON. (Interestingly, the ASP.NET core seems to notice
-            // that the data is JSON and attaches the correct content type of application/json.)
-
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("https://dashboard.nbshare.io/api/v1/");
-            HttpResponseMessage response = await client.GetAsync("apps/reddit");
-            string json = await response.Content.ReadAsStringAsync();
-            return json;
-        }
-
-        [Route("marketstack")]
-        [HttpGet]
-        public async Task<MarketStackObject> getMarketStackInfo(string ticker)
-        {
-            HttpClient client = new HttpClient();
-            //    http://api.marketstack.com/v1/eod?access_key=208302dbe2d07c780ba4de2dc30c56ba&symbols=DIS&limit=1
-            client.BaseAddress = new Uri("http://api.marketstack.com/v1/");
-            var connection = await client.GetAsync($"eod?access_key=208302dbe2d07c780ba4de2dc30c56ba&symbols={ticker}&limit=1"); // Note: Need to change parameters, this is just currently testing 1 record of GME
-            MarketStackObject marketStackObject = await connection.Content.ReadAsAsync<MarketStackObject>();
-            return marketStackObject;
-        }
-        
-    }
+		// MarketStack API
+		[Route("marketstack")]
+		[HttpGet]
+		//public async Task<MarketStackObject> GetMarketStackInfo(string _ticker)		// TODO: change?
+		public async Task<MarketStackObject> getMarketStackInfo(string _ticker)
+		{
+			HttpClient _HttpClient = new HttpClient();
+			_HttpClient.BaseAddress = new Uri("http://api.marketstack.com/v1/");
+			//    http://api.marketstack.com/v1/eod?access_key=208302dbe2d07c780ba4de2dc30c56ba&symbols=DIS&limit=1
+			var connection = await _HttpClient.GetAsync($"eod?access_key=208302dbe2d07c780ba4de2dc30c56ba&symbols={_ticker}&limit=1");
+			MarketStackObject marketStackObject = await connection.Content.ReadAsAsync<MarketStackObject>();
+			return marketStackObject;
+		}
+		// ==================================================================================================== //
+	}
 }
