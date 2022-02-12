@@ -7,6 +7,8 @@ import { DeleteNote } from '../delete-note';
 import { DeleteNoteService } from '../delete-note.service';
 import { GetNotes } from '../get-notes';
 import { GetNotesService } from '../get-notes.service';
+import { AddNote } from '../add-note';
+import { AddNoteService } from '../add-note.service';
 
 @Component({
   selector: 'app-favorite',
@@ -26,10 +28,14 @@ export class FavoriteComponent implements OnInit {
     noteID: 0
   }
 
+  
+
   newNote: string = '';
 
   revealNoteBox: boolean = false;
   passedNoteID: number = 0;
+
+
 
   /*
   deleteNoteIDcaptured: number = 1;
@@ -46,7 +52,8 @@ export class FavoriteComponent implements OnInit {
   }
 
 
-  constructor(private _getNotesService: GetNotesService,
+  constructor(private _addNoteService: AddNoteService,
+    private _getNotesService: GetNotesService,
     private JoinResultsService: JoinResultsService,
     private EditNoteService: EditNoteService,
     private DeleteNoteService: DeleteNoteService) { }
@@ -98,19 +105,91 @@ export class FavoriteComponent implements OnInit {
     this._EditNote.updatedNoteDescription = '';
   }
 
-  
-  /*
-  captureNoteID() {
-    alert(`Note ID captured... ${this.deleteNoteIDcaptured}`);
+
+  checkIfFavoriteHasNote(_favID: number)
+  {
+    for (let i: number = 0; i < this.allJoinResultsForUser.length; i++)
+    {
+      if (this.allJoinResultsForUser[i].favorite_id == _favID)
+      {
+        if (this.allJoinResultsForUser[i].note_id == null)
+        {
+          this.favoriteHasNote == false;
+          alert(`Statement evalutes to: ${this.favoriteHasNote}`)
+        }
+      }
+    }
   }
 
-  fillNotesArray() {
-    this._getNotesService.retrieveNotesTableInfo(
-      (results: any) => {
-        this.getNotesArray = results;
-      }
-    )
+
+
+
+
+
+  // TO DO: Put the Add Note feature inside an ng-container
+  // Make this similar to how the Edit Note works (basically so it only shows the Add Note for just the one stock)
+
+  _AddNote: AddNote = {
+    favID: 0,
+    noteDescription: ''
   }
-  */
+
+  favoriteHasNote: boolean = false;
+
+  setAddNoteFavID(_addNoteFavID: number){
+    this._AddNote.favID = _addNoteFavID; 
+  }
+  
+  addNote()
+  {
+    if (this.favoriteHasNote)
+    {
+      alert('You already have a note for this favorited stock')
+    }
+    else
+    {
+      this._addNoteService.postNote(this._AddNote, 
+        (result: any) => {
+          alert('Note has been added!')
+          this.getUserJoinResults();
+        }
+      )
+    }
+  }
+
+  // OMG THIS IS WORKING!
+  alternativeAddNote(favID: number)
+  {
+    let tempDescription: string = '';
+
+    for (let i: number = 0; i < this.allJoinResultsForUser.length; i++)
+    {
+      if (this.allJoinResultsForUser[i].favorite_id == favID)
+      {
+        tempDescription = this.allJoinResultsForUser[i].description
+        if (tempDescription == null)
+        {
+          this._addNoteService.postNote(this._AddNote, 
+            (result: any) => {
+              alert('Note has been added!')
+              this.clearAddNoteText();
+              this.getUserJoinResults();
+            }
+          );
+        }
+        else
+        {
+          alert('You already have a note for this stock!')
+          this.clearAddNoteText();
+          this.getUserJoinResults();
+        }
+      }
+    }
+  }
+  
+  clearAddNoteText(){
+    this._AddNote.noteDescription = '';
+  }
+
 
 }

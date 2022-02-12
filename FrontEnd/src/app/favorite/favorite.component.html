@@ -9,6 +9,31 @@
     <!--OMG, the setNoteID() function is what I needed all this time. I'm going to cry!-->
     <button (click)="setNoteID(joinresult.note_id)" (click)="deleteStockNote()">Delete Existing Note</button><br>
 
+
+
+    <!--THIS IS WHERE I'M WORKING ON ADDING A NOTE-->
+
+
+    <ng-container>
+    <input type="text" [(ngModel)]="_AddNote.noteDescription">
+    <button (click)="setAddNoteFavID(joinresult.favorite_id)" (click)="alternativeAddNote(joinresult.favorite_id)">Add Note!</button><br>
+    </ng-container>
+
+
+
+
+
+
+    <!--END OF WHERE IM WORKING ON ADDING A NOTE-->
+
+
+
+
+
+
+
+
+
     
     <button (click)="toggleNoteBoxOn(joinresult.note_id)">Note Options</button><br>
 
