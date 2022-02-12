@@ -5,6 +5,8 @@ import { EditNote } from '../edit-note';
 import { EditNoteService } from '../edit-note.service';
 import { DeleteNote } from '../delete-note';
 import { DeleteNoteService } from '../delete-note.service';
+import { GetNotes } from '../get-notes';
+import { GetNotesService } from '../get-notes.service';
 
 @Component({
   selector: 'app-favorite',
@@ -21,12 +23,17 @@ export class FavoriteComponent implements OnInit {
   }
 
   _DeleteNote: DeleteNote = {
-    noteID: 9
+    noteID: 0
   }
 
   newNote: string = '';
 
   revealNoteBox: boolean = false;
+
+  /*
+  deleteNoteIDcaptured: number = 1;
+  getNotesArray: GetNotes[] = [];
+  */
 
   toggleNoteBoxOn(){
     this.revealNoteBox = true;
@@ -37,7 +44,8 @@ export class FavoriteComponent implements OnInit {
   }
 
 
-  constructor(private JoinResultsService: JoinResultsService,
+  constructor(private _getNotesService: GetNotesService,
+    private JoinResultsService: JoinResultsService,
     private EditNoteService: EditNoteService,
     private DeleteNoteService: DeleteNoteService) { }
 
@@ -56,20 +64,40 @@ export class FavoriteComponent implements OnInit {
   editStockNote() {
     this.EditNoteService.editNote(this._EditNote, 
       (result: any) => {
-        alert('Successfully updated the test note');
+        alert('hello this is the editStockNote function being called');
         this.getUserJoinResults();
       }
     );
   }
   // Example URL: https://localhost:7262/api/WallStreetBets/notes?noteID=25&updatedNoteDescription=this%20looks%20like%20a%20great%20stock
 
+  // OH MY GOD THIS ACTUALLY MADE IT WORK. I AM GOING TO CRY.
+  setNoteID(noteID: number){
+    this._DeleteNote.noteID = noteID;
+  }
+
   deleteStockNote() {
     this.DeleteNoteService.deleteNote(this._DeleteNote,
       (result: any) => {
-        alert('the GME 1 note should have been deleted')
+        alert(`Note ID deleted: ${this._DeleteNote.noteID}`)
         this.getUserJoinResults();
       }
       )
   }
+
+  
+  /*
+  captureNoteID() {
+    alert(`Note ID captured... ${this.deleteNoteIDcaptured}`);
+  }
+
+  fillNotesArray() {
+    this._getNotesService.retrieveNotesTableInfo(
+      (results: any) => {
+        this.getNotesArray = results;
+      }
+    )
+  }
+  */
 
 }

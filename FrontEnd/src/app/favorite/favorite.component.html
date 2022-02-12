@@ -4,26 +4,19 @@
     Ticker: {{joinresult.ticker}}<br>
     Favorite ID: {{joinresult.favorite_id}}<br>
     Description: {{joinresult.description}}<br>
+    Note ID: {{joinresult.note_id}}<br>
+
+    <!--OMG, the setNoteID() function is what I needed all this time. I'm going to cry!-->
+    <button (click)="setNoteID(joinresult.note_id)" (click)="deleteStockNote()">Delete Existing Note</button><br>
 
     
-
-    
-    <button (click)="toggleNoteBoxOn()">Update Stock Note</button><br>
+    <button (click)="toggleNoteBoxOn()">Note Options</button><br>
 
     <ng-container *ngIf="revealNoteBox">
         <input type="hidden" value="{{joinresult.favorite_id}}" [(ngModel)]="_EditNote.noteID">
         <input type="text" [(ngModel)]="_EditNote.updatedNoteDescription"/>
-        <button (click)="editStockNote()">Update Disney Note</button><br>
+        <button (click)="editStockNote()">Update Existing Note</button><br>
     </ng-container>
 
 
 </ng-container>
-
-
-
-
-
-<br>
-<br>
-<p>This is a test to delete the GME 2 note</p>
-<button (click)="deleteStockNote()">Delete GME 2 note</button>

@@ -25,6 +25,7 @@ namespace BackEnd.Controllers
                                 ticker = myFavs.ticker,
                                 favorite_id = myFavs.id, //favorite_id = morenotes.favorite_id,
                                 description = morenotes.description,
+                                note_id = morenotes.id // THIS IS WHAT IM TESTING RIGHT NOW.
                             };
                 results = query.ToList();
             }
@@ -82,6 +83,9 @@ namespace BackEnd.Controllers
         public int? favorite_id { get; set; }
         // Note
         public string description { get; set; }
+
+
+        public int? note_id { get; set; } // THIS IS WHAT IM TESTING. I NEED TO ADD THIS IN THE JOINRESULTS QUERY.
     }
 
     public class MarketStackObject

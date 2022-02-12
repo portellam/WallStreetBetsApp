@@ -28,8 +28,8 @@ export class HomeComponent implements OnInit {
     username: ''
   }
 
-  constructor(private EditNoteService: EditNoteService
-    ,private WallStreetBetsInfoService: WallStreetBetsInfoService,
+  constructor(private EditNoteService: EditNoteService,
+    private WallStreetBetsInfoService: WallStreetBetsInfoService,
     private MarketStackService: MarketStackService,
     private FavoriteService: FavoriteService) { }
 

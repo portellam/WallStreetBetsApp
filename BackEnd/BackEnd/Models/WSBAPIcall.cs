@@ -38,7 +38,9 @@
         }
     }
 
-    public class WSBObject
+  
+}
+  public class WSBObject
     {
         // PROPERTIES //
         public int no_of_comments { get; set; }
@@ -46,5 +48,3 @@
         public decimal sentiment_score { get; set; }
         public string ticker { get; set; }
     }
-
-}

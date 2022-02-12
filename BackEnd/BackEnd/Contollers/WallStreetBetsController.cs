@@ -20,6 +20,8 @@ namespace BackEnd.Contollers
 
 
 
+
+
         // ======================================================================================================
         // THESE ARE THE GET & POST FOR THE USERS TABLE
 		[HttpGet]
@@ -44,6 +46,8 @@ namespace BackEnd.Contollers
 			// EXAMPLE: https://localhost:7262/api/WallStreetBets?username=jeffcogs&first_name=jeff
 		}
         // ======================================================================================================
+
+
 
 
 
@@ -94,6 +98,8 @@ namespace BackEnd.Contollers
 
 
 
+
+
         // ======================================================================================================
         // THESE ARE THE CRUD OPERATIONS FOR OUR NOTES TABLE
         [Route("notes")]
@@ -123,6 +129,11 @@ namespace BackEnd.Contollers
             }
         }
 
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        // ~~~~~ THIS IS A PIECE OF CODE THAT UPDATES OUR DATABASE ~~~~~
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         [Route("notes")]
         [HttpPut]
         public void EditNote(int noteID, string updatedNoteDescription)
@@ -213,7 +224,7 @@ namespace BackEnd.Contollers
             //    http://api.marketstack.com/v1/eod?access_key=208302dbe2d07c780ba4de2dc30c56ba&symbols=DIS&limit=1
             client.BaseAddress = new Uri("http://api.marketstack.com/v1/");
             // Just added new API key below on 2/11/2022
-            var connection = await client.GetAsync($"eod?access_key=a6b0ab8551d6ead2bb1df2da121ff9d9&symbols={ticker}&limit=1"); // Note: Need to change parameters, this is just currently testing 1 record of GME
+            var connection = await client.GetAsync($"eod?access_key=a6b0ab8551d6ead2bb1df2da121ff9d9&symbols={ticker}&limit=1");
             MarketStackObject marketStackObject = await connection.Content.ReadAsAsync<MarketStackObject>();
             return marketStackObject;
         }
