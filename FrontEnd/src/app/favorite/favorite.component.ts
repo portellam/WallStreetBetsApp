@@ -18,7 +18,7 @@ export class FavoriteComponent implements OnInit {
   allJoinResultsForUser: JoinResults[] = [];
 
   _EditNote: EditNote = {
-    noteID: 25, 
+    noteID: 0, 
     updatedNoteDescription: ''
   }
 
@@ -29,14 +29,16 @@ export class FavoriteComponent implements OnInit {
   newNote: string = '';
 
   revealNoteBox: boolean = false;
+  passedNoteID: number = 0;
 
   /*
   deleteNoteIDcaptured: number = 1;
   getNotesArray: GetNotes[] = [];
   */
 
-  toggleNoteBoxOn(){
+  toggleNoteBoxOn(_passedNoteID: number){
     this.revealNoteBox = true;
+    this.passedNoteID = _passedNoteID;
   }
 
   toggleNoteBoxOff(){
@@ -60,11 +62,16 @@ export class FavoriteComponent implements OnInit {
       }
     );
   }
+
+  setEditNoteID(myNoteID: number){
+    this._EditNote.noteID = myNoteID;
+  }
+
   
   editStockNote() {
     this.EditNoteService.editNote(this._EditNote, 
       (result: any) => {
-        alert('hello this is the editStockNote function being called');
+        alert(`Edit Note ID: ${this._EditNote.noteID}`);
         this.getUserJoinResults();
       }
     );
