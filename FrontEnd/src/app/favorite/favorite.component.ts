@@ -72,6 +72,8 @@ export class FavoriteComponent implements OnInit {
     this.EditNoteService.editNote(this._EditNote, 
       (result: any) => {
         alert(`Edit Note ID: ${this._EditNote.noteID}`);
+        this.clearEditText();
+        this.toggleNoteBoxOff();
         this.getUserJoinResults();
       }
     );
@@ -90,6 +92,10 @@ export class FavoriteComponent implements OnInit {
         this.getUserJoinResults();
       }
       )
+  }
+
+  clearEditText(){
+    this._EditNote.updatedNoteDescription = '';
   }
 
   
