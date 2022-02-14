@@ -2,9 +2,9 @@
     <br>
     Username: {{joinresult.username}}<br>
     Ticker: {{joinresult.ticker}}<br>
-    Favorite ID: {{joinresult.favorite_id}}<br>
     Description: {{joinresult.description}}<br>
-    Note ID: {{joinresult.note_id}}<br>
+    <!-- Favorite ID: {{joinresult.favorite_id}}<br> -->
+    <!-- Note ID: {{joinresult.note_id}}<br> -->
 
     <!--OMG, the setNoteID() function is what I needed all this time. I'm going to cry!-->
     <button (click)="setNoteID(joinresult.note_id)" (click)="deleteStockNote()">Delete Existing Note</button><br>
@@ -17,6 +17,8 @@
     <ng-container>
     <input type="text" [(ngModel)]="_AddNote.noteDescription">
     <button (click)="setAddNoteFavID(joinresult.favorite_id)" (click)="alternativeAddNote(joinresult.favorite_id)">Add Note!</button><br>
+
+   
     </ng-container>
 
 
@@ -42,5 +44,10 @@
         <button (click)="setEditNoteID(joinresult.note_id)" (click)="editStockNote()">Update Existing Note</button><br>
     </ng-container>
 
+
+
+    <br>
+    <br>
+    <br>
 
 </ng-container>
