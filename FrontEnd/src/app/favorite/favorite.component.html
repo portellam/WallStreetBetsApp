@@ -1,53 +1,42 @@
 <ng-container *ngFor="let joinresult of allJoinResultsForUser">
     <br>
+    <br>
+    <button (click)="setDeleteFavoriteInfo(joinresult.username, joinresult.ticker)" (click)="deleteFavorite()">Remove Favorite</button><br>
+    <!-- https://localhost:7262/api/WallStreetBets/favorites?username=coloritoj&ticker=GME -->
+
+
     Username: {{joinresult.username}}<br>
     Ticker: {{joinresult.ticker}}<br>
-    Description: {{joinresult.description}}<br>
+    Note: {{joinresult.description}}<br>
     <!-- Favorite ID: {{joinresult.favorite_id}}<br> -->
     <!-- Note ID: {{joinresult.note_id}}<br> -->
 
-    <!--OMG, the setNoteID() function is what I needed all this time. I'm going to cry!-->
-    <button (click)="setNoteID(joinresult.note_id)" (click)="deleteStockNote()">Delete Existing Note</button><br>
+    <button (click)="setTempTicker(joinresult.ticker)" (click)="toggleNoteBoxOn(joinresult.note_id)" (click)="toggleNoteExists(joinresult.description)">Note Options</button><br>
 
-
-
-    <!--THIS IS WHERE I'M WORKING ON ADDING A NOTE-->
-
-
-    <ng-container>
-    <input type="text" [(ngModel)]="_AddNote.noteDescription">
-    <button (click)="setAddNoteFavID(joinresult.favorite_id)" (click)="alternativeAddNote(joinresult.favorite_id)">Add Note!</button><br>
-
-   
-    </ng-container>
-
-
-
-
-
-
-    <!--END OF WHERE IM WORKING ON ADDING A NOTE-->
-
-
-
-
-
-
-
-
-
-    
-    <button (click)="toggleNoteBoxOn(joinresult.note_id)">Note Options</button><br>
-
-    <ng-container *ngIf="revealNoteBox && passedNoteID == joinresult.note_id">
+    <ng-container *ngIf="revealNoteBox && passedNoteID == joinresult.note_id && specificTicker == joinresult.ticker">
+        <ng-container *ngIf="noteExists == true">
+        
+        <!--EDIT NOTE-->
+        <br>
+        Update Note:
         <input type="text" [(ngModel)]="_EditNote.updatedNoteDescription">
-        <button (click)="setEditNoteID(joinresult.note_id)" (click)="editStockNote()">Update Existing Note</button><br>
+        <button (click)="setEditNoteID(joinresult.note_id)" (click)="editStockNote()">Save Changes</button><br>
+
+
+        <!--DELETE NOTE-->
+        <button (click)="setNoteID(joinresult.note_id)" (click)="deleteStockNote()">Delete Existing Note</button><br>
+        </ng-container>    
+
+
+
+        <!--ADD NOTE-->
+        <ng-container *ngIf="noteExists == false">
+            Add Note:
+            <input type="text" [(ngModel)]="_AddNote.noteDescription">
+            <button (click)="setAddNoteFavID(joinresult.favorite_id)" (click)="alternativeAddNote(joinresult.favorite_id)">Add Note!</button><br>   
+        </ng-container>      
     </ng-container>
-
-
-
     <br>
     <br>
     <br>
-
 </ng-container>

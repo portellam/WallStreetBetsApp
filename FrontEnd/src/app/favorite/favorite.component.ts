@@ -9,6 +9,8 @@ import { GetNotes } from '../get-notes';
 import { GetNotesService } from '../get-notes.service';
 import { AddNote } from '../add-note';
 import { AddNoteService } from '../add-note.service';
+import { DeleteFavorite } from '../delete-favorite';
+import { DeleteFavoriteService } from '../delete-favorite.service';
 
 @Component({
   selector: 'app-favorite',
@@ -27,13 +29,25 @@ export class FavoriteComponent implements OnInit {
   _DeleteNote: DeleteNote = {
     noteID: 0
   }
-
   
-
   newNote: string = '';
-
   revealNoteBox: boolean = false;
   passedNoteID: number = 0;
+  specificTicker: string = '';
+  noteExists: boolean = false;
+
+  toggleNoteExists(noteDesc: string){
+    if(noteDesc == null){
+      this.noteExists = false;
+    }
+    else{
+      this.noteExists = true;
+    }
+  }
+
+  setTempTicker(tic: string){
+    this.specificTicker = tic;
+  }
 
 
 
@@ -52,7 +66,8 @@ export class FavoriteComponent implements OnInit {
   }
 
 
-  constructor(private _addNoteService: AddNoteService,
+  constructor(private _deleteFavoriteService: DeleteFavoriteService,
+    private _addNoteService: AddNoteService,
     private _getNotesService: GetNotesService,
     private JoinResultsService: JoinResultsService,
     private EditNoteService: EditNoteService,
@@ -190,6 +205,32 @@ export class FavoriteComponent implements OnInit {
   clearAddNoteText(){
     this._AddNote.noteDescription = '';
   }
+
+
+
+
+
+
+  _DeleteFavorite: DeleteFavorite = {
+    username: '',
+    ticker: ''
+  }
+
+  setDeleteFavoriteInfo(u: string, t: string){
+    this._DeleteFavorite.username = u;
+    this._DeleteFavorite.ticker = t;
+  }
+
+  
+  deleteFavorite() {
+    this._deleteFavoriteService.deleteFavorite(this._DeleteFavorite,
+      (result: any) => {
+        alert(`Favorite Deleted: ${this._DeleteFavorite.ticker}`)
+        this.getUserJoinResults();
+      }
+    );
+  }
+
 
 
 }
