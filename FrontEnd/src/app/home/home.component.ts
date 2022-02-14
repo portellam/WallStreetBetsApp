@@ -73,11 +73,16 @@ export class HomeComponent implements OnInit {
 
   saveText(){
     this.showFavComment = '';
-    this.EditNoteService.postNote(this.showFavId, this.noteText, (result: any) => {});
+    this.EditNoteService.postNote(this.showFavId, this.noteText, (result: any) => this.clearNoteText());
+    // this.EditNoteService.postNote(this.showFavId, this.noteText, (result: any) => {});
   }
 
   cancelText(){
     this.showFavComment = '';
+  }
+
+  clearNoteText(){
+    this.noteText = '';
   }
 
 }
