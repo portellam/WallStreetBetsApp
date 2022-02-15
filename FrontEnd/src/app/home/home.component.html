@@ -6,7 +6,12 @@
 
 <!--The first thing I'm going to try and do is get a list of all 50 tickers to show up here-->
 
-
+<h3>Here are today's top 50 stocks on WallStreetBets...</h3>
+<div class="flex-container">
+    <div class="flex-item" *ngFor="let wsb of wsbArray">
+        <button>{{wsb.ticker}}</button>        
+    </div>
+</div>
 
 
 

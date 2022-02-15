@@ -5,3 +5,19 @@
 .MarketStackApiInfo{
     color: red
 }
+
+.flex-container {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -moz-flex;
+    display: flex;
+    flex-wrap: wrap
+}
+
+.flex-item {
+    background-color: rgb(147, 241, 241);
+    margin: 0.5em;
+    padding: 2em;
+    width: 80px;
+}
