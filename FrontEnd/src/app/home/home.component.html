@@ -9,9 +9,44 @@
 <h3>Here are today's top 50 stocks on WallStreetBets...</h3>
 <div class="flex-container">
     <div class="flex-item" *ngFor="let wsb of wsbArray">
-        <button>{{wsb.ticker}}</button>        
+        <button (click)="setCurrentStock(wsb.ticker)">{{wsb.ticker}}</button>        
     </div>
 </div>
+
+<ng-container *ngFor="let wsb of wsbArray">
+    <ng-container *ngIf="currentStock == wsb.ticker">
+        <br>
+        <button (click)="addFav(wsb.ticker)">Add Stock to Favorites</button><br>
+        <div *ngIf="showFavComment == wsb.ticker">
+            Enter a comment (optional): <br>
+            <input type="text" [(ngModel)]="noteText"/><button (click)="saveText()">Save</button><button (click)="cancelText()">Cancel</button>
+        </div>
+            <div class="WallStreetBetsApiInfo">
+                Ticker: {{wsb.ticker}}<br>
+                Sentiment: {{wsb.sentiment}}<br>
+                Sentiment Score: {{wsb.sentiment_score}}<br>
+                Number of Comments: {{wsb.no_of_comments}}<br>
+            </div>
+        <ng-container *ngIf="marketStackInfo && marketStackInfo.data[0] && marketStackInfo.data[0].symbol == wsb.ticker">
+            <div class="MarketStackApiInfo">
+                Opening Price: ${{marketStackInfo.data[0].open}}<br> 
+                Intraday High Price: ${{marketStackInfo.data[0].high}}<br>
+                Intraday Low Price: ${{marketStackInfo.data[0].low}}<br>
+                Closing Price: ${{marketStackInfo.data[0].close}}<br>
+                Volume: {{marketStackInfo.data[0].volume}}<br>
+                Date: {{marketStackInfo.data[0].date}}<br>
+            </div>
+        </ng-container>
+        <button (click)="showMarketStackInfo(wsb.ticker)">Show MarketStack Info</button>
+        <br>
+        <br>    
+        <!-- stonks component would go here -->    
+        <!--Javascript code for tradingview was in his index.html -->
+    </ng-container>
+</ng-container>
+
+<app-stocks [stock]="currentStock"></app-stocks>
+
 
 
 
@@ -25,7 +60,14 @@
 <!-------------------------------------------------------------------------------------------->
 
 
+    
 
+
+
+
+
+<!-- PRESERVED VERSION OF ORIGINAL CODE-->
+<!--
 <ng-container *ngFor="let wsb of wsbArray">
     <br>
     <button (click)="addFav(wsb.ticker)">Add Stock to Favorites</button><br>
@@ -51,8 +93,6 @@
     </ng-container>
     <button (click)="showMarketStackInfo(wsb.ticker)">Show MarketStack Info</button>
     <br>
-    <br>    
-    <!-- stonks component would go here -->    
-    <!--Javascript code for tradingview was in his index.html -->
+    <br>
 </ng-container>
-
+-->

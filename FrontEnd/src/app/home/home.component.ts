@@ -85,4 +85,11 @@ export class HomeComponent implements OnInit {
     this.noteText = '';
   }
 
+
+  currentStock: string = '';
+
+  setCurrentStock(stock: string){
+    this.currentStock = stock;
+  }
+
 }
