@@ -11,6 +11,10 @@ import { AddNote } from '../add-note';
 import { AddNoteService } from '../add-note.service';
 import { DeleteFavorite } from '../delete-favorite';
 import { DeleteFavoriteService } from '../delete-favorite.service';
+import { WallStreetBetsInfo } from '../wall-street-bets-info';
+import { WallStreetBetsInfoService } from '../wall-street-bets-info.service';
+import { MarketStack } from '../market-stack';
+import { MarketStackService } from '../market-stack.service';
 
 @Component({
   selector: 'app-favorite',
@@ -66,7 +70,9 @@ export class FavoriteComponent implements OnInit {
   }
 
 
-  constructor(private _deleteFavoriteService: DeleteFavoriteService,
+  constructor(private _marketStackService: MarketStackService,
+    private _WsbInfoService: WallStreetBetsInfoService,
+    private _deleteFavoriteService: DeleteFavoriteService,
     private _addNoteService: AddNoteService,
     private _getNotesService: GetNotesService,
     private JoinResultsService: JoinResultsService,
@@ -75,6 +81,7 @@ export class FavoriteComponent implements OnInit {
 
   ngOnInit(): void {
     this.getUserJoinResults();
+    this.captureFavoriteWsbInfo();
   }
 
   getUserJoinResults() {
@@ -207,10 +214,6 @@ export class FavoriteComponent implements OnInit {
   }
 
 
-
-
-
-
   _DeleteFavorite: DeleteFavorite = {
     username: '',
     ticker: ''
@@ -227,6 +230,40 @@ export class FavoriteComponent implements OnInit {
       (result: any) => {
         alert(`Favorite Deleted: ${this._DeleteFavorite.ticker}`)
         this.getUserJoinResults();
+      }
+    );
+  }
+
+
+  favoriteWsbArray: WallStreetBetsInfo[] = [];
+  temporaryWsbObject: WallStreetBetsInfo | undefined;
+  temporaryWsbObjectFilled: boolean = false;
+  myTicker: string = '';
+
+  captureFavoriteWsbInfo() {
+    this._WsbInfoService.retrieveWallStreetBetsInfo(
+      (results: any) => {
+        this.favoriteWsbArray = results;
+      }
+    );
+  } 
+
+  showWsbInfoForStock(myFavoriteTicker: string){
+    for (let i: number = 0; i < this.favoriteWsbArray.length; i++){
+      if (this.favoriteWsbArray[i].ticker == myFavoriteTicker){
+        this.temporaryWsbObject = this.favoriteWsbArray[i];
+        this.temporaryWsbObjectFilled = true;
+        this.myTicker = this.favoriteWsbArray[i].ticker;
+      }
+    }
+  }
+
+  myMarketStackObject: MarketStack | undefined
+
+  showMarketStackInfoForStock(ticker: string){
+    this._marketStackService.retrieveMarketStackInfo(ticker,
+      (results: any) => {
+        this.myMarketStackObject = results;  
       }
     );
   }
