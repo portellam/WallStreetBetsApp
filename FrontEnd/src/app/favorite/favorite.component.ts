@@ -100,7 +100,6 @@ export class FavoriteComponent implements OnInit {
   editStockNote() {
     this.EditNoteService.editNote(this._EditNote, 
       (result: any) => {
-        alert(`Edit Note ID: ${this._EditNote.noteID}`);
         this.clearEditText();
         this.toggleNoteBoxOff();
         this.getUserJoinResults();
@@ -117,7 +116,6 @@ export class FavoriteComponent implements OnInit {
   deleteStockNote() {
     this.DeleteNoteService.deleteNote(this._DeleteNote,
       (result: any) => {
-        alert(`Note ID deleted: ${this._DeleteNote.noteID}`)
         this.getUserJoinResults();
       }
       )
@@ -137,7 +135,6 @@ export class FavoriteComponent implements OnInit {
         if (this.allJoinResultsForUser[i].note_id == null)
         {
           this.favoriteHasNote == false;
-          alert(`Statement evalutes to: ${this.favoriteHasNote}`)
         }
       }
     }
@@ -172,7 +169,6 @@ export class FavoriteComponent implements OnInit {
     {
       this._addNoteService.postNote(this._AddNote, 
         (result: any) => {
-          alert('Note has been added!')
           this.getUserJoinResults();
         }
       )
@@ -193,7 +189,6 @@ export class FavoriteComponent implements OnInit {
         {
           this._addNoteService.postNote(this._AddNote, 
             (result: any) => {
-              alert('Note has been added!')
               this.clearAddNoteText();
               this.getUserJoinResults();
             }
@@ -201,7 +196,6 @@ export class FavoriteComponent implements OnInit {
         }
         else
         {
-          alert('You already have a note for this stock!')
           this.clearAddNoteText();
           this.getUserJoinResults();
         }
@@ -228,7 +222,6 @@ export class FavoriteComponent implements OnInit {
   deleteFavorite() {
     this._deleteFavoriteService.deleteFavorite(this._DeleteFavorite,
       (result: any) => {
-        alert(`Favorite Deleted: ${this._DeleteFavorite.ticker}`)
         this.getUserJoinResults();
       }
     );

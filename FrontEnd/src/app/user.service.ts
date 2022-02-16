@@ -13,7 +13,6 @@ export class UserService {
   
   login(username: string) {
     this.username = username;
-    alert(this.username);
   }
 
   getCurrent() {
