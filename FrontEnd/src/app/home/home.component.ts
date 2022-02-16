@@ -16,24 +16,24 @@ export class HomeComponent implements OnInit {
 
   // PROPERTIES //
   // MarketStack
-  currentStock: string = '';
-  marketStackInfo: MarketStack | undefined;
+  _Stock: string = '';
+  _MarketStack: MarketStack | undefined;
 
   // WallStreetBets
-  wsbArray: WallStreetBetsInfo[] = [];
+  _WallStreetBetsInfoArray: WallStreetBetsInfo[] = [];
 
   // Favorite
-  myFav: Favorite = {
+  _Favorite: Favorite = {
     id: 0,
     ticker: '',
     username: ''
   }
+  _ticker: string = '';
 
   // Note
-  showFavComment: string = '';
-  showFavId: number = 0;
-  noteText: string = '';
-  
+  _description: string = '';
+  _Favorite_id: number = 0;
+
   // ================================================================================ //
 
   // METHODS //
@@ -48,31 +48,31 @@ export class HomeComponent implements OnInit {
   }
   
   // MarketStack
-  showMarketStackInfo(ticker: string){
+  showMarketStack(ticker: string){
     this._MarketStackService.get(ticker,
       (results: any) => {
         console.log('STACK INFO:');
         console.log(results);
-        this.marketStackInfo = results;
+        this._MarketStack = results;
       }
     );
   }
   setCurrentStock(stock: string){
-    this.currentStock = stock;
+    this._Stock = stock;
   }
 
   // WallStreetBets
   showWsbInfo(){
     this._WallStreetBetsInfoService.get(
       (results: any) => {
-        this.wsbArray = results;
+        this._WallStreetBetsInfoArray = results;
       }
     );
   }
 
   // Favorite
   // NOTE: OK, this function is working
-  // What I need to do is figure out how to pass the ticker they are favoriting into myFav
+  // What I need to do is figure out how to pass the ticker they are favoriting into _Favorite
   // I also need to figure out how to pass their username as well (without having to type it)
   addFav(ticker: string){
     //alert(ticker);
@@ -80,8 +80,8 @@ export class HomeComponent implements OnInit {
       (result: any) => {
         //alert('Succesfully added favorite!')
         if (result) {
-          this.showFavComment = ticker;
-          this.showFavId = result;
+          this._ticker = ticker;
+          this._Favorite_id = result;
         }
       }
     );
@@ -89,16 +89,16 @@ export class HomeComponent implements OnInit {
 
   // Note
   saveText(){
-    this.showFavComment = '';
-    this._EditNoteService.post(this.showFavId, this.noteText, (result: any) => this.clearNoteText());
-    // this.EditNoteService.postNote(this.showFavId, this.noteText, (result: any) => {});
+    this._ticker = '';
+    this._EditNoteService.post(this._Favorite_id, this._description, (result: any) => this.clear_description());
+    // this.EditNoteService.postNote(this._Favorite_id, this._description, (result: any) => {});
   }  
 
   cancelText(){
-    this.showFavComment = '';
+    this._ticker = '';
   }
 
-  clearNoteText(){
-    this.noteText = '';
+  clear_description(){
+    this._description = '';
   }  
 }
