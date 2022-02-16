@@ -23,22 +23,128 @@ import { MarketStackService } from '../market-stack.service';
 })
 export class FavoriteComponent implements OnInit {
 
-  allJoinResultsForUser: JoinResults[] = [];
+  // PROPERTIES //
+  // MarketStack
+  myMarketStackObject: MarketStack | undefined
 
+  // WallStreetBets
+  favoriteWsbArray: WallStreetBetsInfo[] = [];
+  temporaryWsbObject: WallStreetBetsInfo | undefined;
+
+  // JoinResults
+  allJoinResultsForUser: JoinResults[] = [];
+  specificTicker: string = '';
+
+  // Favorite
+  _DeleteFavorite: DeleteFavorite = {
+    username: '',
+    ticker: ''
+  }
+  myTicker: string = '';
+
+  // Notes
+  _AddNote: AddNote = {
+    favID: 0,
+    noteDescription: ''
+  }
   _EditNote: EditNote = {
     noteID: 0, 
     updatedNoteDescription: ''
   }
-
   _DeleteNote: DeleteNote = {
     noteID: 0
   }
-  
   newNote: string = '';
-  revealNoteBox: boolean = false;
   passedNoteID: number = 0;
-  specificTicker: string = '';
+
+  // TOGGLES
+  favoriteHasNote: boolean = false;
   noteExists: boolean = false;
+  revealNoteBox: boolean = false;
+  temporaryWsbObjectFilled: boolean = false;
+
+  // NOTE: commented out by Josh
+  /*
+  deleteNoteIDcaptured: number = 1;
+  getNotesArray: GetNotes[] = [];
+  */
+
+  // ================================================================================ //
+
+  // METHODS //
+
+  // DEPENDENCIES
+  constructor(private _MarketStackService: MarketStackService,
+    private _WallStreetBetsInfoService: WallStreetBetsInfoService,
+    private _DeleteFavoriteService: DeleteFavoriteService,
+    private _AddNoteService: AddNoteService,
+    private _GetNotesService: GetNotesService,
+    private _JoinResultsService: JoinResultsService,
+    private _EditNoteService: EditNoteService,
+    private _DeleteNoteService: DeleteNoteService) { }
+
+  ngOnInit(): void {
+    this.getUserJoinResults();
+    this.captureFavoriteWsbInfo();
+  }
+
+  // JoinResults
+  getUserJoinResults() {
+    this._JoinResultsService.getJoinResults(
+      (results: any) => {
+        this.allJoinResultsForUser = results;
+      }
+    );
+  }
+  // Example URL: https://localhost:7262/api/WallStreetBets/notes?noteID=25&updatedNoteDescription=this%20looks%20like%20a%20great%20stock
+  // OH MY GOD THIS ACTUALLY MADE IT WORK. I AM GOING TO CRY.
+
+  // MarketStack
+  showMarketStackInfoForStock(ticker: string){
+    this._MarketStackService.retrieveMarketStackInfo(ticker,
+      (results: any) => {
+        this.myMarketStackObject = results;  
+      }
+    );
+  }
+
+  // WallStreetBets
+  captureFavoriteWsbInfo() {
+    this._WallStreetBetsInfoService.retrieveWallStreetBetsInfo(
+      (results: any) => {
+        this.favoriteWsbArray = results;
+      }
+    );
+  }
+
+  showWsbInfoForStock(myFavoriteTicker: string){
+    for (let i: number = 0; i < this.favoriteWsbArray.length; i++){
+      if (this.favoriteWsbArray[i].ticker == myFavoriteTicker){
+        this.temporaryWsbObject = this.favoriteWsbArray[i];
+        this.temporaryWsbObjectFilled = true;
+        this.myTicker = this.favoriteWsbArray[i].ticker;
+      }
+    }
+  }  
+  
+  // Favorite
+  setDeleteFavoriteInfo(u: string, t: string){
+    this._DeleteFavorite.username = u;
+    this._DeleteFavorite.ticker = t;
+  }
+
+  deleteFavorite() {
+    this._DeleteFavoriteService.deleteFavorite(this._DeleteFavorite,
+      (result: any) => {
+        alert(`Favorite Deleted: ${this._DeleteFavorite.ticker}`)
+        this.getUserJoinResults();
+      }
+    );
+  }
+
+  // Note
+  // TODO: Put the Add Note feature inside an ng-container
+  // Make this similar to how the Edit Note works (basically so it only shows the Add Note for just the one stock)
 
   toggleNoteExists(noteDesc: string){
     if(noteDesc == null){
@@ -49,17 +155,6 @@ export class FavoriteComponent implements OnInit {
     }
   }
 
-  setTempTicker(tic: string){
-    this.specificTicker = tic;
-  }
-
-
-
-  /*
-  deleteNoteIDcaptured: number = 1;
-  getNotesArray: GetNotes[] = [];
-  */
-
   toggleNoteBoxOn(_passedNoteID: number){
     this.revealNoteBox = true;
     this.passedNoteID = _passedNoteID;
@@ -69,36 +164,16 @@ export class FavoriteComponent implements OnInit {
     this.revealNoteBox = false;
   }
 
-
-  constructor(private _marketStackService: MarketStackService,
-    private _WsbInfoService: WallStreetBetsInfoService,
-    private _deleteFavoriteService: DeleteFavoriteService,
-    private _addNoteService: AddNoteService,
-    private _getNotesService: GetNotesService,
-    private JoinResultsService: JoinResultsService,
-    private EditNoteService: EditNoteService,
-    private DeleteNoteService: DeleteNoteService) { }
-
-  ngOnInit(): void {
-    this.getUserJoinResults();
-    this.captureFavoriteWsbInfo();
-  }
-
-  getUserJoinResults() {
-    this.JoinResultsService.getJoinResults(
-      (results: any) => {
-        this.allJoinResultsForUser = results;
-      }
-    );
+  setTempTicker(tic: string){
+    this.specificTicker = tic;
   }
 
   setEditNoteID(myNoteID: number){
     this._EditNote.noteID = myNoteID;
   }
 
-  
   editStockNote() {
-    this.EditNoteService.editNote(this._EditNote, 
+    this._EditNoteService.editNote(this._EditNote, 
       (result: any) => {
         alert(`Edit Note ID: ${this._EditNote.noteID}`);
         this.clearEditText();
@@ -107,15 +182,9 @@ export class FavoriteComponent implements OnInit {
       }
     );
   }
-  // Example URL: https://localhost:7262/api/WallStreetBets/notes?noteID=25&updatedNoteDescription=this%20looks%20like%20a%20great%20stock
-
-  // OH MY GOD THIS ACTUALLY MADE IT WORK. I AM GOING TO CRY.
-  setNoteID(noteID: number){
-    this._DeleteNote.noteID = noteID;
-  }
 
   deleteStockNote() {
-    this.DeleteNoteService.deleteNote(this._DeleteNote,
+    this._DeleteNoteService.deleteNote(this._DeleteNote,
       (result: any) => {
         alert(`Note ID deleted: ${this._DeleteNote.noteID}`)
         this.getUserJoinResults();
@@ -123,10 +192,9 @@ export class FavoriteComponent implements OnInit {
       )
   }
 
-  clearEditText(){
-    this._EditNote.updatedNoteDescription = '';
+  setNoteID(noteID: number){
+    this._DeleteNote.noteID = noteID;
   }
-
 
   checkIfFavoriteHasNote(_favID: number)
   {
@@ -143,25 +211,10 @@ export class FavoriteComponent implements OnInit {
     }
   }
 
-
-
-
-
-
-  // TO DO: Put the Add Note feature inside an ng-container
-  // Make this similar to how the Edit Note works (basically so it only shows the Add Note for just the one stock)
-
-  _AddNote: AddNote = {
-    favID: 0,
-    noteDescription: ''
-  }
-
-  favoriteHasNote: boolean = false;
-
   setAddNoteFavID(_addNoteFavID: number){
     this._AddNote.favID = _addNoteFavID; 
   }
-  
+
   addNote()
   {
     if (this.favoriteHasNote)
@@ -170,7 +223,7 @@ export class FavoriteComponent implements OnInit {
     }
     else
     {
-      this._addNoteService.postNote(this._AddNote, 
+      this._AddNoteService.postNote(this._AddNote, 
         (result: any) => {
           alert('Note has been added!')
           this.getUserJoinResults();
@@ -179,7 +232,7 @@ export class FavoriteComponent implements OnInit {
     }
   }
 
-  // OMG THIS IS WORKING!
+  // NOTE: OMG THIS IS WORKING!
   alternativeAddNote(favID: number)
   {
     let tempDescription: string = '';
@@ -191,7 +244,7 @@ export class FavoriteComponent implements OnInit {
         tempDescription = this.allJoinResultsForUser[i].description
         if (tempDescription == null)
         {
-          this._addNoteService.postNote(this._AddNote, 
+          this._AddNoteService.postNote(this._AddNote, 
             (result: any) => {
               alert('Note has been added!')
               this.clearAddNoteText();
@@ -213,61 +266,7 @@ export class FavoriteComponent implements OnInit {
     this._AddNote.noteDescription = '';
   }
 
-
-  _DeleteFavorite: DeleteFavorite = {
-    username: '',
-    ticker: ''
+  clearEditText(){
+    this._EditNote.updatedNoteDescription = '';
   }
-
-  setDeleteFavoriteInfo(u: string, t: string){
-    this._DeleteFavorite.username = u;
-    this._DeleteFavorite.ticker = t;
-  }
-
-  
-  deleteFavorite() {
-    this._deleteFavoriteService.deleteFavorite(this._DeleteFavorite,
-      (result: any) => {
-        alert(`Favorite Deleted: ${this._DeleteFavorite.ticker}`)
-        this.getUserJoinResults();
-      }
-    );
-  }
-
-
-  favoriteWsbArray: WallStreetBetsInfo[] = [];
-  temporaryWsbObject: WallStreetBetsInfo | undefined;
-  temporaryWsbObjectFilled: boolean = false;
-  myTicker: string = '';
-
-  captureFavoriteWsbInfo() {
-    this._WsbInfoService.retrieveWallStreetBetsInfo(
-      (results: any) => {
-        this.favoriteWsbArray = results;
-      }
-    );
-  } 
-
-  showWsbInfoForStock(myFavoriteTicker: string){
-    for (let i: number = 0; i < this.favoriteWsbArray.length; i++){
-      if (this.favoriteWsbArray[i].ticker == myFavoriteTicker){
-        this.temporaryWsbObject = this.favoriteWsbArray[i];
-        this.temporaryWsbObjectFilled = true;
-        this.myTicker = this.favoriteWsbArray[i].ticker;
-      }
-    }
-  }
-
-  myMarketStackObject: MarketStack | undefined
-
-  showMarketStackInfoForStock(ticker: string){
-    this._marketStackService.retrieveMarketStackInfo(ticker,
-      (results: any) => {
-        this.myMarketStackObject = results;  
-      }
-    );
-  }
-
-
-
 }

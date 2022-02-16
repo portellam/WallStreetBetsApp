@@ -16,6 +16,7 @@ export class AppComponent {
 
   // TOGGLES
   _userVisible: boolean = false;
+  
   // ========== //
 
   // METHODS //

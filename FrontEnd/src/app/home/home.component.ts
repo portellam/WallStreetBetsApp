@@ -14,38 +14,42 @@ import { EditNoteService } from '../edit-note.service';
 })
 export class HomeComponent implements OnInit {
 
-  wsbArray: WallStreetBetsInfo[] = [];
-
+  // PROPERTIES //
+  // MarketStack
+  currentStock: string = '';
   marketStackInfo: MarketStack | undefined;
 
-  showFavComment: string = '';
-  showFavId: number = 0;
-  noteText: string = '';
+  // WallStreetBets
+  wsbArray: WallStreetBetsInfo[] = [];
 
+  // Favorite
   myFav: Favorite = {
     id: 0,
     ticker: '',
     username: ''
   }
 
-  constructor(private EditNoteService: EditNoteService,
-    private WallStreetBetsInfoService: WallStreetBetsInfoService,
-    private MarketStackService: MarketStackService,
-    private FavoriteService: FavoriteService) { }
+  // Note
+  showFavComment: string = '';
+  showFavId: number = 0;
+  noteText: string = '';
+  
+  // ================================================================================ //
+
+  // METHODS //
+
+  // DEPENDENCIES
+  constructor(private _EditNoteService: EditNoteService,
+    private _WallStreetBetsInfoService: WallStreetBetsInfoService,
+    private _MarketStackService: MarketStackService,
+    private _FavoriteService: FavoriteService) { }
 
   ngOnInit(): void {
   }
-
-  showWsbInfo(){
-    this.WallStreetBetsInfoService.retrieveWallStreetBetsInfo(
-      (results: any) => {
-        this.wsbArray = results;
-      }
-    );
-  }
-
+  
+  // MarketStack
   showMarketStackInfo(ticker: string){
-    this.MarketStackService.retrieveMarketStackInfo(ticker,
+    this._MarketStackService.retrieveMarketStackInfo(ticker,
       (results: any) => {
         console.log('STACK INFO:');
         console.log(results);
@@ -53,14 +57,26 @@ export class HomeComponent implements OnInit {
       }
     );
   }
+  setCurrentStock(stock: string){
+    this.currentStock = stock;
+  }
 
+  // WallStreetBets
+  showWsbInfo(){
+    this._WallStreetBetsInfoService.retrieveWallStreetBetsInfo(
+      (results: any) => {
+        this.wsbArray = results;
+      }
+    );
+  }
 
-  // OK, this function is working
+  // Favorite
+  // NOTE: OK, this function is working
   // What I need to do is figure out how to pass the ticker they are favoriting into myFav
   // I also need to figure out how to pass their username as well (without having to type it)
   addFav(ticker: string){
     //alert(ticker);
-    this.FavoriteService.postFavorite(ticker,
+    this._FavoriteService.postFavorite(ticker,
       (result: any) => {
         //alert('Succesfully added favorite!')
         if (result) {
@@ -71,11 +87,12 @@ export class HomeComponent implements OnInit {
     );
   }
 
+  // Note
   saveText(){
     this.showFavComment = '';
-    this.EditNoteService.postNote(this.showFavId, this.noteText, (result: any) => this.clearNoteText());
+    this._EditNoteService.postNote(this.showFavId, this.noteText, (result: any) => this.clearNoteText());
     // this.EditNoteService.postNote(this.showFavId, this.noteText, (result: any) => {});
-  }
+  }  
 
   cancelText(){
     this.showFavComment = '';
@@ -83,13 +100,5 @@ export class HomeComponent implements OnInit {
 
   clearNoteText(){
     this.noteText = '';
-  }
-
-
-  currentStock: string = '';
-
-  setCurrentStock(stock: string){
-    this.currentStock = stock;
-  }
-
+  }  
 }
