@@ -1,4 +1,4 @@
-﻿namespace BackEnd.Models
+namespace BackEnd.Models
 {
 	public class MarketStackAPIcall
 	{

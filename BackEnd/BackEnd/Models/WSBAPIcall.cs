@@ -1,11 +1,11 @@
-﻿namespace BackEnd.Models
+namespace BackEnd.Models
 {
 	public class WSBAPIcall
 	{
 		// NOTE: made changes and proposed changes to variable names to another pattern.
 
 		// PROPERTIES //
-		private static HttpClient _realClient = null;	// TODO: change?
+		private static HttpClient _realClient = null;   // TODO: change?
 
 		// METHODS //
 		public static HttpClient _HttpClient
