@@ -1,29 +1,34 @@
-<ng-container *ngFor="let joinresult of allJoinResultsForUser">
-    <br>
-    <br>
-    <button (click)="setDeleteFavoriteInfo(joinresult.username, joinresult.ticker)" (click)="deleteFavorite()">Remove Favorite</button><br>
+<h1>Here are your favorite stocks!</h1>
+<div class="flex-container">
 
+<ng-container *ngFor="let joinresult of allJoinResultsForUser">
+    <div class="flex-item">
     <div class="AllOtherText">
-    <b>Ticker:</b> {{joinresult.ticker}}<br>
-    <b>Note:</b> {{joinresult.description}}<br>
+        <div class="tickerTitle">        
+            {{joinresult.ticker}}<br>
+        </div>
+        <br>
+    <b>Note:</b> {{joinresult.description}}<br><br>
     <!-- Favorite ID: {{joinresult.favorite_id}}<br> -->
     <!-- Note ID: {{joinresult.note_id}}<br> -->
     </div>
 
-    <button (click)="setTempTicker(joinresult.ticker)" (click)="toggleNoteBoxOn(joinresult.note_id)" (click)="toggleNoteExists(joinresult.description)">Note Options</button><br>
+    <button class="otherButton" (click)="setTempTicker(joinresult.ticker)" (click)="toggleNoteBoxOn(joinresult.note_id)" (click)="toggleNoteExists(joinresult.description)">Note Options</button><br>
 
     <ng-container *ngIf="revealNoteBox && passedNoteID == joinresult.note_id && specificTicker == joinresult.ticker">
         <ng-container *ngIf="noteExists == true">
         
         <!--EDIT NOTE-->
         <div class="AllOtherText">
-        <b>Edit Note:</b>
-        <input type="text" [(ngModel)]="_EditNote.updatedNoteDescription">
+            <br>
+        <b>Edit Note: </b>
+        <input type="text" [(ngModel)]="_EditNote.updatedNoteDescription"><br><br>
         <button (click)="setEditNoteID(joinresult.note_id)" (click)="editStockNote()">Save Changes</button><br>
         </div>
 
 
         <!--DELETE NOTE-->
+        <br>
         <button (click)="setNoteID(joinresult.note_id)" (click)="deleteStockNote()">Delete Existing Note</button><br>
         </ng-container>    
 
@@ -31,37 +36,41 @@
         <!--ADD NOTE-->
         <ng-container *ngIf="noteExists == false">
             <div class="AllOtherText">
-            <b>Add Note:</b>
-            <input type="text" [(ngModel)]="_AddNote.noteDescription">
-            <button (click)="setAddNoteFavID(joinresult.favorite_id)" (click)="alternativeAddNote(joinresult.favorite_id)">Add Note!</button><br>
+                <br>
+            <b>Add Note: </b>
+            <input type="text" [(ngModel)]="_AddNote.noteDescription"><br>
+            <button (click)="setAddNoteFavID(joinresult.favorite_id)" (click)="alternativeAddNote(joinresult.favorite_id)">Save Note</button><br>
             </div>   
         </ng-container>      
     </ng-container>
 
-    <button (click)="showWsbInfoForStock(joinresult.ticker)">Get Latest WSB Info!</button><br>
+    <br>
+    <button class="otherButton" (click)="showWsbInfoForStock(joinresult.ticker)">Get Latest WSB Info</button><br>
     <ng-container *ngIf="temporaryWsbObjectFilled && myTicker == joinresult.ticker">
         <div class="WallStreetBetsApiInfo">
-            <b>Ticker:</b> {{temporaryWsbObject?.ticker}}<br>
+            <br>
             <b>Sentiment:</b> {{temporaryWsbObject?.sentiment}}<br>
             <b>Sentiment Score:</b> {{temporaryWsbObject?.sentiment_score}}<br>
             <b>Number of Comments:</b> {{temporaryWsbObject?.no_of_comments}}<br>
-        </div>
-        <ng-container *ngIf="myMarketStackObject && myMarketStackObject.data[0] && myMarketStackObject.data[0].symbol == joinresult.ticker">
+            <br>
+        </div>        
+    <button class="otherButton" (click)="showMarketStackInfoForStock(joinresult.ticker)">Show Latest MarketStack Info</button>
+    <ng-container *ngIf="myMarketStackObject && myMarketStackObject.data[0] && myMarketStackObject.data[0].symbol == joinresult.ticker">
         <div class="MarketStackApiInfo">
+            <br>
             <b>Opening Price:</b> ${{myMarketStackObject.data[0].open}}<br> 
             <b>Intraday High Price:</b> ${{myMarketStackObject.data[0].high}}<br>
             <b>Intraday Low Price:</b> ${{myMarketStackObject.data[0].low}}<br>
             <b>Closing Price:</b> ${{myMarketStackObject.data[0].close}}<br>
             <b>Volume:</b> {{myMarketStackObject.data[0].volume}}<br>
         </div>
+        </ng-container>
     </ng-container>
-    <button (click)="showMarketStackInfoForStock(joinresult.ticker)">Show Latest MarketStack Info!</button>
-    </ng-container>
-    
-    
-    
 
     <br>
-    <br>
-    <br>
+    <button class="deleteButton" (click)="setDeleteFavoriteInfo(joinresult.username, joinresult.ticker)" (click)="deleteFavorite()">Remove Favorite</button><br><br>
+
+    </div>
 </ng-container>
+
+</div>

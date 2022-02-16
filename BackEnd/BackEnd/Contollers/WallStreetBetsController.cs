@@ -235,8 +235,8 @@ namespace BackEnd.Contollers
             HttpClient client = new HttpClient();
             //    http://api.marketstack.com/v1/eod?access_key=208302dbe2d07c780ba4de2dc30c56ba&symbols=DIS&limit=1
             client.BaseAddress = new Uri("http://api.marketstack.com/v1/");
-            // Just added new API key below on 2/11/2022
-            var connection = await client.GetAsync($"eod?access_key=a6b0ab8551d6ead2bb1df2da121ff9d9&symbols={ticker}&limit=1");
+            // Just added new API key below on 2/16/2022
+            var connection = await client.GetAsync($"eod?access_key=e2488e8fbbbb3d54d6ad81a7305246c6&symbols={ticker}&limit=1");
             MarketStackObject marketStackObject = await connection.Content.ReadAsAsync<MarketStackObject>();
             return marketStackObject;
         }

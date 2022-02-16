@@ -1,17 +1,91 @@
 .WallStreetBetsApiInfo{
-    color: blue;
-    font-size: 24px;
+    color: rgb(0, 0, 0);
+    font-size: 16px;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .MarketStackApiInfo{
-    color: rgb(0, 122, 41);
-    font-size: 24px;
+    color: rgb(0, 0, 0);
+    font-size: 16px;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .AllOtherText{
     color: black;
-    font-size: 24px;
+    font-size: 16px;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.flex-container {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -moz-flex;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+
+.flex-item {
+    background-color:rgb(190, 238, 199);
+    margin: 0.5em;
+    padding: 0.5em;
+    width: 300px;
+}
+
+.tickerTitle{
+    color: black;
+    font-size: 50px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-style: bold;
+}
+
+.deleteButton {
+	background:linear-gradient(to bottom, #e090a1 5%, #d19ba7 100%);
+	background-color:#cf8192;
+	border-radius:20px;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:12px;
+	font-weight:bold;
+	padding:8px 12px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #3d768a;
+}
+.deleteButton:hover {
+	background:linear-gradient(to bottom, #bd2042 5%, #d61842 100%);
+	background-color:#bd2042;
+}
+.deleteButton:active {
+	position:relative;
+	top:1px;
+}
+
+
+
+
+.otherButton {
+	background:linear-gradient(to bottom, #599bb3 5%, #408c99 100%);
+	background-color:#599bb3;
+	border-radius:20px;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:12px;
+	font-weight:bold;
+	padding:8px 12px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #3d768a;
+}
+.otherButton:hover {
+	background:linear-gradient(to bottom, #20abbd 5%, #09b7ce 100%);
+	background-color:#20abbd;
+}
+.otherButton:active {
+	position:relative;
+	top:1px;
 }
