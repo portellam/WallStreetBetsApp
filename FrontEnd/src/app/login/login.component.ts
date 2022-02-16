@@ -30,9 +30,12 @@ export class LoginComponent implements OnInit {
   // ========== //
 
   // METHODS //
+
+  // DEPENDENCIES
   constructor(private _UserService: UserService, private _Router:Router) {
     this.getAll();
   }
+  
   ngOnInit(): void {
   }
 

@@ -19,6 +19,8 @@ export class UserService {
   // ========== //
 
   // METHODS //
+
+  // DEPENDENCIES
   constructor(private _HttpClient: HttpClient) {
   }
 

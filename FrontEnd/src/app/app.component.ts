@@ -16,12 +16,15 @@ export class AppComponent {
 
   // TOGGLES
   _userVisible: boolean = false;
-
   // ========== //
+
   // METHODS //
+
+  // DEPENDENCIES
   constructor(private _UserService: UserService) {
   }
 
+  // CRUD FUNCTIONS
   getLogin(){
     this._userVisible = this._UserService.getLogin();
   }

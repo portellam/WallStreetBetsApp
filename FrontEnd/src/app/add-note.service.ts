@@ -7,9 +7,15 @@ import { AddNote } from './add-note';
 })
 export class AddNoteService {
 
-  constructor(private http: HttpClient) { }
+  // METHODS // 
 
-  postNote(_AddNote: AddNote, cb: any){
-    this.http.post<AddNote>(`https://localhost:7262/api/WallStreetBets/notes?favID=${_AddNote.favID}&noteDescription=${_AddNote.noteDescription}`, _AddNote).subscribe(cb);
+  // DEPENDENCIES
+  constructor(private _HttpClient: HttpClient) { }
+
+  // CRUD FUNCTIONS
+  
+  //post(_Note: AddNote, cb: any) {
+  postNote(_Note: AddNote, cb: any) {
+    this._HttpClient.post<AddNote>(`https://localhost:7262/api/WallStreetBets/notes?favID=${_Note.favID}&noteDescription=${_Note.noteDescription}`, _Note).subscribe(cb);
   }
 }

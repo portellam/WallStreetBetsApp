@@ -7,11 +7,17 @@ import { DeleteNote } from './delete-note';
 })
 export class DeleteNoteService {
 
-  constructor(private http: HttpClient) { }
+  // METHODS //
 
-  deleteNote(deleteNote: DeleteNote, cb: any){
-    this.http.delete(`https://localhost:7262/api/WallStreetBets/notes?noteID=${deleteNote.noteID}`).subscribe(cb);
+  // DEPENDENCIES
+  constructor(private _HttpClient: HttpClient) { }
+
+  // CRUD FUNCTIONS
+
+  //delete(_Note: DeleteNote, cb: any) {
+  deleteNote(_Note: DeleteNote, cb: any) {
+    this._HttpClient.delete(`https://localhost:7262/api/WallStreetBets/notes?noteID=${_Note.noteID}`).subscribe(cb);
   }
 
-  // Example URL: https://localhost:7262/api/WallStreetBets/notes?noteID=20
+  // EXAMPLE URL: https://localhost:7262/api/WallStreetBets/notes?noteID=20
 }

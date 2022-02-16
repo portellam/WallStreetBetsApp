@@ -7,9 +7,15 @@ import { GetNotes } from './get-notes';
 })
 export class GetNotesService {
 
-  constructor(private http: HttpClient) { }
+  // METHODS //
 
-  retrieveNotesTableInfo(cb: any){
-    this.http.get<GetNotes[]>('https://localhost:7262/api/WallStreetBets/notes').subscribe(cb)
+  // DEPENDENCIES
+  constructor(private _HttpClient: HttpClient) { }
+
+  // CRUD FUNCTIONS
+
+  //get(cb: any) {
+  retrieveNotesTableInfo(cb: any) {
+    this._HttpClient.get<GetNotes[]>('https://localhost:7262/api/WallStreetBets/notes').subscribe(cb)
   }
 }

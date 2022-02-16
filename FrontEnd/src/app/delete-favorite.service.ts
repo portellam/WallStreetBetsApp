@@ -7,9 +7,15 @@ import { DeleteFavorite } from './delete-favorite';
 })
 export class DeleteFavoriteService {
 
-  constructor(private http: HttpClient) { }
+  // METHODS //
 
-  deleteFavorite(deleteFavorite: DeleteFavorite, cb: any){
-    this.http.delete(`https://localhost:7262/api/WallStreetBets/favorites?username=${deleteFavorite.username}&ticker=${deleteFavorite.ticker}`).subscribe(cb)
+  // DEPENDENCIES
+  constructor(private _HttpClient: HttpClient) { }
+
+  // CRUD FUNCTIONS
+  
+  //delete(_Favorite: DeleteFavorite, cb: any) {
+  deleteFavorite(_Favorite: DeleteFavorite, cb: any) {
+    this._HttpClient.delete(`https://localhost:7262/api/WallStreetBets/favorites?username=${_Favorite.username}&ticker=${_Favorite.ticker}`).subscribe(cb)
   }
 }
