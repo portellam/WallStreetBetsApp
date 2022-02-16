@@ -6,26 +6,27 @@ using System.Threading.Tasks;
 
 namespace BackEnd.Controllers
 {
+    // NOTE: all of our API calls will happen on the backend (not from the front end)
+
     public class WallStreetBetsDB
     {
         // METHODS //
-        // NOTE: all of our API calls will happen on the backend (not from the front end)
-        public static List<JoinResults> GetJoinResults(string username)
+        public static List<JoinResults> GetJoinResults(string _username)
         {
             List<JoinResults> results = null;
             using (WallStreetBetsContext context = new WallStreetBetsContext())
             {
-                var query = from myFavs in context.Favorites
-                            join myNotes in context.Notes on myFavs.id equals myNotes.favorite_id into fullnotes
-                            from morenotes in fullnotes.DefaultIfEmpty()
-                            where myFavs.username == username
+                var query = from _Favorites in context.Favorites
+                            join _Notes in context.Notes on _Favorites.id equals _Notes.favorite_id into tempNotes
+                            from moreNotes in tempNotes.DefaultIfEmpty()
+                            where _Favorites.username == _username
                             select new JoinResults()
                             {
-                                username = myFavs.username,
-                                ticker = myFavs.ticker,
-                                favorite_id = myFavs.id, //favorite_id = morenotes.favorite_id,
-                                description = morenotes.description,
-                                note_id = morenotes.id // THIS IS WHAT IM TESTING RIGHT NOW.
+                                username = _Favorites.username,
+                                ticker = _Favorites.ticker,
+                                favorite_id = moreNotes.favorite_id,
+                                description = moreNotes.description,
+                                note_id = moreNotes.id // NOTE: Josh test
                             };
                 results = query.ToList();
             }
@@ -51,6 +52,7 @@ namespace BackEnd.Controllers
         public int id { get; set; }
         public string username { get; set; }
         public string first_name { get; set; }
+        //public string firstName { get; set; }
     }
 
     public class Favorite
@@ -59,17 +61,16 @@ namespace BackEnd.Controllers
         public int id { get; set; }
         public string ticker { get; set; }
         public string username { get; set; }
-        //public int user_id { get; set; }            // foreign key
-        //public List<Note> noteList { get; set; }    // like a foreign key
+        //public List<int> note_ids { get ; set; }      // TODO: test
     }
 
     public class Note
     {
+        // PROPERTIES //
         public int id { get; set; }      
-        public string description { get; set; } // EXAMPLE: GME looks like a great buy!
+        public string description { get; set; }         // EXAMPLE: GME looks like a great buy!
         public int favorite_id { get; set; }
-        //public DateTime lastEdit { get; set; }      //  TODO: optional
-        //public List<Favorite> favoriteList { get; set; }
+        //public DateTime lastEdit { get; set; }        //  TODO: optional
     }
 
     public class JoinResults
@@ -78,23 +79,27 @@ namespace BackEnd.Controllers
         // User
         public string username { get; set; }
         //public int user_id { get; set; }
+
         // Favorite
         public string ticker { get; set; }
         public int? favorite_id { get; set; }
+        //public List<int> note_ids { get ; set; }      // TODO: test
+
         // Note
         public string description { get; set; }
-
-
-        public int? note_id { get; set; } // THIS IS WHAT IM TESTING. I NEED TO ADD THIS IN THE JOINRESULTS QUERY.
+        //public DateTime lastEdit { get; set; }        // TODO: test
+        public int? note_id { get; set; }               // NOTE: THIS IS WHAT IM TESTING. I NEED TO ADD THIS IN THE JOINRESULTS QUERY.
     }
 
     public class MarketStackObject
     {
+        // PROPERTIES //
         public List<StockInfo> data { get; set; }
     }
 
     public class StockInfo
     {
+        // PROPERTIES //
         public double open { get; set; }
         public double high { get; set; }
         public double low { get; set; }
@@ -105,26 +110,20 @@ namespace BackEnd.Controllers
     }
 
     public class WallStreetBetsContext : DbContext
-    {        
+    {
         // PROPERTIES //
         public DbSet<User> Users { get; set; }
         public DbSet<Favorite> Favorites { get; set; }
         public DbSet<Note> Notes { get; set; }
 
         // METHODS //
-        public WallStreetBetsContext(DbContextOptions<WallStreetBetsContext> options) : base(options)
-        {
+        public WallStreetBetsContext(DbContextOptions<WallStreetBetsContext> options) : base(options) { }
 
-        }
-
-        public WallStreetBetsContext()
-        {
-        }
+        public WallStreetBetsContext() { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS;Database=WSBdatabase;Integrated Security=SSPI;");
         }
     }
-
 }
