@@ -7,20 +7,58 @@ import { User } from './user';
 })
 export class UserService {
 
-  username: string = '';
+  // PROPERTIES //
+  _User: User = {
+    id: 0,
+    username: '',
+    first_name: ''
+  }
+
+  // TOGGLES
+  userVisible: boolean = false;
+  // ========== //
+
   // METHODS //
-  constructor(private http: HttpClient) { }
-  
-  login(username: string) {
-    this.username = username;
-    alert(this.username);
+  constructor(private _HttpClient: HttpClient) {
   }
 
-  getCurrent() {
-    return this.username;
+  // TOGGLES
+  login(bool: boolean) {
+    if(bool)
+    {
+      this.userVisible = true;
+    }
+    this._User.username = '';
+    this._User.first_name = '';
+    this.userVisible = false;
   }
 
-  postUser(_User: User, cb: any){
-    this.http.post<User>(`https://localhost:7262/api/WallStreetBets?username=${_User.username}&first_name=${_User.first_name}`, _User).subscribe(cb);
+  // CRUD FUNCTIONS
+  getAll(cb: any) {
+    this._HttpClient.get<User[]>(`https://localhost:7262/api/WallStreetBets?`).subscribe(cb);
   }
+
+  getLogin(){
+    return this.userVisible;
+  }
+
+  get() {
+    return this._User;
+  }
+
+  post(_User: User, cb: any) {
+    this._HttpClient.post<User>(`https://localhost:7262/api/WallStreetBets?username=${_User.username}&first_name=${_User.first_name}`, _User).subscribe(cb);
+  }
+
+  put(_User: User, cb: any) {
+    this._HttpClient.put<User>(`https://localhost:7262/api/WallStreetBets?username=${_User.username}&first_name=${_User.first_name}`, _User).subscribe(cb);
+  }
+
+  // TODO: add DeleteUser from alexbranch
+  /*
+  delete(_User: User, cb: any) {
+    this._HttpClient.delete<User>(`https://localhost:7262/api/WallStreetBets?username=${_User.username}&first_name=${_User.first_name}`, _User).subscribe(cb);
+  }
+  */
+  // ========== //
 }

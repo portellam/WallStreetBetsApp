@@ -1,3 +1,55 @@
+<!-- NOTE: user offline -->
+<div *ngIf="!_userVisible">
+    <div *ngIf="!signUpVisible">
+    <h4>Don't have account with us?&nbsp;<button (click)="toggleSignUp()" *ngIf="!signUpVisible">Sign Up</button></h4>
+    <h2>Sign In:</h2>
+        Username<br /><input type="text" [(ngModel)]="_username"/>&nbsp;
+        <button (click)="signIn()">Continue</button>
+    </div>
+
+    <div *ngIf="signUpVisible">
+    <h4>Already have an account?&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button (click)="toggleSignUp()" *ngIf="signUpVisible">Sign In&nbsp;</button></h4>
+    <h2>Sign Up:</h2>
+        Username<br /><input type="text" [(ngModel)]="_username"><br />
+        First Name<br /><input type="text" [(ngModel)]="_firstName">&nbsp;
+        <button (click)="signUp()">Continue</button> 
+    </div><br />
+</div>
+
+<!-- NOTE: user online -->
+<div *ngIf="_userVisible">
+    <div *ngIf="_userVisible">
+        <h4>Sign Out:
+            <button (click)="login(false)">Continue</button>
+        </h4>
+    </div>
+    <h4 *ngIf="!editVisible">Edit your account?&nbsp;&nbsp;&nbsp;
+        <button (click)="toggleEdit()" *ngIf="!editVisible">Show</button>
+    </h4>
+    <h4 *ngIf="!deleteVisible">Delete your account?
+        <button (click)="toggleDelete()" *ngIf="!deleteVisible">Show</button>
+    </h4>
+
+    <div *ngIf="editVisible">
+        <h2>Edit Account:</h2>
+        <button (click)="toggleEdit()" *ngIf="editVisible">Cancel</button>
+        <h4>Required *</h4>
+            *Old Username<br /><input type="text" [(ngModel)]="_username"><br />
+            *New Username<br /><input type="text" [(ngModel)]="_username"><br />
+            New First Name<br /><input type="text" [(ngModel)]="_firstName">&nbsp;           
+            <button (click)="edit()">Continue</button>
+    </div>
+     
+    <div *ngIf="deleteVisible">
+        <h2>Delete Account:</h2>
+        <button (click)="toggleDelete()" *ngIf="deleteVisible">Cancel</button>
+        <h4>Required *</h4>
+            *First Name<br /><input type="text" [(ngModel)]="_firstName">&nbsp;
+            <button (click)="deleteThis()">Continue</button>   
+    </div>
+</div>
+
+<!--    TODO: REMOVE
 <h4>Don't have account with us? Sign up for <u>free!</u></h4>
 
 <h2>Login</h2>
@@ -12,3 +64,4 @@
     <br />
     <button (click)="addToList()">Sign Up</button>
 <br />
+-->

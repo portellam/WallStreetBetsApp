@@ -1,4 +1,18 @@
-<a routerLink="/login">Login</a> &nbsp;
-<a routerLink="/">Home</a> &nbsp;
-<a routerLink="/favorite">Favorite</a>
+<a routerLink="/">Home</a>&nbsp;&nbsp;
+<a *ngIf="!_userVisible" routerLink="/login">Login</a><a *ngIf="!_userVisible">&nbsp;&nbsp;</a>
+<a *ngIf="_userVisible" routerLink="/login">My Login</a><a *ngIf="_userVisible">&nbsp;&nbsp;</a>
+<a *ngIf="_userVisible" routerLink="/favorite">My Favorites</a><a *ngIf="_userVisible">&nbsp;&nbsp;<br /></a>
+<h4 *ngIf="_userVisible">Signed in as {{_username}}.</h4>
 <router-outlet></router-outlet>
+<br />
+<!-- NOTE: THIS DIV SHOULD BE ALIGNED TO THE BOTTOM OF THE PAGE -->
+<div>
+    <a routerLink="/contact">Contact</a>&nbsp;&nbsp;
+    <a routerLink="/api">API</a>&nbsp;&nbsp;
+    <a routerLink="/about">About</a>&nbsp;&nbsp;
+    <p>
+    NeighborShare, Inc. is a registered 501(c)(3) non-profit organization. EIN: 85-0811667<br />
+    © 2022 Reddit inc. All rights reserved.<br />
+    © 2022 MarketStack, an apilayer product. All rights reserved.
+    </p>
+</div>
