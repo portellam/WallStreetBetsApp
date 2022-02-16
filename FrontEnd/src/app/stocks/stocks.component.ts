@@ -33,8 +33,8 @@ export class StocksComponent implements OnInit {
   createWidget(newStock: string) {
     new TradingView.widget(
       {
-        "width": 980,
-        "height": 610,
+        "width": 1200,
+        "height": 400,
         "symbol": `${newStock}`,
         "intervial": "D",
         "timezone": "Etc/UTC",

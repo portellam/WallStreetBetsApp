@@ -1,9 +1,13 @@
 .WallStreetBetsApiInfo{
-    color: blue
+    color: blue;
+    font-size: 24px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .MarketStackApiInfo{
-    color: red
+    color: rgb(0, 122, 41);
+    font-size: 24px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .flex-container {
@@ -15,9 +19,47 @@
     flex-wrap: wrap
 }
 
+
 .flex-item {
-    background-color: rgb(147, 241, 241);
-    margin: 0.5em;
-    padding: 1em;
-    width: 50px;
+    margin: 0.25em;
+    padding: .5em;
+}
+
+.myButton {
+	box-shadow: 0px 10px 14px -7px #276873;
+	background:linear-gradient(to bottom, #599bb3 5%, #408c99 100%);
+	background-color:#599bb3;
+	border-radius:20px;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:16px;
+	font-weight:bold;
+	padding:13px 32px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #3d768a;
+}
+.myButton:hover {
+	background:linear-gradient(to bottom, #409968 5%, #59b359 100%);
+	background-color:#409968;
+}
+.myButton:active {
+	position:relative;
+	top:1px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    padding: 10px;
+}
+
+
+  .grid-item {
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    font-size: 30px;
+    text-align: center;
 }

@@ -1,20 +1,16 @@
-<br>
-<br>
-<button (click)="showWsbInfo()">Click here to get WSB info!</button>
-<br>
-<br>
-
-<!--The first thing I'm going to try and do is get a list of all 50 tickers to show up here-->
-
 <h3>Here are today's top 50 stocks on WallStreetBets...</h3>
 <div class="flex-container">
     <div class="flex-item" *ngFor="let wsb of wsbArray">
-        <button (click)="setCurrentStock(wsb.ticker)">{{wsb.ticker}}</button>        
+        <button class="myButton" (click)="toggleStockIsSelected()" (click)="setCurrentStock(wsb.ticker)">{{wsb.ticker}}</button>        
     </div>
 </div>
 
+<ng-container *ngIf="stockIsSelected">
+
+<div class="grid-container">
 <ng-container *ngFor="let wsb of wsbArray">
     <ng-container *ngIf="currentStock == wsb.ticker">
+        <div>
         <br>
         <button (click)="addFav(wsb.ticker)">Add Stock to Favorites</button><br>
         <div *ngIf="showFavComment == wsb.ticker">
@@ -22,19 +18,18 @@
             <input type="text" [(ngModel)]="noteText"/><button (click)="saveText()">Save</button><button (click)="cancelText()">Cancel</button>
         </div>
             <div class="WallStreetBetsApiInfo">
-                Ticker: {{wsb.ticker}}<br>
-                Sentiment: {{wsb.sentiment}}<br>
-                Sentiment Score: {{wsb.sentiment_score}}<br>
-                Number of Comments: {{wsb.no_of_comments}}<br>
+                <b>Ticker:</b> {{wsb.ticker}}<br>
+                <b>Sentiment:</b> {{wsb.sentiment}}<br>
+                <b>Sentiment Score:</b> {{wsb.sentiment_score}}<br>
+                <b>Number of Comments:</b> {{wsb.no_of_comments}}<br>
             </div>
         <ng-container *ngIf="marketStackInfo && marketStackInfo.data[0] && marketStackInfo.data[0].symbol == wsb.ticker">
             <div class="MarketStackApiInfo">
-                Opening Price: ${{marketStackInfo.data[0].open}}<br> 
-                Intraday High Price: ${{marketStackInfo.data[0].high}}<br>
-                Intraday Low Price: ${{marketStackInfo.data[0].low}}<br>
-                Closing Price: ${{marketStackInfo.data[0].close}}<br>
-                Volume: {{marketStackInfo.data[0].volume}}<br>
-                Date: {{marketStackInfo.data[0].date}}<br>
+                <b>Opening Price:</b>${{marketStackInfo.data[0].open}}<br> 
+                <b>Intraday High Price:</b> ${{marketStackInfo.data[0].high}}<br>
+                <b>Intraday Low Price:</b> ${{marketStackInfo.data[0].low}}<br>
+                <b>Closing Price:</b> ${{marketStackInfo.data[0].close}}<br>
+                <b>Volume:</b> {{marketStackInfo.data[0].volume}}<br>
             </div>
         </ng-container>
         <button (click)="showMarketStackInfo(wsb.ticker)">Show MarketStack Info</button>
@@ -42,11 +37,15 @@
         <br>    
         <!-- stonks component would go here -->    
         <!--Javascript code for tradingview was in his index.html -->
+        </div>
     </ng-container>
 </ng-container>
 
-<app-stocks [stock]="currentStock"></app-stocks>
 
+<app-stocks [stock]="currentStock"></app-stocks>
+</div>
+
+</ng-container>
 
 
 

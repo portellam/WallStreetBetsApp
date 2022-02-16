@@ -1,7 +1,17 @@
 .WallStreetBetsApiInfo{
-    color: blue
+    color: blue;
+    font-size: 24px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .MarketStackApiInfo{
-    color: red
+    color: rgb(0, 122, 41);
+    font-size: 24px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.AllOtherText{
+    color: black;
+    font-size: 24px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }

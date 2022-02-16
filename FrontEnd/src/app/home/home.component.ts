@@ -34,6 +34,7 @@ export class HomeComponent implements OnInit {
     private FavoriteService: FavoriteService) { }
 
   ngOnInit(): void {
+    this.showWsbInfo();
   }
 
   showWsbInfo(){
@@ -90,6 +91,12 @@ export class HomeComponent implements OnInit {
 
   setCurrentStock(stock: string){
     this.currentStock = stock;
+  }
+
+  stockIsSelected: boolean = false;
+
+  toggleStockIsSelected(){
+    this.stockIsSelected = true;
   }
 
 }
