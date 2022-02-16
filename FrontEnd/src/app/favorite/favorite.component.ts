@@ -25,22 +25,22 @@ export class FavoriteComponent implements OnInit {
 
   // PROPERTIES //
   // MarketStack
-  myMarketStackObject: MarketStack | undefined
+  _MarketStackObject: MarketStack | undefined
 
   // WallStreetBets
-  favoriteWsbArray: WallStreetBetsInfo[] = [];
-  temporaryWsbObject: WallStreetBetsInfo | undefined;
+  fav_WSBArray: WallStreetBetsInfo[] = [];
+  temp_WSBInfoObj: WallStreetBetsInfo | undefined;
 
   // JoinResults
-  allJoinResultsForUser: JoinResults[] = [];
-  specificTicker: string = '';
+  _JoinResults: JoinResults[] = [];
 
   // Favorite
   _DeleteFavorite: DeleteFavorite = {
     username: '',
     ticker: ''
   }
-  myTicker: string = '';
+  _ticker: string = '';
+  specific_Ticker: string = '';
 
   // Notes
   _AddNote: AddNote = {
@@ -54,14 +54,14 @@ export class FavoriteComponent implements OnInit {
   _DeleteNote: DeleteNote = {
     noteID: 0
   }
-  newNote: string = '';
-  passedNoteID: number = 0;
+  _Note: string = '';
+  _note_ID: number = 0;
 
   // TOGGLES
-  favoriteHasNote: boolean = false;
+  favoriteNoteVisible: boolean = false;
   noteExists: boolean = false;
-  revealNoteBox: boolean = false;
-  temporaryWsbObjectFilled: boolean = false;
+  noteBoxVisible: boolean = false;
+  temp_WSBInfoObjFilled: boolean = false;
 
   // NOTE: commented out by Josh
   /*
@@ -92,7 +92,7 @@ export class FavoriteComponent implements OnInit {
   getUserJoinResults() {
     this._JoinResultsService.get(
       (results: any) => {
-        this.allJoinResultsForUser = results;
+        this._JoinResults = results;
       }
     );
   }
@@ -103,7 +103,7 @@ export class FavoriteComponent implements OnInit {
   showMarketStackInfoForStock(ticker: string){
     this._MarketStackService.get(ticker,
       (results: any) => {
-        this.myMarketStackObject = results;  
+        this._MarketStackObject = results;  
       }
     );
   }
@@ -112,17 +112,17 @@ export class FavoriteComponent implements OnInit {
   captureFavoriteWsbInfo() {
     this._WallStreetBetsInfoService.get(
       (results: any) => {
-        this.favoriteWsbArray = results;
+        this.fav_WSBArray = results;
       }
     );
   }
 
   showWsbInfoForStock(myFavoriteTicker: string){
-    for (let i: number = 0; i < this.favoriteWsbArray.length; i++){
-      if (this.favoriteWsbArray[i].ticker == myFavoriteTicker){
-        this.temporaryWsbObject = this.favoriteWsbArray[i];
-        this.temporaryWsbObjectFilled = true;
-        this.myTicker = this.favoriteWsbArray[i].ticker;
+    for (let i: number = 0; i < this.fav_WSBArray.length; i++){
+      if (this.fav_WSBArray[i].ticker == myFavoriteTicker){
+        this.temp_WSBInfoObj = this.fav_WSBArray[i];
+        this.temp_WSBInfoObjFilled = true;
+        this._ticker = this.fav_WSBArray[i].ticker;
       }
     }
   }  
@@ -155,17 +155,17 @@ export class FavoriteComponent implements OnInit {
     }
   }
 
-  toggleNoteBoxOn(_passedNoteID: number){
-    this.revealNoteBox = true;
-    this.passedNoteID = _passedNoteID;
+  toggleNoteBoxOn(__note_ID: number){
+    this.noteBoxVisible = true;
+    this._note_ID = __note_ID;
   }
 
   toggleNoteBoxOff(){
-    this.revealNoteBox = false;
+    this.noteBoxVisible = false;
   }
 
   setTempTicker(tic: string){
-    this.specificTicker = tic;
+    this.specific_Ticker = tic;
   }
 
   setEditNoteID(myNoteID: number){
@@ -196,16 +196,16 @@ export class FavoriteComponent implements OnInit {
     this._DeleteNote.noteID = noteID;
   }
 
-  checkIfFavoriteHasNote(_favID: number)
+  checkIfFavoriteNoteVisible(_favID: number)
   {
-    for (let i: number = 0; i < this.allJoinResultsForUser.length; i++)
+    for (let i: number = 0; i < this._JoinResults.length; i++)
     {
-      if (this.allJoinResultsForUser[i].favorite_id == _favID)
+      if (this._JoinResults[i].favorite_id == _favID)
       {
-        if (this.allJoinResultsForUser[i].note_id == null)
+        if (this._JoinResults[i].note_id == null)
         {
-          this.favoriteHasNote == false;
-          alert(`Statement evalutes to: ${this.favoriteHasNote}`)
+          this.favoriteNoteVisible == false;
+          alert(`Statement evalutes to: ${this.favoriteNoteVisible}`)
         }
       }
     }
@@ -217,7 +217,7 @@ export class FavoriteComponent implements OnInit {
 
   addNote()
   {
-    if (this.favoriteHasNote)
+    if (this.favoriteNoteVisible)
     {
       alert('You already have a note for this favorited stock')
     }
@@ -237,11 +237,11 @@ export class FavoriteComponent implements OnInit {
   {
     let tempDescription: string = '';
 
-    for (let i: number = 0; i < this.allJoinResultsForUser.length; i++)
+    for (let i: number = 0; i < this._JoinResults.length; i++)
     {
-      if (this.allJoinResultsForUser[i].favorite_id == favID)
+      if (this._JoinResults[i].favorite_id == favID)
       {
-        tempDescription = this.allJoinResultsForUser[i].description
+        tempDescription = this._JoinResults[i].description
         if (tempDescription == null)
         {
           this._AddNoteService.postNote(this._AddNote, 

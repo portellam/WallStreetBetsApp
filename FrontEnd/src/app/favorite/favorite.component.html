@@ -1,4 +1,4 @@
-<ng-container *ngFor="let joinresult of allJoinResultsForUser">
+<ng-container *ngFor="let joinresult of _JoinResults">
     <br>
     <br>
     <button (click)="setDeleteFavoriteInfo(joinresult.username, joinresult.ticker)" (click)="deleteFavorite()">Remove Favorite</button><br>
@@ -11,7 +11,7 @@
 
     <button (click)="setTempTicker(joinresult.ticker)" (click)="toggleNoteBoxOn(joinresult.note_id)" (click)="toggleNoteExists(joinresult.description)">Note Options</button><br>
 
-    <ng-container *ngIf="revealNoteBox && passedNoteID == joinresult.note_id && specificTicker == joinresult.ticker">
+    <ng-container *ngIf="noteBoxVisible && _note_ID == joinresult.note_id && specific_Ticker == joinresult.ticker">
         <ng-container *ngIf="noteExists == true">
         
         <!--EDIT NOTE-->
@@ -19,11 +19,9 @@
         <input type="text" [(ngModel)]="_EditNote.updatedNoteDescription">
         <button (click)="setEditNoteID(joinresult.note_id)" (click)="editStockNote()">Save Changes</button><br>
 
-
         <!--DELETE NOTE-->
         <button (click)="setNoteID(joinresult.note_id)" (click)="deleteStockNote()">Delete Existing Note</button><br>
         </ng-container>    
-
 
         <!--ADD NOTE-->
         <ng-container *ngIf="noteExists == false">
@@ -34,28 +32,25 @@
     </ng-container>
 
     <button (click)="showWsbInfoForStock(joinresult.ticker)">Get Latest WSB Info!</button><br>
-    <ng-container *ngIf="temporaryWsbObjectFilled && myTicker == joinresult.ticker">
+    <ng-container *ngIf="temp_WSBInfoObjFilled && _ticker == joinresult.ticker">
         <div class="WallStreetBetsApiInfo">
-            Ticker: {{temporaryWsbObject?.ticker}}<br>
-            Sentiment: {{temporaryWsbObject?.sentiment}}<br>
-            Sentiment Score: {{temporaryWsbObject?.sentiment_score}}<br>
-            Number of Comments: {{temporaryWsbObject?.no_of_comments}}<br>
+            Ticker: {{temp_WSBInfoObj?.ticker}}<br>
+            Sentiment: {{temp_WSBInfoObj?.sentiment}}<br>
+            Sentiment Score: {{temp_WSBInfoObj?.sentiment_score}}<br>
+            Number of Comments: {{temp_WSBInfoObj?.no_of_comments}}<br>
         </div>
-        <ng-container *ngIf="myMarketStackObject && myMarketStackObject.data[0] && myMarketStackObject.data[0].symbol == joinresult.ticker">
+        <ng-container *ngIf="_MarketStackObject && _MarketStackObject.data[0] && _MarketStackObject.data[0].symbol == joinresult.ticker">
         <div class="MarketStackApiInfo">
-            Opening Price: ${{myMarketStackObject.data[0].open}}<br> 
-            Intraday High Price: ${{myMarketStackObject.data[0].high}}<br>
-            Intraday Low Price: ${{myMarketStackObject.data[0].low}}<br>
-            Closing Price: ${{myMarketStackObject.data[0].close}}<br>
-            Volume: {{myMarketStackObject.data[0].volume}}<br>
-            Date: {{myMarketStackObject.data[0].date}}<br>
+            Opening Price: ${{_MarketStackObject.data[0].open}}<br> 
+            Intraday High Price: ${{_MarketStackObject.data[0].high}}<br>
+            Intraday Low Price: ${{_MarketStackObject.data[0].low}}<br>
+            Closing Price: ${{_MarketStackObject.data[0].close}}<br>
+            Volume: {{_MarketStackObject.data[0].volume}}<br>
+            Date: {{_MarketStackObject.data[0].date}}<br>
         </div>
     </ng-container>
     <button (click)="showMarketStackInfoForStock(joinresult.ticker)">Show Latest MarketStack Info!</button>
     </ng-container>
-    
-    
-    
 
     <br>
     <br>
