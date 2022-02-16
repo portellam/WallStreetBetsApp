@@ -14,13 +14,13 @@ export class EditNoteService {
 
   // CRUD FUNCTIONS
 
-  //post(fav_id: number, description: string, cb: any) {
-  postNote(fav_id: number, description: string, cb: any) {
+  post(fav_id: number, description: string, cb: any) {
+  //postNote(fav_id: number, description: string, cb: any) {
     this._HttpClient.post(`https://localhost:7262/api/WallStreetBets/notes?favID=${fav_id}&noteDescription=${description}`, fav_id).subscribe(cb);
   }
 
-  //put(_Note: EditNote, cb: any) {
-  editNote(_Note: EditNote, cb: any) {
+  put(_Note: EditNote, cb: any) {
+  //editNote(_Note: EditNote, cb: any) {
     this._HttpClient.put<EditNote>(`https://localhost:7262/api/WallStreetBets/notes?noteID=${_Note.noteID}&updatedNoteDescription=${_Note.updatedNoteDescription}`, _Note).subscribe(cb);
   }
 

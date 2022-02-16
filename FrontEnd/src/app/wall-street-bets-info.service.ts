@@ -13,8 +13,8 @@ export class WallStreetBetsInfoService {
   constructor(private _HttpClient: HttpClient) { }
 
   // CRUD FUNCTIONS
-  //get(cb: any) {
-  retrieveWallStreetBetsInfo(cb: any) {
+  get(cb: any) {
+  //retrieveWallStreetBetsInfo(cb: any) {
     this._HttpClient.get<WallStreetBetsInfo[]>('https://localhost:7262/api/WallStreetBets/nbshare').subscribe(cb);
   }
 }

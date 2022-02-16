@@ -8,10 +8,16 @@ import { StockInfo } from './stock-info';
 })
 export class MarketStackService {
 
-  constructor(private http: HttpClient) { }
+  // METHODS //
 
-  retrieveMarketStackInfo(ticker: string, cb: any) {
-    this.http.get<MarketStack>(
+  // DEPENDENCIES
+  constructor(private _HttpClient: HttpClient) { }
+
+  // CRUD FUNCTIONS
+  
+  get(ticker: string, cb: any) {
+  //retrieveMarketStackInfo(ticker: string, cb: any) {
+    this._HttpClient.get<MarketStack>(
       `https://localhost:7262/api/WallStreetBets/marketstack?ticker=${ticker}`)
       .subscribe(cb);
   }

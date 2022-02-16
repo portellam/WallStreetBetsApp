@@ -20,8 +20,8 @@ export class JoinResultsService {
     this._HttpClient.get<JoinResults[]>('https://localhost:7262/api/WallStreetBets/joinresults?username=coloritoj').subscribe(cb)
   } */
 
-  //get(cb: any) {
-  getJoinResults(cb: any) {
+  get(cb: any) {
+  //getJoinResults(cb: any) {
     this._HttpClient.get<JoinResults[]>(`https://localhost:7262/api/WallStreetBets/joinresults?username=${this._UserService.get()}`).subscribe(cb)
   }
 

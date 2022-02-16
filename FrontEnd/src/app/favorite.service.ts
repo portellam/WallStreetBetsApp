@@ -15,8 +15,8 @@ export class FavoriteService {
 
   // CRUD FUNCTIONS
 
-  //post(ticker: string, cb: any) {
-  postFavorite(ticker: string, cb: any) {
+  post(ticker: string, cb: any) {
+  //postFavorite(ticker: string, cb: any) {
     //alert(this._UserService.get())
     this._HttpClient.post(`https://localhost:7262/api/WallStreetBets/favorites?username=${this._UserService.get()}&ticker=${ticker}`, ticker).subscribe(
       (result: any) => {

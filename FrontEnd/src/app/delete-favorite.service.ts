@@ -14,8 +14,8 @@ export class DeleteFavoriteService {
 
   // CRUD FUNCTIONS
   
-  //delete(_Favorite: DeleteFavorite, cb: any) {
-  deleteFavorite(_Favorite: DeleteFavorite, cb: any) {
+  delete(_Favorite: DeleteFavorite, cb: any) {
+  //deleteFavorite(_Favorite: DeleteFavorite, cb: any) {
     this._HttpClient.delete(`https://localhost:7262/api/WallStreetBets/favorites?username=${_Favorite.username}&ticker=${_Favorite.ticker}`).subscribe(cb)
   }
 }

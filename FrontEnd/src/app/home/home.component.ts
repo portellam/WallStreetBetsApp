@@ -49,7 +49,7 @@ export class HomeComponent implements OnInit {
   
   // MarketStack
   showMarketStackInfo(ticker: string){
-    this._MarketStackService.retrieveMarketStackInfo(ticker,
+    this._MarketStackService.get(ticker,
       (results: any) => {
         console.log('STACK INFO:');
         console.log(results);
@@ -63,7 +63,7 @@ export class HomeComponent implements OnInit {
 
   // WallStreetBets
   showWsbInfo(){
-    this._WallStreetBetsInfoService.retrieveWallStreetBetsInfo(
+    this._WallStreetBetsInfoService.get(
       (results: any) => {
         this.wsbArray = results;
       }
@@ -76,7 +76,7 @@ export class HomeComponent implements OnInit {
   // I also need to figure out how to pass their username as well (without having to type it)
   addFav(ticker: string){
     //alert(ticker);
-    this._FavoriteService.postFavorite(ticker,
+    this._FavoriteService.post(ticker,
       (result: any) => {
         //alert('Succesfully added favorite!')
         if (result) {
@@ -90,7 +90,7 @@ export class HomeComponent implements OnInit {
   // Note
   saveText(){
     this.showFavComment = '';
-    this._EditNoteService.postNote(this.showFavId, this.noteText, (result: any) => this.clearNoteText());
+    this._EditNoteService.post(this.showFavId, this.noteText, (result: any) => this.clearNoteText());
     // this.EditNoteService.postNote(this.showFavId, this.noteText, (result: any) => {});
   }  
 

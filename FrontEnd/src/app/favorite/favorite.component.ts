@@ -90,7 +90,7 @@ export class FavoriteComponent implements OnInit {
 
   // JoinResults
   getUserJoinResults() {
-    this._JoinResultsService.getJoinResults(
+    this._JoinResultsService.get(
       (results: any) => {
         this.allJoinResultsForUser = results;
       }
@@ -101,7 +101,7 @@ export class FavoriteComponent implements OnInit {
 
   // MarketStack
   showMarketStackInfoForStock(ticker: string){
-    this._MarketStackService.retrieveMarketStackInfo(ticker,
+    this._MarketStackService.get(ticker,
       (results: any) => {
         this.myMarketStackObject = results;  
       }
@@ -110,7 +110,7 @@ export class FavoriteComponent implements OnInit {
 
   // WallStreetBets
   captureFavoriteWsbInfo() {
-    this._WallStreetBetsInfoService.retrieveWallStreetBetsInfo(
+    this._WallStreetBetsInfoService.get(
       (results: any) => {
         this.favoriteWsbArray = results;
       }
@@ -134,7 +134,7 @@ export class FavoriteComponent implements OnInit {
   }
 
   deleteFavorite() {
-    this._DeleteFavoriteService.deleteFavorite(this._DeleteFavorite,
+    this._DeleteFavoriteService.delete(this._DeleteFavorite,
       (result: any) => {
         alert(`Favorite Deleted: ${this._DeleteFavorite.ticker}`)
         this.getUserJoinResults();
@@ -173,7 +173,7 @@ export class FavoriteComponent implements OnInit {
   }
 
   editStockNote() {
-    this._EditNoteService.editNote(this._EditNote, 
+    this._EditNoteService.put(this._EditNote, 
       (result: any) => {
         alert(`Edit Note ID: ${this._EditNote.noteID}`);
         this.clearEditText();
@@ -184,7 +184,7 @@ export class FavoriteComponent implements OnInit {
   }
 
   deleteStockNote() {
-    this._DeleteNoteService.deleteNote(this._DeleteNote,
+    this._DeleteNoteService.delete(this._DeleteNote,
       (result: any) => {
         alert(`Note ID deleted: ${this._DeleteNote.noteID}`)
         this.getUserJoinResults();

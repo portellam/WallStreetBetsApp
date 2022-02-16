@@ -14,8 +14,8 @@ export class GetNotesService {
 
   // CRUD FUNCTIONS
 
-  //get(cb: any) {
-  retrieveNotesTableInfo(cb: any) {
+  get(cb: any) {
+  //retrieveNotesTableInfo(cb: any) {
     this._HttpClient.get<GetNotes[]>('https://localhost:7262/api/WallStreetBets/notes').subscribe(cb)
   }
 }
