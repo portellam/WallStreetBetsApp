@@ -1,0 +1,11 @@
+.mainfont{
+    color: rgb(0, 0, 0);
+    font-size: 16px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.smallerfont{
+    color: rgb(0, 0, 0);
+    font-size: 12px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}

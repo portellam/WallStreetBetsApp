@@ -89,3 +89,9 @@
 	position:relative;
 	top:1px;
 }
+
+.mainfont{
+    color: rgb(0, 0, 0);
+    font-size: 16px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
