@@ -1,12 +1,10 @@
-﻿using System.Net.Http;
-
-namespace BackEnd.Models
+﻿namespace BackEnd.Models
 {
     public class MarketStackApiModel
     {
         private static readonly string MarketStackApiUrl = "http://api.marketstack.com/v1/eod";
         private static HttpClient MarketStackHttpClient = null;
-        
+
         public static HttpClient MyMarketStackHttpContext
         {
             get

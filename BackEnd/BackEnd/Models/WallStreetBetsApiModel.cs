@@ -30,7 +30,7 @@
             var connection = await ThisWallStreetBetsHttpClient.GetAsync(WallStreetBetsConnection);
             List<WallStreetBetsModel> wallStreetBetsModelList = await connection.Content.ReadAsAsync<List<WallStreetBetsModel>>();
 
-            foreach(WallStreetBetsModel wallStreetBetsModel in wallStreetBetsModelList)
+            foreach (WallStreetBetsModel wallStreetBetsModel in wallStreetBetsModelList)
             {
                 if (String.Equals(ticker, wallStreetBetsModel.Ticker))
                 {
