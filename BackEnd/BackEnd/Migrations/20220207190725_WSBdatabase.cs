@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
+using System.Diagnostics.CodeAnalysis;
 
 #nullable disable
 
 namespace BackEnd.Migrations
 {
+    [ExcludeFromCodeCoverage]
     public partial class WSBdatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

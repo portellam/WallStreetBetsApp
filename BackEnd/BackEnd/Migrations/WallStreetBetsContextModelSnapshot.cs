@@ -2,11 +2,13 @@
 using BackEnd.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using System.Diagnostics.CodeAnalysis;
 
 #nullable disable
 
 namespace BackEnd.Migrations
 {
+    [ExcludeFromCodeCoverage]
     [DbContext(typeof(WallStreetBetsDbContext))]
     partial class WallStreetBetsContextModelSnapshot : ModelSnapshot
     {
