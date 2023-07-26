@@ -1,5 +1,8 @@
-﻿namespace BackEnd.Models
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace BackEnd.Models
 {
+    [ExcludeFromCodeCoverage]
     public class StockInfoModel
     {
         public double ClosingPrice { get; set; }
