@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using BackEnd.Controllers;
 using BackEnd.Models;
-using System.Collections.Generic;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -11,15 +10,39 @@ namespace BackEnd.Contollers
     [ApiController]
     public class WallStreetBetsController : ControllerBase
     {
-        private static string LastKnownGoodMarketStackApiKey = String.Empty;
-
+        /// <summary>
+        /// List of API keys for MarketStack
+        /// MarketStack permits 1000 requests/month.
+        /// </summary>
         private static readonly List<string> MarketStackApiKeyList = new List<string> {
-            "e2488e8fbbbb3d54d6ad81a7305246c6",         // NOTE: API key created 2022/02/16
-            "208302dbe2d07c780ba4de2dc30c56ba"
+            //                                          //  date created,   email address
+            "e2488e8fbbbb3d54d6ad81a7305246c6",         //  2022/02/16
+            "208302dbe2d07c780ba4de2dc30c56ba",         //  2022/02/16
+
+            "db5ba6ebfd7e3c28ab4eabf5d24ee9cf",         //  2023/07/26,     tihen26671@wiemei.com
+            "960112bd8dc19a9be4f34e691fd6af43",         //  2023/07/26,     jexeres730@wiemei.com
+            "175b74334b1ad20b81965387c33c9884",         //  2023/07/26,     radana2405@quipas.com
+            "97ac1ff1ce31ffde42bbeb5e7760d9bd",         //  2023/07/26,     vofiyax821@weizixu.com
+            "54d1e01dbeadeddd4a310777d4131379",         //  2023/07/26,     tijini4663@wiemei.com
+
+            "dce0b45b5d53f724dd0b756ba09c0510",         //  2023/07/26,     nebicij492@wiemei.com
+            "807da50746f00ddbceb1347e3f76bbf9",         //  2023/07/26,     rijit47321@weizixu.com
+            "6e1e6de7627d5066883b5fec9261b6b9",         //  2023/07/26,     xovene1890@wiemei.com
+            "651e5201c8502600b861df27bad1b799",         //  2023/07/26,     kafibi3617@sportrid.com
+            "e1592170924a2b79eff89ed444d6015b"          //  2023/07/26,     dorofow114@weizixu.com
         };
 
+        private static string LastKnownGoodMarketStackApiKey = MarketStackApiKeyList.First();
+
+        /// <summary>
+        /// Documentation: https://marketstack.com/documentation
+        /// </summary>
         private static readonly string MarketStackApiUrl = "http://api.marketstack.com/v1/";
-        private static readonly string NbShareApiUrl = "https://dashboard.nbshare.io/api/v1/";
+
+        /// <summary>
+        /// Documentation: https://tradestie.com/apps/reddit/api/
+        /// </summary>
+        private static readonly string NbShareApiUrl = "https://tradestie.io/api/v1/";
         private readonly WallStreetBetsDbContext WallStreetBetsDbContext;
 
         public WallStreetBetsController(WallStreetBetsDbContext wallStreetBetsContext)
@@ -59,7 +82,7 @@ namespace BackEnd.Contollers
         [HttpDelete]
         public void DeleteFavorite(string username, string ticker)
         {
-            foreach(FavoriteModel favoriteModel in WallStreetBetsDbContext.Favorites.ToList())
+            foreach (FavoriteModel favoriteModel in WallStreetBetsDbContext.Favorites.ToList())
             {
                 if (String.Equals(favoriteModel.Username, username)
                     && String.Equals(favoriteModel.Ticker, ticker))
@@ -77,7 +100,7 @@ namespace BackEnd.Contollers
             return WallStreetBetsDbContext.Favorites;
         }
 
-		[HttpPost]
+        [HttpPost]
         public void AddUser(string username, string firstName)
         {
             UserModel userModel = new UserModel()
@@ -131,7 +154,7 @@ namespace BackEnd.Contollers
         public async Task<MarketStackModel> GetMarketStack(string ticker)
         {
             UpdateLastKnownGoodMarketStackApiKey();
-            var connection = GetMarketStackConnection(LastKnownGoodMarketStackApiKey, ticker);
+            var connection = GetMarketStackApiRequest(LastKnownGoodMarketStackApiKey, ticker);
             HttpResponseMessage httpResponseMessage = await GetMarketStackHttpClient().GetAsync(connection);
 
             if (httpResponseMessage is null)
@@ -142,7 +165,10 @@ namespace BackEnd.Contollers
             return await httpResponseMessage.Content.ReadAsAsync<MarketStackModel>();
         }
 
-        protected internal virtual string GetMarketStackConnection(string marketStackApiKey, string ticker)
+        /// <summary>
+        /// Documentation: https://marketstack.com/documentation
+        /// </summary>
+        protected internal virtual string GetMarketStackApiRequest(string marketStackApiKey, string ticker)
         {
             return String.Format($"eod?access_key={0}&symbols={1}&limit=1", marketStackApiKey, ticker);
         }
@@ -155,7 +181,7 @@ namespace BackEnd.Contollers
             };
         }
 
-        protected internal virtual async Task<bool> IsMarketStackAPIKeyNotExpired(string marketStackApiKey)
+        protected internal virtual async Task<bool> IsMarketStackApiKeyNotExpired(string marketStackApiKey)
         {
             var connection = String.Format($"eod?access_key={0}", marketStackApiKey);
             HttpResponseMessage httpResponseMessage = await GetMarketStackHttpClient().GetAsync(connection);
@@ -168,7 +194,7 @@ namespace BackEnd.Contollers
 
             foreach (string marketStackApiKey in MarketStackApiKeyList)
             {
-                isApiKeyValid = await IsMarketStackAPIKeyNotExpired(marketStackApiKey);
+                isApiKeyValid = await IsMarketStackApiKeyNotExpired(marketStackApiKey);
 
                 if (isApiKeyValid)
                 {
@@ -224,7 +250,7 @@ namespace BackEnd.Contollers
                     return;
                 }
             }
-        }   
+        }
 
         [Route("notes")]
         [HttpDelete]
@@ -245,7 +271,7 @@ namespace BackEnd.Contollers
         [HttpPut]
         public void EditNote(int noteId, string description)
         {
-            foreach(NoteModel noteModel in WallStreetBetsDbContext.Notes.ToList())
+            foreach (NoteModel noteModel in WallStreetBetsDbContext.Notes.ToList())
             {
                 if (noteModel.Id == noteId)
                 {
