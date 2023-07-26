@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using BackEnd.Controllers;
 using BackEnd.Models;
+using System.Collections.Generic;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -29,6 +30,7 @@ namespace BackEnd.Contollers
         [Route("favorites")]
         [HttpPost]
         public FavoriteModel AddFavorite(string username, string ticker)
+        // public void AddFavorite(string username, string ticker)                                     // TODO: verify intended behavior, then decide to replace with this.
         {
             List<FavoriteModel> favoriteModelList = WallStreetBetsDbContext.Favorites.ToList();
 
@@ -38,6 +40,7 @@ namespace BackEnd.Contollers
                     && String.Equals(ticker, favoriteModel.Ticker))
                 {
                     return null;
+                    //return;                                                                   // NOTE: Ditto line 33.
                 }
             }
 
@@ -56,12 +59,12 @@ namespace BackEnd.Contollers
         [HttpDelete]
         public void DeleteFavorite(string username, string ticker)
         {
-            List<FavoriteModel> Favs = WallStreetBetsDbContext.Favorites.ToList();
-            for (int i = 0; i < Favs.Count; i++)
+            foreach(FavoriteModel favoriteModel in WallStreetBetsDbContext.Favorites.ToList())
             {
-                if (username == Favs[i].Username && ticker == Favs[i].Ticker)
+                if (String.Equals(favoriteModel.Username, username)
+                    && String.Equals(favoriteModel.Ticker, ticker))
                 {
-                    WallStreetBetsDbContext.Favorites.Remove(Favs[i]);
+                    WallStreetBetsDbContext.Favorites.Remove(favoriteModel);
                     WallStreetBetsDbContext.SaveChanges();
                 }
             }
@@ -77,10 +80,13 @@ namespace BackEnd.Contollers
 		[HttpPost]
         public void AddUser(string username, string firstName)
         {
-            UserModel myUser = new UserModel();
-            myUser.Username = username;
-            myUser.FirstName = firstName;
-            WallStreetBetsDbContext.Users.Add(myUser);
+            UserModel userModel = new UserModel()
+            {
+                FirstName = firstName,
+                Username = username
+            };
+
+            WallStreetBetsDbContext.Users.Add(userModel);
             WallStreetBetsDbContext.SaveChanges();
         }
 
@@ -88,18 +94,17 @@ namespace BackEnd.Contollers
         [HttpGet]
         public IEnumerable<JoinResultsModel> GetJoinResults(string username)
         {
-            List<JoinResultsModel> myJoinResults = GetJoinResultsModelList(username);
-            return myJoinResults;
+            return GetJoinResultsModelList(username);
         }
 
         protected internal virtual List<JoinResultsModel> GetJoinResultsModelList(string username)
         {
-            List<JoinResultsModel> joinResultsList = null;
-
             if (username is null)
             {
-                return joinResultsList;
+                return null;
             }
+
+            List<JoinResultsModel> joinResultsList = null;
 
             using (WallStreetBetsDbContext context = new WallStreetBetsDbContext())
             {
@@ -131,11 +136,10 @@ namespace BackEnd.Contollers
 
             if (httpResponseMessage is null)
             {
-                throw new NullReferenceException("MarketStack API Key is not valid or is expired.");
+                throw new NullReferenceException("MarketStack API key is not valid or is expired.");
             }
 
-            MarketStackModel marketStackObject = await httpResponseMessage.Content.ReadAsAsync<MarketStackModel>();
-            return marketStackObject;
+            return await httpResponseMessage.Content.ReadAsAsync<MarketStackModel>();
         }
 
         protected internal virtual string GetMarketStackConnection(string marketStackApiKey, string ticker)
@@ -187,33 +191,37 @@ namespace BackEnd.Contollers
         /// correctly read it as JSON. (Interestingly, the ASP.NET core seems to notice
         /// that the data is JSON and attaches the correct content type of application/json.)
         /// </summary>
-        /// <returns>the</returns>
+        /// <returns>the nb share</returns>
         [Route("nbshare")]
         [HttpGet]
         public async Task<string> GetNbShare()
         {
-            HttpClient httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri(NbShareApiUrl);
+            HttpClient httpClient = new HttpClient()
+            {
+                BaseAddress = new Uri(NbShareApiUrl)
+            };
+
             HttpResponseMessage response = await httpClient.GetAsync("apps/reddit");
             return await response.Content.ReadAsStringAsync();
         }
 
         [Route("notes")]
         [HttpPost]
-        public void AddNote(int favID, string noteDescription)
+        public void AddNote(int favoriteId, string noteDescription)
         {
-            NoteModel myNote = new NoteModel();
-            List<FavoriteModel> favoriteRecords = WallStreetBetsDbContext.Favorites.ToList();
-
-            for (int i = 0; i < favoriteRecords.Count; i++)
+            foreach (FavoriteModel favoriteModel in WallStreetBetsDbContext.Favorites.ToList())
             {
-                if (favoriteRecords[i].Id == favID)
+                if (favoriteModel.Id == favoriteId)
                 {
-                    myNote.FavoriteId = favID;
-                    myNote.Description = noteDescription;
+                    NoteModel noteModel = new NoteModel()
+                    {
+                        Id = favoriteModel.Id,
+                        Description = noteDescription
+                    };
 
-                    WallStreetBetsDbContext.Notes.Add(myNote);
+                    WallStreetBetsDbContext.Notes.Add(noteModel);
                     WallStreetBetsDbContext.SaveChanges();
+                    return;
                 }
             }
         }   
@@ -222,37 +230,29 @@ namespace BackEnd.Contollers
         [HttpDelete]
         public void DeleteNote(int noteId)
         {
-            List<NoteModel> notesList = WallStreetBetsDbContext.Notes.ToList();
-            NoteModel noteToDelete = new NoteModel();
-
-            for (int i = 0; i < notesList.Count; i++)
+            foreach (NoteModel noteModel in WallStreetBetsDbContext.Notes.ToList())
             {
-                if (notesList[i].Id == noteId)
+                if (noteModel.Id == noteId)
                 {
-                    noteToDelete = notesList[i];
-
-                    WallStreetBetsDbContext.Notes.Remove(noteToDelete);
+                    WallStreetBetsDbContext.Notes.Remove(noteModel);
                     WallStreetBetsDbContext.SaveChanges();
+                    return;
                 }
             }
         }
 
         [Route("notes")]
         [HttpPut]
-        public void EditNote(int noteID, string description)
+        public void EditNote(int noteId, string description)
         {
-            List<NoteModel> notesList = WallStreetBetsDbContext.Notes.ToList();
-            NoteModel myNote = new NoteModel();
-
-            for (int i = 0; i < notesList.Count; i++)
+            foreach(NoteModel noteModel in WallStreetBetsDbContext.Notes.ToList())
             {
-                if (notesList[i].Id == noteID)
+                if (noteModel.Id == noteId)
                 {
-                    notesList[i].Description = description;
-                    myNote = notesList[i];
-
-                    WallStreetBetsDbContext.Notes.Update(myNote);
+                    noteModel.Description = description;
+                    WallStreetBetsDbContext.Notes.Update(noteModel);
                     WallStreetBetsDbContext.SaveChanges();
+                    return;
                 }
             }
         }
