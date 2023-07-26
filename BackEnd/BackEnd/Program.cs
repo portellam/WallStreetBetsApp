@@ -1,4 +1,4 @@
-using BackEnd.Controllers;
+using BackEnd.Models;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddDbContext<WallStreetBetsContext>(options =>
+builder.Services.AddDbContext<WallStreetBetsDbContext>(options =>
 {
 	options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")); // 45:50 or so is where I left off. Added the Microsoft.EntityFrameworkCore at the top.
 });
