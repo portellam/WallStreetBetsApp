@@ -3,6 +3,7 @@
     public class WallStreetBetsApiModel
     {
         private static readonly string WallStreetBetsApiUrl = "https://dashboard.nbshare.io/";
+        private static readonly string WallStreetBetsConnection = "/api/v1/apps/reddit";
         private static HttpClient WallStreetBetsHttpClient = null;
 
         public static HttpClient ThisWallStreetBetsHttpClient
@@ -26,19 +27,18 @@
         /// <returns>the API result</returns>
         public static async Task<WallStreetBetsModel> GetWallStreetBetsModel(string ticker)
         {
-            var connection = await ThisWallStreetBetsHttpClient.GetAsync("/api/v1/apps/reddit");
+            var connection = await ThisWallStreetBetsHttpClient.GetAsync(WallStreetBetsConnection);
             List<WallStreetBetsModel> wallStreetBetsModelList = await connection.Content.ReadAsAsync<List<WallStreetBetsModel>>();
-            WallStreetBetsModel wallStreetBetsModel = new WallStreetBetsModel();
 
-            for (int i = 0; i < wallStreetBetsModelList.Count; i++)
+            foreach(WallStreetBetsModel wallStreetBetsModel in wallStreetBetsModelList)
             {
-                if (wallStreetBetsModelList[i].Ticker.ToLower() == ticker.ToLower())
+                if (String.Equals(ticker, wallStreetBetsModel.Ticker))
                 {
-                    wallStreetBetsModel = wallStreetBetsModelList[i];
+                    return wallStreetBetsModel;
                 }
             }
 
-            return wallStreetBetsModel;
+            return null;
         }
     }
 }
