@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 
 #nullable disable
 
-namespace BackEnd.Migrations
+namespace WallStreetBetsApp.Server.Migrations
 {
     [ExcludeFromCodeCoverage]
     public partial class WSBdatabase : Migration

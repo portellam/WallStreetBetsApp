@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using BackEnd.Models;
+using WallStreetBetsApp.Server.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 

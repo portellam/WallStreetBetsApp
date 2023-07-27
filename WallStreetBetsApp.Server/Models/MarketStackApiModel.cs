@@ -1,4 +1,4 @@
-﻿namespace BackEnd.Models
+﻿namespace WallStreetBetsApp.Server.Models
 {
     public class MarketStackApiModel
     {

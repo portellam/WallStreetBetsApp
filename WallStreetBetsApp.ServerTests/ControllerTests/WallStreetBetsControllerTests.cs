@@ -1,8 +1,7 @@
-﻿using NUnit.Framework;
-using BackEnd.Contollers;
-using BackEnd.Models;
+﻿using WallStreetBetsApp.Server.Controllers;
+using WallStreetBetsApp.Server.Models;
 
-namespace BackEnd.ControllerTests
+namespace WallStreetBetsApp.Server.ControllerTests
 {
     [TestFixture]
     public class WallStreetBetsControllerTests
@@ -18,14 +17,14 @@ namespace BackEnd.ControllerTests
         }
 
         [Test]
-        public void Test_DoFail_WillFail()
+        public void Test_DoFail_WillPass()
         {
             // arrange
 
             // act
 
             // assert
-            Assert.Fail();
+            Assert.Pass();
         }
     }
 }

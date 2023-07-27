@@ -1,10 +1,11 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace BackEnd.Models
+namespace WallStreetBetsApp.Server.Models
 {
     [ExcludeFromCodeCoverage]
-    public class MarketStackModel
+    public class BaseModel
     {
+        public PaginationModel PaginationModel { get; set; }
         public List<StockInfoModel> StockInfoModelList { get; set; }
     }
 }

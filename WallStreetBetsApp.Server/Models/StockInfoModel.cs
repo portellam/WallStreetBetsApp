@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace BackEnd.Models
+namespace WallStreetBetsApp.Server.Models
 {
     [ExcludeFromCodeCoverage]
     public class StockInfoModel

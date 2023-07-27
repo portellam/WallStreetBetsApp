@@ -1,12 +1,12 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace BackEnd.Controllers
+namespace WallStreetBetsApp.Server.Controllers
 {
     [ExcludeFromCodeCoverage]
-    public class UserModel
+    public class FavoriteModel
     {
         public int Id { get; set; }
+        public string Ticker { get; set; }
         public string Username { get; set; }
-        public string FirstName { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using BackEnd.Controllers;
+using WallStreetBetsApp.Server.Controllers;
 
-namespace BackEnd.Models
+namespace WallStreetBetsApp.Server.Models
 {
     public class WallStreetBetsDbContext : DbContext
     {

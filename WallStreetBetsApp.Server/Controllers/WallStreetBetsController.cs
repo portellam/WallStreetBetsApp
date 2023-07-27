@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
-using BackEnd.Controllers;
-using BackEnd.Models;
+using WallStreetBetsApp.Server.Controllers;
+using WallStreetBetsApp.Server.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace BackEnd.Contollers
+namespace WallStreetBetsApp.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

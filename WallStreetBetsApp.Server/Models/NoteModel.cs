@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace BackEnd.Controllers
+namespace WallStreetBetsApp.Server.Controllers
 {
     [ExcludeFromCodeCoverage]
     public class NoteModel
