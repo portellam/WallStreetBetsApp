@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using WallStreetBetsApp.Server.Controllers;
+using System.Runtime.CompilerServices;
 using WallStreetBetsApp.Server.Models;
+
+[assembly: InternalsVisibleTo("WallStreetBetsApp.ServerTests")]
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,7 +16,7 @@ namespace WallStreetBetsApp.Server.Controllers
         /// List of API keys for MarketStack
         /// MarketStack permits 1000 requests/month.
         /// </summary>
-        private static readonly List<string> MarketStackApiKeyList = new List<string> {
+        protected internal static readonly List<string> MarketStackApiKeyList = new List<string> {
             //                                          //  date created,   email address
             "e2488e8fbbbb3d54d6ad81a7305246c6",         //  2022/02/16
             "208302dbe2d07c780ba4de2dc30c56ba",         //  2022/02/16
@@ -32,7 +34,7 @@ namespace WallStreetBetsApp.Server.Controllers
             "e1592170924a2b79eff89ed444d6015b"          //  2023/07/26,     dorofow114@weizixu.com
         };
 
-        private static string LastKnownGoodMarketStackApiKey = MarketStackApiKeyList.First();
+        protected internal static string LastKnownGoodMarketStackApiKey = MarketStackApiKeyList.First();
 
         /// <summary>
         /// Documentation: https://marketstack.com/documentation
