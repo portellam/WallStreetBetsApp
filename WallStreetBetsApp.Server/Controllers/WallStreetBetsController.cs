@@ -47,9 +47,9 @@ namespace WallStreetBetsApp.Server.Controllers
         private static readonly string NbShareApiUrl = "https://tradestie.io/api/v1/";
         private readonly WallStreetBetsDbContext WallStreetBetsDbContext;
 
-        public WallStreetBetsController(WallStreetBetsDbContext wallStreetBetsContext)
+        public WallStreetBetsController(WallStreetBetsDbContext wallStreetBetsDbContext)
         {
-            this.WallStreetBetsDbContext = wallStreetBetsContext;
+            this.WallStreetBetsDbContext = wallStreetBetsDbContext;
         }
 
         [Route("favorites")]
@@ -57,7 +57,7 @@ namespace WallStreetBetsApp.Server.Controllers
         public FavoriteModel AddFavorite(string username, string ticker)
         // public void AddFavorite(string username, string ticker)                                     // TODO: verify intended behavior, then decide to replace with this.
         {
-            List<FavoriteModel> favoriteModelList = WallStreetBetsDbContext.Favorites.ToList();
+            List<FavoriteModel> favoriteModelList = WallStreetBetsDbContext.FavoriteDbSet.ToList();
 
             foreach (FavoriteModel favoriteModel in favoriteModelList)
             {
@@ -75,7 +75,7 @@ namespace WallStreetBetsApp.Server.Controllers
                 Ticker = ticker
             };
 
-            WallStreetBetsDbContext.Favorites.Add(newFavoriteModel);
+            WallStreetBetsDbContext.FavoriteDbSet.Add(newFavoriteModel);
             WallStreetBetsDbContext.SaveChanges();
             return newFavoriteModel;
         }
@@ -84,12 +84,12 @@ namespace WallStreetBetsApp.Server.Controllers
         [HttpDelete]
         public void DeleteFavorite(string username, string ticker)
         {
-            foreach (FavoriteModel favoriteModel in WallStreetBetsDbContext.Favorites.ToList())
+            foreach (FavoriteModel favoriteModel in WallStreetBetsDbContext.FavoriteDbSet.ToList())
             {
                 if (String.Equals(favoriteModel.Username, username)
                     && String.Equals(favoriteModel.Ticker, ticker))
                 {
-                    WallStreetBetsDbContext.Favorites.Remove(favoriteModel);
+                    WallStreetBetsDbContext.FavoriteDbSet.Remove(favoriteModel);
                     WallStreetBetsDbContext.SaveChanges();
                 }
             }
@@ -99,7 +99,7 @@ namespace WallStreetBetsApp.Server.Controllers
         [HttpGet]
         public IEnumerable<FavoriteModel> GetFavoriteEnum()
         {
-            return WallStreetBetsDbContext.Favorites;
+            return WallStreetBetsDbContext.FavoriteDbSet;
         }
 
         [HttpPost]
@@ -111,7 +111,7 @@ namespace WallStreetBetsApp.Server.Controllers
                 Username = username
             };
 
-            WallStreetBetsDbContext.Users.Add(userModel);
+            WallStreetBetsDbContext.UserDbSet.Add(userModel);
             WallStreetBetsDbContext.SaveChanges();
         }
 
@@ -131,20 +131,21 @@ namespace WallStreetBetsApp.Server.Controllers
 
             List<JoinResultsModel> joinResultsList = null;
 
-            using (WallStreetBetsDbContext context = new WallStreetBetsDbContext())
+            using (WallStreetBetsDbContext wallStreetBetsDbContext = new WallStreetBetsDbContext())
             {
-                var query = from myFavs in context.Favorites
-                            join myNotes in context.Notes on myFavs.Id equals myNotes.FavoriteId into fullnotes
-                            from morenotes in fullnotes.DefaultIfEmpty()
-                            where myFavs.Username == username
+                var query = from favorites in wallStreetBetsDbContext.FavoriteDbSet
+                            join notes in wallStreetBetsDbContext.NoteDbSet on favorites.Id equals notes.FavoriteId into notes
+                            from some_notes in notes.DefaultIfEmpty()
+                            where favorites.Username == username
                             select new JoinResultsModel()
                             {
-                                Username = myFavs.Username,
-                                Ticker = myFavs.Ticker,
-                                FavoriteId = myFavs.Id,                    //favorite_id = morenotes.favorite_id,
-                                Description = morenotes.Description,
-                                NoteId = morenotes.Id
+                                Username = favorites.Username,
+                                Ticker = favorites.Ticker,
+                                FavoriteId = favorites.Id,                    //favorite_id = morenotes.favorite_id,
+                                Description = some_notes.Description,
+                                NoteId = some_notes.Id
                             };
+
                 joinResultsList = query.ToList();
             }
 
@@ -237,7 +238,7 @@ namespace WallStreetBetsApp.Server.Controllers
         [HttpPost]
         public void AddNote(int favoriteId, string noteDescription)
         {
-            foreach (FavoriteModel favoriteModel in WallStreetBetsDbContext.Favorites.ToList())
+            foreach (FavoriteModel favoriteModel in WallStreetBetsDbContext.FavoriteDbSet.ToList())
             {
                 if (favoriteModel.Id == favoriteId)
                 {
@@ -247,7 +248,7 @@ namespace WallStreetBetsApp.Server.Controllers
                         Description = noteDescription
                     };
 
-                    WallStreetBetsDbContext.Notes.Add(noteModel);
+                    WallStreetBetsDbContext.NoteDbSet.Add(noteModel);
                     WallStreetBetsDbContext.SaveChanges();
                     return;
                 }
@@ -258,11 +259,11 @@ namespace WallStreetBetsApp.Server.Controllers
         [HttpDelete]
         public void DeleteNote(int noteId)
         {
-            foreach (NoteModel noteModel in WallStreetBetsDbContext.Notes.ToList())
+            foreach (NoteModel noteModel in WallStreetBetsDbContext.NoteDbSet.ToList())
             {
                 if (noteModel.Id == noteId)
                 {
-                    WallStreetBetsDbContext.Notes.Remove(noteModel);
+                    WallStreetBetsDbContext.NoteDbSet.Remove(noteModel);
                     WallStreetBetsDbContext.SaveChanges();
                     return;
                 }
@@ -273,12 +274,12 @@ namespace WallStreetBetsApp.Server.Controllers
         [HttpPut]
         public void EditNote(int noteId, string description)
         {
-            foreach (NoteModel noteModel in WallStreetBetsDbContext.Notes.ToList())
+            foreach (NoteModel noteModel in WallStreetBetsDbContext.NoteDbSet.ToList())
             {
                 if (noteModel.Id == noteId)
                 {
                     noteModel.Description = description;
-                    WallStreetBetsDbContext.Notes.Update(noteModel);
+                    WallStreetBetsDbContext.NoteDbSet.Update(noteModel);
                     WallStreetBetsDbContext.SaveChanges();
                     return;
                 }
@@ -289,13 +290,13 @@ namespace WallStreetBetsApp.Server.Controllers
         [HttpGet]
         public IEnumerable<NoteModel> GetNoteList()
         {
-            return WallStreetBetsDbContext.Notes;
+            return WallStreetBetsDbContext.NoteDbSet;
         }
 
         [HttpGet]
         public IEnumerable<UserModel> GetUserEnum()
         {
-            return WallStreetBetsDbContext.Users;
+            return WallStreetBetsDbContext.UserDbSet;
         }
     }
 }
