@@ -6,12 +6,16 @@ using System.Diagnostics.CodeAnalysis;
 namespace WallStreetBetsApp.Server.Migrations
 {
     [ExcludeFromCodeCoverage]
-    public partial class WSBdatabase : Migration
+    public partial class WallStreetBetsDatabase : Migration
     {
+        private const string favoriteTable = "favorites";
+        private const string noteTable = "notes";
+        private const string userTable = "users";
+
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Favorites",
+                name: favoriteTable,
                 columns: table => new
                 {
                     id = table.Column<int>(type: "int", nullable: false)
@@ -22,11 +26,11 @@ namespace WallStreetBetsApp.Server.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Favorites", x => x.id);
+                    table.PrimaryKey($"PK_{favoriteTable}", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Notes",
+                name: noteTable,
                 columns: table => new
                 {
                     id = table.Column<int>(type: "int", nullable: false)
@@ -36,11 +40,11 @@ namespace WallStreetBetsApp.Server.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Notes", x => x.id);
+                    table.PrimaryKey($"PK_{noteTable}", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: userTable,
                 columns: table => new
                 {
                     id = table.Column<int>(type: "int", nullable: false)
@@ -50,20 +54,20 @@ namespace WallStreetBetsApp.Server.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.id);
+                    table.PrimaryKey($"PK_{$"PK_{favoriteTable}"}", x => x.id);
                 });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Favorites");
+                name: favoriteTable);
 
             migrationBuilder.DropTable(
-                name: "Notes");
+                name: noteTable);
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: userTable);
         }
     }
 }

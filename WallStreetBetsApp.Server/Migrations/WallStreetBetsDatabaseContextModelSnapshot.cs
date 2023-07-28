@@ -10,7 +10,7 @@ namespace WallStreetBetsApp.Server.Migrations
 {
     [ExcludeFromCodeCoverage]
     [DbContext(typeof(WallStreetBetsDbContext))]
-    partial class WallStreetBetsContextModelSnapshot : ModelSnapshot
+    partial class WallStreetBetsDatabaseContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
